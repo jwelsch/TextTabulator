@@ -7,12 +7,6 @@ namespace TextTabulator
 {
     public delegate string TableValue();
 
-    public enum ColumnAlignment
-    {
-        Left,
-        Right
-    };
-
     public class Tabulator
     {
         public char ColumnSeparator { get; set; } = '|';
@@ -23,14 +17,14 @@ namespace TextTabulator
 
         public char RowSeparator { get; set; } = '-';
 
-        public string Tabulate(IEnumerable<IEnumerable<TableValue>> rowValues)
+        public string Tabulate(IEnumerable<IEnumerable<TableValue>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
 
             return Tabulate(Array.Empty<string>(), rowValueStrings);
         }
 
-        public string Tabulate(IEnumerable<TableValue> headers, IEnumerable<IEnumerable<TableValue>> rowValues)
+        public string Tabulate(IEnumerable<TableValue> headers, IEnumerable<IEnumerable<TableValue>> rowValues, TabulatorOptions? options = null)
         {
             var headerStrings = headers.Select(i => i.Invoke());
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
@@ -38,14 +32,14 @@ namespace TextTabulator
             return Tabulate(headerStrings, rowValueStrings);
         }
 
-        public string Tabulate(IEnumerable<IEnumerable<object>> rowValues)
+        public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.ToString()));
 
             return Tabulate(Array.Empty<string>(), rowValueStrings);
         }
 
-        public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues)
+        public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
         {
             var headerStrings = headers.Select(i => i.ToString());
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.ToString()));
@@ -58,8 +52,10 @@ namespace TextTabulator
             return Tabulate(Array.Empty<string>(), rowValues);
         }
 
-        public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues)
+        public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
         {
+            options ??= new TabulatorOptions();
+
             var maxColumnWidths = new List<int>();
 
             GetRowAndColumnData(new List<IEnumerable<string>> { headers }, ref maxColumnWidths);
@@ -73,7 +69,7 @@ namespace TextTabulator
                 throw new Exception($"The number of headers ({headerCount}) does not match the number of values in each row ({maxColumnWidths.Count}).");
             }
 
-            return TabulateData(headers, rowValues, maxColumnWidths.ToArray(), rowCount);
+            return TabulateData(headers, rowValues, maxColumnWidths.ToArray(), rowCount, options);
         }
 
         private int GetRowAndColumnData(IEnumerable<IEnumerable<string>> rowValues, ref List<int> maxColumnWidths)
@@ -106,7 +102,7 @@ namespace TextTabulator
             return row;
         }
 
-        private string TabulateData(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, int[] maxColumnWidths, int rowCount)
+        private string TabulateData(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, int[] maxColumnWidths, int rowCount, TabulatorOptions options)
         {
             var entireRowSeparator = BuildEntireRowSeparator(RowSeparator, ColumnSeparator, ColumnLeftPadding, ColumnRightPadding, maxColumnWidths);
 
@@ -115,23 +111,29 @@ namespace TextTabulator
             // Start with the top edge of the table.
             table.AppendLine(entireRowSeparator);
 
+            var row = 0;
+
             if (headers.Any())
             {
                 // Add the header row.
-                var headerRow = BuildRowValues(headers, ColumnSeparator, ColumnLeftPadding, ColumnRightPadding, maxColumnWidths);
+                var headerRow = BuildRowValues(headers, ColumnSeparator, ColumnLeftPadding, ColumnRightPadding, maxColumnWidths, row, options);
                 table.AppendLine(headerRow);
                 table.AppendLine(entireRowSeparator);
+
+                row++;
             }
 
             foreach (var rowValue in rowValues)
             {
                 // Add the row values.
-                var row = BuildRowValues(rowValue, ColumnSeparator, ColumnLeftPadding, ColumnRightPadding, maxColumnWidths);
-                table.AppendLine(row);
+                var rowString = BuildRowValues(rowValue, ColumnSeparator, ColumnLeftPadding, ColumnRightPadding, maxColumnWidths, row, options);
+                table.AppendLine(rowString);
 
                 // Add the row separator.
                 // Note that this will also account for the bottom edge of the table.
                 table.AppendLine(entireRowSeparator);
+
+                row++;
             }
 
             return table.ToString();
@@ -154,29 +156,40 @@ namespace TextTabulator
             return entireRowSeparator.ToString();
         }
 
-        private static string BuildRowValues(IEnumerable<string> values, char columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths)
+        private static string BuildRowValues(IEnumerable<string> values, char columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths, int row, TabulatorOptions options)
         {
-            var row = new StringBuilder();
+            var rowString = new StringBuilder();
             var col = 0;
 
             // Account for the left edge of the table.
-            row.Append(columnSeparator);
+            rowString.Append(columnSeparator);
 
             // Add the value, padding, and the right column separator for each column.
             // Note that this will also account for the right edge of the table.
             foreach (var value in values)
             {
-                row.Append(columnLeftPadding);
+                var cellAlignment = options.CellAlignmentProvider.GetColumnAlignment(col, row);
 
-                row.Append(value);
-                row.Append(' ', maxColumnWidths[col] - value.Length);
+                rowString.Append(columnLeftPadding);
 
-                row.Append(columnRightPadding + columnSeparator);
+                if (cellAlignment == CellAlignment.Right)
+                {
+                    rowString.Append(' ', maxColumnWidths[col] - value.Length);
+                }
+
+                rowString.Append(value);
+
+                if (cellAlignment == CellAlignment.Left)
+                {
+                    rowString.Append(' ', maxColumnWidths[col] - value.Length);
+                }
+
+                rowString.Append(columnRightPadding + columnSeparator);
 
                 col++;
             }
 
-            return row.ToString();
+            return rowString.ToString();
         }
     }
 }

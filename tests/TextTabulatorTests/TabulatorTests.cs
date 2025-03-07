@@ -514,5 +514,165 @@ namespace TextTabulatorTests
 
             Assert.Equal(expected, table);
         }
+
+        [Fact]
+        public void When_tabulate_called_with_headers_longer_uniform_alignment_left_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "XXXHeader1",
+                "YYYHeader2",
+                "ZZZHeader3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}|{headers[1]}|{headers[2]}|
+----------------------------------
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
+----------------------------------
+|{values[1][0]}   |{values[1][1]}   |{values[1][2]}   |
+----------------------------------
+|{values[2][0]}   |{values[2][1]}   |{values[2][2]}   |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Left)
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_headers_longer_uniform_alignment_right_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "XXXHeader1",
+                "YYYHeader2",
+                "ZZZHeader3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}|{headers[1]}|{headers[2]}|
+----------------------------------
+|   {values[0][0]}|   {values[0][1]}|   {values[0][2]}|
+----------------------------------
+|   {values[1][0]}|   {values[1][1]}|   {values[1][2]}|
+----------------------------------
+|   {values[2][0]}|   {values[2][1]}|   {values[2][2]}|
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Right)
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_values_longer_uniform_alignment_left_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "Header2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "XXXvalue1A", "XXXvalue1B", "XXXvalue1C" },
+                new string [] { "YYYvalue2A", "YYYvalue2B", "YYYvalue2C" },
+                new string [] { "ZZZvalue3A", "ZZZvalue3B", "ZZZvalue3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}   |{headers[1]}   |{headers[2]}   |
+----------------------------------
+|{values[0][0]}|{values[0][1]}|{values[0][2]}|
+----------------------------------
+|{values[1][0]}|{values[1][1]}|{values[1][2]}|
+----------------------------------
+|{values[2][0]}|{values[2][1]}|{values[2][2]}|
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Left)
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_values_longer_uniform_alignment_right_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "Header2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "XXXvalue1A", "XXXvalue1B", "XXXvalue1C" },
+                new string [] { "YYYvalue2A", "YYYvalue2B", "YYYvalue2C" },
+                new string [] { "ZZZvalue3A", "ZZZvalue3B", "ZZZvalue3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|   {headers[0]}|   {headers[1]}|   {headers[2]}|
+----------------------------------
+|{values[0][0]}|{values[0][1]}|{values[0][2]}|
+----------------------------------
+|{values[1][0]}|{values[1][1]}|{values[1][2]}|
+----------------------------------
+|{values[2][0]}|{values[2][1]}|{values[2][2]}|
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Right)
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
     }
 }
