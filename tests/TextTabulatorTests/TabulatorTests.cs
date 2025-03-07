@@ -7,7 +7,7 @@ namespace TextTabulatorTests
         [Fact]
         public void When_tabulator_ctor_called_and_properties_set_then_properties_return_expected_values0()
         {
-            var columnSeparator = "!";
+            var columnSeparator = '!';
             var columnLeftPadding = "#";
             var columnRightPadding = "#";
             var rowSeparator = '_';
@@ -61,35 +61,12 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator
             {
-                ColumnSeparator = "#"
+                ColumnSeparator = '#'
             };
 
             var table = sut.Tabulate(headers, values);
 
             Assert.Equal($"--------\r\n#{headers[0]}#\r\n--------\r\n#{values[0][0]} #\r\n--------\r\n", table);
-        }
-
-        [Fact]
-        public void When_column_separator_customized_with_multicharacter_string_then_table_returned()
-        {
-            var headers = new string[]
-            {
-                "Header"
-            };
-
-            var values = new string[][]
-            {
-                new string [] { "value" }
-            };
-
-            var sut = new Tabulator
-            {
-                ColumnSeparator = "|#|"
-            };
-
-            var table = sut.Tabulate(headers, values);
-
-            Assert.Equal($"------------\r\n|#|{headers[0]}|#|\r\n------------\r\n|#|{values[0][0]} |#|\r\n------------\r\n", table);
         }
 
         [Fact]

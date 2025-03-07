@@ -7,9 +7,15 @@ namespace TextTabulator
 {
     public delegate string TableValue();
 
+    public enum ColumnAlignment
+    {
+        Left,
+        Right
+    };
+
     public class Tabulator
     {
-        public string ColumnSeparator { get; set; } = "|";
+        public char ColumnSeparator { get; set; } = '|';
 
         public string ColumnLeftPadding { get; set; } = string.Empty;
 
@@ -131,24 +137,24 @@ namespace TextTabulator
             return table.ToString();
         }
 
-        private static string BuildEntireRowSeparator(char rowSeparator, string columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths)
+        private static string BuildEntireRowSeparator(char rowSeparator, char columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths)
         {
             var entireRowSeparator = new StringBuilder();
 
             // Account for the left edge of the table.
-            entireRowSeparator.Append(rowSeparator, columnSeparator.Length);
+            entireRowSeparator.Append(rowSeparator);
 
             // Add enough row separators so that the entire row separator takes into account each column, its padding, and its column separator.
             // This will also account for the right edge of the table.
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                entireRowSeparator.Append(rowSeparator, columnLeftPadding.Length + maxColumnWidths[i] + columnRightPadding.Length + columnSeparator.Length);
+                entireRowSeparator.Append(rowSeparator, columnLeftPadding.Length + maxColumnWidths[i] + columnRightPadding.Length + 1 /* column separator */);
             }
 
             return entireRowSeparator.ToString();
         }
 
-        private static string BuildRowValues(IEnumerable<string> values, string columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths)
+        private static string BuildRowValues(IEnumerable<string> values, char columnSeparator, string columnLeftPadding, string columnRightPadding, int[] maxColumnWidths)
         {
             var row = new StringBuilder();
             var col = 0;
