@@ -14,7 +14,27 @@
 
         public char ValueRowSeparator { get; set; } = '-';
 
+        public char ValueLeftEdgeJoint { get; set; } = '|';
+
+        public char ValueMiddleJoint { get; set; } = '+';
+
+        public char ValueRightEdgeJoint { get; set; } = '|';
+
         public char HeaderRowSeparator { get; set;} = '-';
+
+        public char HeaderLeftEdgeJoint { get; set; } = '|';
+
+        public char HeaderMiddleJoint { get; set; } = '+';
+
+        public char HeaderRightEdgeJoint { get; set; } = '|';
+
+        public char LeftEdge { get; set; } = '|';
+
+        public char RightEdge { get; set; } = '|';
+
+        public char TopEdge { get; set; } = '-';
+
+        public char BottomEdge { get; set; } = '-';
 
         public char TopLeftCorner { get; set; } = '-';
 
@@ -24,21 +44,9 @@
 
         public char BottomLeftCorner { get; set; } = '-';
 
-        public char ValueLeftEdgeJoint { get; set; } = '|';
-
-        public char ValueRightEdgeJoint { get; set; } = '|';
-
-        public char HeaderLeftEdgeJoint { get; set; } = '|';
-
-        public char HeaderRightEdgeJoint { get; set; } = '|';
-
         public char TopEdgeJoint { get; set; } = '-';
 
         public char BottomEdgeJoint { get; set; } = '-';
-
-        public char ValueMiddleJoint { get; set; } = '-';
-
-        public char HeaderMiddleJoint { get; set; } = '-';
 
         public ICellAlignmentProvider CellAlignmentProvider { get; set; } = new UniformAlignmentProvider(CellAlignment.Left);
     }

@@ -41,7 +41,9 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnSeparator = '#'
+                ColumnSeparator = '#',
+                LeftEdge = '#',
+                RightEdge = '#',
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -284,8 +286,10 @@ namespace TextTabulatorTests
                 HeaderRightEdgeJoint = '_',
                 TopLeftCorner = '_',
                 TopRightCorner = '_',
+                TopEdge = '_',
                 BottomLeftCorner = '_',
                 BottomRightCorner = '_',
+                BottomEdge = '_',
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -684,48 +688,52 @@ namespace TextTabulatorTests
             var headers = new string[]
             {
                 "Header1",
-                "YYYHeader2",
-                "Header3",
+                "Header2",
+                "ZZZHeader3"
             };
 
             var values = new string[][]
             {
-                new string [] { "XXXvalue1A", "value2A", "ZZZvalue3A" },
-                new string [] { "XXXvalue1B", "value2B", "ZZZvalue3B" },
-                new string [] { "XXXvalue1C", "value2C", "ZZZvalue3C" },
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
             };
 
             var expected =
-@$"┌──────────┬──────────┬──────────┐
-│{headers[0]}   │{headers[1]}│{headers[2]}   │
-╞══════════╪══════════╪══════════╡
-│{values[0][0]}│   {values[0][1]}│{values[0][2]}│
-├──────────┼──────────┼──────────┤
-│{values[1][0]}│   {values[1][1]}│{values[1][2]}│
-├──────────┼──────────┼──────────┤
-│{values[2][0]}│   {values[2][1]}│{values[2][2]}│
-└──────────┴──────────┴──────────┘
+@$"╔══════════╤══════════╤══════════╗
+║{headers[0]}   │{headers[1]}   │{headers[2]}║
+╠══════════╪══════════╪══════════╣
+║{values[0][0]}   │   {values[0][1]}│   {values[0][2]}║
+╟──────────┼──────────┼──────────╢
+║{values[1][0]}   │{values[1][1]}│   {values[1][2]}║
+╟──────────┼──────────┼──────────╢
+║{values[2][0]}│   {values[2][1]}│   {values[2][2]}║
+╚══════════╧══════════╧══════════╝
 ";
 
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformHeaderUniformValueAlignmentProvider(),
+                CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
                 ValueRowSeparator = '─',
-                HeaderRowSeparator = '═',
-                ColumnSeparator = '│',
-                TopLeftCorner = '┌',
-                TopRightCorner = '┐',
-                BottomLeftCorner = '└',
-                BottomRightCorner = '┘',
-                ValueLeftEdgeJoint = '├',
-                ValueRightEdgeJoint = '┤',
-                HeaderLeftEdgeJoint = '╞',
-                HeaderRightEdgeJoint = '╡',
-                TopEdgeJoint = '┬',
-                BottomEdgeJoint = '┴',
+                ValueLeftEdgeJoint = '╟',
                 ValueMiddleJoint = '┼',
+                ValueRightEdgeJoint = '╢',
+                HeaderRowSeparator = '═',
+                HeaderLeftEdgeJoint = '╠',
                 HeaderMiddleJoint = '╪',
+                HeaderRightEdgeJoint = '╣',
+                LeftEdge = '║',
+                RightEdge = '║',
+                TopEdge = '═',
+                BottomEdge = '═',
+                ColumnSeparator = '│',
+                TopLeftCorner = '╔',
+                TopRightCorner = '╗',
+                BottomLeftCorner = '╚',
+                BottomRightCorner = '╝',
+                TopEdgeJoint = '╤',
+                BottomEdgeJoint = '╧',
             };
 
             var table = sut.Tabulate(headers, values, options);

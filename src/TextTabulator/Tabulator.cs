@@ -152,9 +152,9 @@ namespace TextTabulator
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.ValueRowSeparator, options.ColumnLeftPadding.Length);
-                sb.Append(options.ValueRowSeparator, maxColumnWidths[i]);
-                sb.Append(options.ValueRowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(options.TopEdge, options.ColumnLeftPadding.Length);
+                sb.Append(options.TopEdge, maxColumnWidths[i]);
+                sb.Append(options.TopEdge, options.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
@@ -201,9 +201,9 @@ namespace TextTabulator
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.ValueRowSeparator, options.ColumnLeftPadding.Length);
-                sb.Append(options.ValueRowSeparator, maxColumnWidths[i]);
-                sb.Append(options.ValueRowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(options.BottomEdge, options.ColumnLeftPadding.Length);
+                sb.Append(options.BottomEdge, maxColumnWidths[i]);
+                sb.Append(options.BottomEdge, options.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
@@ -222,7 +222,7 @@ namespace TextTabulator
             var col = 0;
 
             // Account for the left edge of the table.
-            rowString.Append(options.ColumnSeparator);
+            rowString.Append(options.LeftEdge);
 
             // Add the value, padding, and the right column separator for each column.
             // Note that this will also account for the right edge of the table.
@@ -244,7 +244,11 @@ namespace TextTabulator
                     rowString.Append(' ', maxColumnWidths[col] - value.Length);
                 }
 
-                rowString.Append(options.ColumnRightPadding + options.ColumnSeparator);
+                // Add the right padding for the column.
+                rowString.Append(options.ColumnRightPadding);
+
+                // Add the right column separator or, if this is the last value in the row, the right edge of the table.
+                rowString.Append(col < maxColumnWidths.Length - 1 ? options.ColumnSeparator : options.RightEdge);
 
                 col++;
             }

@@ -20,12 +20,32 @@ internal class Program
 
         var tabulator = new Tabulator();
 
-        var table = tabulator.Tabulate(headers, values, new TabulatorOptions
-        {
-            CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
-            HeaderRowSeparator = '=',
-            HeaderMiddleJoint = '=',
-        });
+        var options = new TabulatorOptions();
+        //var options = new TabulatorOptions
+        //{
+        //    CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
+        //    ValueRowSeparator = '─',
+        //    ValueLeftEdgeJoint = '╟',
+        //    ValueMiddleJoint = '┼',
+        //    ValueRightEdgeJoint = '╢',
+        //    HeaderRowSeparator = '═',
+        //    HeaderLeftEdgeJoint = '╠',
+        //    HeaderMiddleJoint = '╪',
+        //    HeaderRightEdgeJoint = '╣',
+        //    LeftEdge = '║',
+        //    RightEdge = '║',
+        //    TopEdge = '═',
+        //    BottomEdge = '═',
+        //    ColumnSeparator = '│',
+        //    TopLeftCorner = '╔',
+        //    TopRightCorner = '╗',
+        //    BottomLeftCorner = '╚',
+        //    BottomRightCorner = '╝',
+        //    TopEdgeJoint = '╤',
+        //    BottomEdgeJoint = '╧',
+        //};
+
+        var table = tabulator.Tabulate(headers, values, options);
 
         Console.WriteLine(table);
     }
