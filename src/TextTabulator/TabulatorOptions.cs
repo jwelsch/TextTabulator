@@ -12,7 +12,9 @@
 
         public string ColumnRightPadding { get; set; } = string.Empty;
 
-        public char RowSeparator { get; set; } = '-';
+        public char ValueRowSeparator { get; set; } = '-';
+
+        public char HeaderRowSeparator { get; set;} = '-';
 
         public char TopLeftCorner { get; set; } = '-';
 
@@ -22,15 +24,21 @@
 
         public char BottomLeftCorner { get; set; } = '-';
 
-        public char LeftEdgeJoint { get; set; } = '|';
+        public char ValueLeftEdgeJoint { get; set; } = '|';
 
-        public char RightEdgeJoint { get; set; } = '|';
+        public char ValueRightEdgeJoint { get; set; } = '|';
+
+        public char HeaderLeftEdgeJoint { get; set; } = '|';
+
+        public char HeaderRightEdgeJoint { get; set; } = '|';
 
         public char TopEdgeJoint { get; set; } = '-';
 
         public char BottomEdgeJoint { get; set; } = '-';
 
-        public char MiddleJoint { get; set; } = '-';
+        public char ValueMiddleJoint { get; set; } = '-';
+
+        public char HeaderMiddleJoint { get; set; } = '-';
 
         public ICellAlignmentProvider CellAlignmentProvider { get; set; } = new UniformAlignmentProvider(CellAlignment.Left);
     }

@@ -107,7 +107,7 @@ namespace TextTabulator
             var topEdge = BuildTopEdge(options, maxColumnWidths);
             table.AppendLine(topEdge);
 
-            var middleRowSeparator = BuildMiddleRowSeparator(options, maxColumnWidths);
+            var middleRowSeparator = BuildRowSeparator(options, maxColumnWidths, false);
 
             var row = 0;
 
@@ -116,7 +116,9 @@ namespace TextTabulator
                 // Add the header row.
                 var headerRow = BuildRowValues(headers, maxColumnWidths, 0, options);
                 table.AppendLine(headerRow);
-                table.AppendLine(middleRowSeparator);
+
+                var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
+                table.AppendLine(headerRowSeparator);
 
                 row++;
             }
@@ -150,9 +152,9 @@ namespace TextTabulator
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
-                sb.Append(options.RowSeparator, maxColumnWidths[i]);
-                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(options.ValueRowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(options.ValueRowSeparator, maxColumnWidths[i]);
+                sb.Append(options.ValueRowSeparator, options.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
@@ -165,25 +167,28 @@ namespace TextTabulator
             return sb.ToString();
         }
 
-        private string BuildMiddleRowSeparator(TabulatorOptions options, int[] maxColumnWidths)
+        private string BuildRowSeparator(TabulatorOptions options, int[] maxColumnWidths, bool isHeaderRow)
         {
             var sb = new StringBuilder();
 
-            sb.Append(options.LeftEdgeJoint);
+            sb.Append(isHeaderRow ? options.HeaderLeftEdgeJoint : options.ValueLeftEdgeJoint);
+
+            var rowSeparator = isHeaderRow ? options.HeaderRowSeparator : options.ValueRowSeparator;
+            var middleJoint = isHeaderRow ? options.HeaderMiddleJoint : options.ValueMiddleJoint;
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
-                sb.Append(options.RowSeparator, maxColumnWidths[i]);
-                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(rowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(rowSeparator, maxColumnWidths[i]);
+                sb.Append(rowSeparator, options.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
-                    sb.Append(options.MiddleJoint);
+                    sb.Append(middleJoint);
                 }
             }
 
-            sb.Append(options.RightEdgeJoint);
+            sb.Append(isHeaderRow ? options.HeaderRightEdgeJoint : options.ValueRightEdgeJoint);
 
             return sb.ToString();
         }
@@ -196,9 +201,9 @@ namespace TextTabulator
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
-                sb.Append(options.RowSeparator, maxColumnWidths[i]);
-                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(options.ValueRowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(options.ValueRowSeparator, maxColumnWidths[i]);
+                sb.Append(options.ValueRowSeparator, options.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {

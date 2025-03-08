@@ -276,9 +276,12 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                RowSeparator = '_',
-                LeftEdgeJoint = '_',
-                RightEdgeJoint = '_',
+                ValueRowSeparator = '_',
+                ValueLeftEdgeJoint = '_',
+                ValueRightEdgeJoint = '_',
+                HeaderRowSeparator = '_',
+                HeaderLeftEdgeJoint = '_',
+                HeaderRightEdgeJoint = '_',
                 TopLeftCorner = '_',
                 TopRightCorner = '_',
                 BottomLeftCorner = '_',
@@ -695,7 +698,7 @@ namespace TextTabulatorTests
             var expected =
 @$"┌──────────┬──────────┬──────────┐
 │{headers[0]}   │{headers[1]}│{headers[2]}   │
-├──────────┼──────────┼──────────┤
+╞══════════╪══════════╪══════════╡
 │{values[0][0]}│   {values[0][1]}│{values[0][2]}│
 ├──────────┼──────────┼──────────┤
 │{values[1][0]}│   {values[1][1]}│{values[1][2]}│
@@ -708,17 +711,21 @@ namespace TextTabulatorTests
             var options = new TabulatorOptions
             {
                 CellAlignmentProvider = new UniformHeaderUniformValueAlignmentProvider(),
-                RowSeparator = '─',
+                ValueRowSeparator = '─',
+                HeaderRowSeparator = '═',
                 ColumnSeparator = '│',
                 TopLeftCorner = '┌',
                 TopRightCorner = '┐',
                 BottomLeftCorner = '└',
                 BottomRightCorner = '┘',
-                LeftEdgeJoint = '├',
-                RightEdgeJoint = '┤',
+                ValueLeftEdgeJoint = '├',
+                ValueRightEdgeJoint = '┤',
+                HeaderLeftEdgeJoint = '╞',
+                HeaderRightEdgeJoint = '╡',
                 TopEdgeJoint = '┬',
                 BottomEdgeJoint = '┴',
-                MiddleJoint = '┼'
+                ValueMiddleJoint = '┼',
+                HeaderMiddleJoint = '╪',
             };
 
             var table = sut.Tabulate(headers, values, options);
