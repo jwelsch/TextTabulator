@@ -41,9 +41,12 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnSeparator = '#',
-                LeftEdge = '#',
-                RightEdge = '#',
+                Styling = new AsciiTableStyling
+                {
+                    ColumnSeparator = '#',
+                    LeftEdge = '#',
+                    RightEdge = '#',
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -68,7 +71,10 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnLeftPadding = "#"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnLeftPadding = "#"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -93,7 +99,10 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions()
             {
-                ColumnLeftPadding = "__"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnLeftPadding = "__"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -118,7 +127,10 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnRightPadding = "#"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnRightPadding = "#"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -143,7 +155,10 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnRightPadding = "__"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnRightPadding = "__"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -168,8 +183,11 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnLeftPadding = "@",
-                ColumnRightPadding = "#"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnLeftPadding = "@",
+                    ColumnRightPadding = "#"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -194,8 +212,11 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ColumnLeftPadding = "@@@",
-                ColumnRightPadding = "###"
+                Styling = new AsciiTableStyling
+                {
+                    ColumnLeftPadding = "@@@",
+                    ColumnRightPadding = "###"
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -278,18 +299,21 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                ValueRowSeparator = '_',
-                ValueLeftEdgeJoint = '_',
-                ValueRightEdgeJoint = '_',
-                HeaderRowSeparator = '_',
-                HeaderLeftEdgeJoint = '_',
-                HeaderRightEdgeJoint = '_',
-                TopLeftCorner = '_',
-                TopRightCorner = '_',
-                TopEdge = '_',
-                BottomLeftCorner = '_',
-                BottomRightCorner = '_',
-                BottomEdge = '_',
+                Styling = new AsciiTableStyling
+                {
+                    ValueRowSeparator = '_',
+                    ValueLeftEdgeJoint = '_',
+                    ValueRightEdgeJoint = '_',
+                    HeaderRowSeparator = '_',
+                    HeaderLeftEdgeJoint = '_',
+                    HeaderRightEdgeJoint = '_',
+                    TopLeftCorner = '_',
+                    TopRightCorner = '_',
+                    TopEdge = '_',
+                    BottomLeftCorner = '_',
+                    BottomRightCorner = '_',
+                    BottomEdge = '_',
+                }
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -554,7 +578,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Left)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left)
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -594,7 +618,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Right)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right)
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -634,7 +658,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Left)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left)
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -674,7 +698,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.Right)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right)
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -714,26 +738,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
-                ValueRowSeparator = '─',
-                ValueLeftEdgeJoint = '╟',
-                ValueMiddleJoint = '┼',
-                ValueRightEdgeJoint = '╢',
-                HeaderRowSeparator = '═',
-                HeaderLeftEdgeJoint = '╠',
-                HeaderMiddleJoint = '╪',
-                HeaderRightEdgeJoint = '╣',
-                LeftEdge = '║',
-                RightEdge = '║',
-                TopEdge = '═',
-                BottomEdge = '═',
-                ColumnSeparator = '│',
-                TopLeftCorner = '╔',
-                TopRightCorner = '╗',
-                BottomLeftCorner = '╚',
-                BottomRightCorner = '╝',
-                TopEdgeJoint = '╤',
-                BottomEdgeJoint = '╧',
+                CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
+                Styling = new UnicodeTableStyling(),
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -773,7 +779,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.CenterLeftBias)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterLeftBias)
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -813,7 +819,7 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.CenterRightBias)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterRightBias)
             };
 
             var table = sut.Tabulate(headers, values, options);

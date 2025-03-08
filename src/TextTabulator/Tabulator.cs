@@ -148,21 +148,21 @@ namespace TextTabulator
         {
             var sb = new StringBuilder();
 
-            sb.Append(options.TopLeftCorner);
+            sb.Append(options.Styling.TopLeftCorner);
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.TopEdge, options.ColumnLeftPadding.Length);
-                sb.Append(options.TopEdge, maxColumnWidths[i]);
-                sb.Append(options.TopEdge, options.ColumnRightPadding.Length);
+                sb.Append(options.Styling.TopEdge, options.Styling.ColumnLeftPadding.Length);
+                sb.Append(options.Styling.TopEdge, maxColumnWidths[i]);
+                sb.Append(options.Styling.TopEdge, options.Styling.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
-                    sb.Append(options.TopEdgeJoint);
+                    sb.Append(options.Styling.TopEdgeJoint);
                 }
             }
 
-            sb.Append(options.TopRightCorner);
+            sb.Append(options.Styling.TopRightCorner);
 
             return sb.ToString();
         }
@@ -171,16 +171,16 @@ namespace TextTabulator
         {
             var sb = new StringBuilder();
 
-            sb.Append(isHeaderRow ? options.HeaderLeftEdgeJoint : options.ValueLeftEdgeJoint);
+            sb.Append(isHeaderRow ? options.Styling.HeaderLeftEdgeJoint : options.Styling.ValueLeftEdgeJoint);
 
-            var rowSeparator = isHeaderRow ? options.HeaderRowSeparator : options.ValueRowSeparator;
-            var middleJoint = isHeaderRow ? options.HeaderMiddleJoint : options.ValueMiddleJoint;
+            var rowSeparator = isHeaderRow ? options.Styling.HeaderRowSeparator : options.Styling.ValueRowSeparator;
+            var middleJoint = isHeaderRow ? options.Styling.HeaderMiddleJoint : options.Styling.ValueMiddleJoint;
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(rowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(rowSeparator, options.Styling.ColumnLeftPadding.Length);
                 sb.Append(rowSeparator, maxColumnWidths[i]);
-                sb.Append(rowSeparator, options.ColumnRightPadding.Length);
+                sb.Append(rowSeparator, options.Styling.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
@@ -188,7 +188,7 @@ namespace TextTabulator
                 }
             }
 
-            sb.Append(isHeaderRow ? options.HeaderRightEdgeJoint : options.ValueRightEdgeJoint);
+            sb.Append(isHeaderRow ? options.Styling.HeaderRightEdgeJoint : options.Styling.ValueRightEdgeJoint);
 
             return sb.ToString();
         }
@@ -197,21 +197,21 @@ namespace TextTabulator
         {
             var sb = new StringBuilder();
 
-            sb.Append(options.BottomLeftCorner);
+            sb.Append(options.Styling.BottomLeftCorner);
 
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                sb.Append(options.BottomEdge, options.ColumnLeftPadding.Length);
-                sb.Append(options.BottomEdge, maxColumnWidths[i]);
-                sb.Append(options.BottomEdge, options.ColumnRightPadding.Length);
+                sb.Append(options.Styling.BottomEdge, options.Styling.ColumnLeftPadding.Length);
+                sb.Append(options.Styling.BottomEdge, maxColumnWidths[i]);
+                sb.Append(options.Styling.BottomEdge, options.Styling.ColumnRightPadding.Length);
 
                 if (i < maxColumnWidths.Length - 1)
                 {
-                    sb.Append(options.BottomEdgeJoint);
+                    sb.Append(options.Styling.BottomEdgeJoint);
                 }
             }
 
-            sb.Append(options.BottomRightCorner);
+            sb.Append(options.Styling.BottomRightCorner);
 
             return sb.ToString();
         }
@@ -222,15 +222,15 @@ namespace TextTabulator
             var col = 0;
 
             // Account for the left edge of the table.
-            rowString.Append(options.LeftEdge);
+            rowString.Append(options.Styling.LeftEdge);
 
             // Add the value, padding, and the right column separator for each column.
             // Note that this will also account for the right edge of the table.
             foreach (var value in values)
             {
-                var cellAlignment = options.CellAlignmentProvider.GetColumnAlignment(col, row);
+                var cellAlignment = options.CellAlignment.GetColumnAlignment(col, row);
 
-                rowString.Append(options.ColumnLeftPadding);
+                rowString.Append(options.Styling.ColumnLeftPadding);
 
                 var leftOffset = 0;
 
@@ -269,10 +269,10 @@ namespace TextTabulator
                 rowString.Append(' ', rightOffset);
 
                 // Add the right padding for the column.
-                rowString.Append(options.ColumnRightPadding);
+                rowString.Append(options.Styling.ColumnRightPadding);
 
                 // Add the right column separator or, if this is the last value in the row, the right edge of the table.
-                rowString.Append(col < maxColumnWidths.Length - 1 ? options.ColumnSeparator : options.RightEdge);
+                rowString.Append(col < maxColumnWidths.Length - 1 ? options.Styling.ColumnSeparator : options.Styling.RightEdge);
 
                 col++;
             }
