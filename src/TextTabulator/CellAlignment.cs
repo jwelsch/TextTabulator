@@ -6,7 +6,9 @@ namespace TextTabulator
     public enum CellAlignment
     {
         Left,
-        Right
+        Right,
+        CenterLeftBias,
+        CenterRightBias,
     };
 
     public interface ICellAlignmentProvider

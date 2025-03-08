@@ -232,17 +232,41 @@ namespace TextTabulator
 
                 rowString.Append(options.ColumnLeftPadding);
 
+                var leftOffset = 0;
+
                 if (cellAlignment == CellAlignment.Right)
                 {
-                    rowString.Append(' ', maxColumnWidths[col] - value.Length);
+                    leftOffset = maxColumnWidths[col] - value.Length;
                 }
+                else if (cellAlignment == CellAlignment.CenterLeftBias)
+                {
+                    leftOffset = (maxColumnWidths[col] - value.Length) / 2;
+                }
+                else if (cellAlignment == CellAlignment.CenterRightBias)
+                {
+                    leftOffset = ((maxColumnWidths[col] - value.Length) / 2) + ((maxColumnWidths[col] - value.Length) % 2 == 0 ? 0 : 1);
+                }
+
+                rowString.Append(' ', leftOffset);
 
                 rowString.Append(value);
 
+                var rightOffset = 0;
+
                 if (cellAlignment == CellAlignment.Left)
                 {
-                    rowString.Append(' ', maxColumnWidths[col] - value.Length);
+                    rightOffset = maxColumnWidths[col] - value.Length;
                 }
+                else if (cellAlignment == CellAlignment.CenterLeftBias)
+                {
+                    rightOffset = ((maxColumnWidths[col] - value.Length) / 2) + ((maxColumnWidths[col] - value.Length) % 2 == 0 ? 0 : 1);
+                }
+                else if (cellAlignment == CellAlignment.CenterRightBias)
+                {
+                    rightOffset = (maxColumnWidths[col] - value.Length) / 2;
+                }
+
+                rowString.Append(' ', rightOffset);
 
                 // Add the right padding for the column.
                 rowString.Append(options.ColumnRightPadding);

@@ -6,7 +6,7 @@ internal class Program
     {
         var headers = new string[]
         {
-            "Header1",
+            "Header",
             "Header2",
             "ZZZHeader3"
         };
@@ -20,30 +20,30 @@ internal class Program
 
         var tabulator = new Tabulator();
 
-        var options = new TabulatorOptions();
-        //var options = new TabulatorOptions
-        //{
-        //    CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
-        //    ValueRowSeparator = '─',
-        //    ValueLeftEdgeJoint = '╟',
-        //    ValueMiddleJoint = '┼',
-        //    ValueRightEdgeJoint = '╢',
-        //    HeaderRowSeparator = '═',
-        //    HeaderLeftEdgeJoint = '╠',
-        //    HeaderMiddleJoint = '╪',
-        //    HeaderRightEdgeJoint = '╣',
-        //    LeftEdge = '║',
-        //    RightEdge = '║',
-        //    TopEdge = '═',
-        //    BottomEdge = '═',
-        //    ColumnSeparator = '│',
-        //    TopLeftCorner = '╔',
-        //    TopRightCorner = '╗',
-        //    BottomLeftCorner = '╚',
-        //    BottomRightCorner = '╝',
-        //    TopEdgeJoint = '╤',
-        //    BottomEdgeJoint = '╧',
-        //};
+        //var options = new TabulatorOptions();
+        var options = new TabulatorOptions
+        {
+            CellAlignmentProvider = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias),
+            ValueRowSeparator = '─',
+            ValueLeftEdgeJoint = '╟',
+            ValueMiddleJoint = '┼',
+            ValueRightEdgeJoint = '╢',
+            HeaderRowSeparator = '═',
+            HeaderLeftEdgeJoint = '╠',
+            HeaderMiddleJoint = '╪',
+            HeaderRightEdgeJoint = '╣',
+            LeftEdge = '║',
+            RightEdge = '║',
+            TopEdge = '═',
+            BottomEdge = '═',
+            ColumnSeparator = '│',
+            TopLeftCorner = '╔',
+            TopRightCorner = '╗',
+            BottomLeftCorner = '╚',
+            BottomRightCorner = '╝',
+            TopEdgeJoint = '╤',
+            BottomEdgeJoint = '╧',
+        };
 
         var table = tabulator.Tabulate(headers, values, options);
 

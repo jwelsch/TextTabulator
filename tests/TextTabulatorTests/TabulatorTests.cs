@@ -245,11 +245,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -317,11 +317,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[1][0]}   |{values[1][1]}   |{values[1][2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[2][0]}   |{values[2][1]}   |{values[2][2]}   |
 ----------------------------------
 ";
@@ -353,11 +353,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}   |{headers[1]}   |{headers[2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
@@ -382,9 +382,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -416,11 +416,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]()}|{headers[1]()}|{headers[2]()}|
-|-----------------------|
+|-------+-------+-------|
 |{values[0][0]()}|{values[0][1]()}|{values[0][2]()}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]()}|{values[1][1]()}|{values[1][2]()}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]()}|{values[2][1]()}|{values[2][2]()}|
 -------------------------
 ";
@@ -445,9 +445,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]()}|{values[0][1]()}|{values[0][2]()}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]()}|{values[1][1]()}|{values[1][2]()}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]()}|{values[2][1]()}|{values[2][2]()}|
 -------------------------
 ";
@@ -479,11 +479,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -508,9 +508,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|-----------------------|
+|-------+-------+-------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -542,11 +542,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[1][0]}   |{values[1][1]}   |{values[1][2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[2][0]}   |{values[2][1]}   |{values[2][2]}   |
 ----------------------------------
 ";
@@ -582,11 +582,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-|--------------------------------|
+|----------+----------+----------|
 |   {values[0][0]}|   {values[0][1]}|   {values[0][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |   {values[1][0]}|   {values[1][1]}|   {values[1][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |   {values[2][0]}|   {values[2][1]}|   {values[2][2]}|
 ----------------------------------
 ";
@@ -622,11 +622,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}   |{headers[1]}   |{headers[2]}   |
-|--------------------------------|
+|----------+----------+----------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
@@ -662,11 +662,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |   {headers[0]}|   {headers[1]}|   {headers[2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-|--------------------------------|
+|----------+----------+----------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
@@ -734,6 +734,86 @@ namespace TextTabulatorTests
                 BottomRightCorner = '╝',
                 TopEdgeJoint = '╤',
                 BottomEdgeJoint = '╧',
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_center_left_bias_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                "Header2",
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|  {headers[0]}  | {headers[1]}  |{headers[2]}|
+|----------+----------+----------|
+| {values[0][0]}  | {values[0][1]}  | {values[0][2]}  |
+|----------+----------+----------|
+| {values[1][0]}  |{values[1][1]}| {values[1][2]}  |
+|----------+----------+----------|
+|{values[2][0]}| {values[2][1]}  | {values[2][2]}  |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.CenterLeftBias)
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_center_right_bias_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                "Header2",
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|  {headers[0]}  |  {headers[1]} |{headers[2]}|
+|----------+----------+----------|
+|  {values[0][0]} |  {values[0][1]} |  {values[0][2]} |
+|----------+----------+----------|
+|  {values[1][0]} |{values[1][1]}|  {values[1][2]} |
+|----------+----------+----------|
+|{values[2][0]}|  {values[2][1]} |  {values[2][2]} |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformAlignmentProvider(CellAlignment.CenterRightBias)
             };
 
             var table = sut.Tabulate(headers, values, options);

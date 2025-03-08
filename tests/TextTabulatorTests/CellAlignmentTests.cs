@@ -114,7 +114,7 @@ namespace TextTabulatorTests
             var alignments = new CellAlignment[]
             {
                 CellAlignment.Left,
-                CellAlignment.Right,
+                CellAlignment.CenterLeftBias,
                 CellAlignment.Right
             };
 
