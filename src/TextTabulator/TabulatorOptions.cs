@@ -12,7 +12,7 @@
 
         public string ColumnRightPadding { get; set; } = string.Empty;
 
-        //public char RowSeparator { get; set; } = '-';
+        public char RowSeparator { get; set; } = '-';
 
         //public char TopLeftCorner { get; set; } = '-';
 

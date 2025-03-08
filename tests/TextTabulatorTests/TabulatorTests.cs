@@ -5,28 +5,6 @@ namespace TextTabulatorTests
     public class TabulatorTests
     {
         [Fact]
-        public void When_tabulator_ctor_called_and_properties_set_then_properties_return_expected_values0()
-        {
-            var columnSeparator = '!';
-            var columnLeftPadding = "#";
-            var columnRightPadding = "#";
-            var rowSeparator = '_';
-
-            var sut = new Tabulator
-            {
-                ColumnSeparator = columnSeparator,
-                ColumnLeftPadding = columnLeftPadding,
-                ColumnRightPadding = columnRightPadding,
-                RowSeparator = rowSeparator
-            };
-
-            Assert.Equal(columnSeparator, sut.ColumnSeparator);
-            Assert.Equal(columnLeftPadding, sut.ColumnLeftPadding);
-            Assert.Equal(columnRightPadding, sut.ColumnRightPadding);
-            Assert.Equal(rowSeparator, sut.RowSeparator);
-        }
-
-        [Fact]
         public void When_tabulate_called_with_one_header_and_one_row_then_table_returned()
         {
             var headers = new string[]
@@ -59,12 +37,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnSeparator = '#'
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"--------\r\n#{headers[0]}#\r\n--------\r\n#{values[0][0]} #\r\n--------\r\n", table);
         }
@@ -82,12 +62,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnLeftPadding = "#"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"---------\r\n|#{headers[0]}|\r\n---------\r\n|#{values[0][0]} |\r\n---------\r\n", table);
         }
@@ -105,12 +87,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions()
             {
                 ColumnLeftPadding = "__"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"----------\r\n|__{headers[0]}|\r\n----------\r\n|__{values[0][0]} |\r\n----------\r\n", table);
         }
@@ -128,12 +112,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnRightPadding = "#"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"---------\r\n|{headers[0]}#|\r\n---------\r\n|{values[0][0]} #|\r\n---------\r\n", table);
         }
@@ -151,12 +137,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnRightPadding = "__"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"----------\r\n|{headers[0]}__|\r\n----------\r\n|{values[0][0]} __|\r\n----------\r\n", table);
         }
@@ -174,13 +162,15 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnLeftPadding = "@",
                 ColumnRightPadding = "#"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"----------\r\n|@{headers[0]}#|\r\n----------\r\n|@{values[0][0]} #|\r\n----------\r\n", table);
         }
@@ -198,13 +188,15 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 ColumnLeftPadding = "@@@",
                 ColumnRightPadding = "###"
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"--------------\r\n|@@@{headers[0]}###|\r\n--------------\r\n|@@@{values[0][0]} ###|\r\n--------------\r\n", table);
         }
@@ -280,12 +272,14 @@ namespace TextTabulatorTests
                 new string [] { "value" }
             };
 
-            var sut = new Tabulator
+            var sut = new Tabulator();
+
+            var options = new TabulatorOptions
             {
                 RowSeparator = '_'
             };
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, options);
 
             Assert.Equal($"________\r\n|{headers[0]}|\r\n________\r\n|{values[0][0]} |\r\n________\r\n", table);
         }
