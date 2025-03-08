@@ -35,7 +35,11 @@ namespace TextTabulator
             _cellAlignments = cellAlignments.Select(i => i.ToArray()).ToArray();
         }
 
-        public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex) => _cellAlignments[columnIndex][rowIndex];
+        public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex)
+        {
+            var columnAlignment = _cellAlignments[columnIndex >= _cellAlignments.Length ? _cellAlignments.Length - 1 : columnIndex];
+            return columnAlignment[rowIndex >= columnAlignment.Length ? columnAlignment.Length - 1 : rowIndex];
+        }
     }
 
     public class UniformColumnAlignmentProvider : ICellAlignmentProvider
@@ -47,7 +51,7 @@ namespace TextTabulator
             _columnAlignments = columnAlignments.ToArray();
         }
 
-        public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex) => _columnAlignments[columnIndex];
+        public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex) => _columnAlignments[columnIndex >= _columnAlignments.Length ? _columnAlignments.Length - 1 : columnIndex];
     }
 
     public class UniformValueAlignmentProvider : ICellAlignmentProvider
@@ -63,7 +67,7 @@ namespace TextTabulator
 
         public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex)
         {
-            return rowIndex == 0 ? _headerAlignments[columnIndex] : _uniformValueAlignment;
+            return rowIndex == 0 ? _headerAlignments[columnIndex >= _headerAlignments.Length ? _headerAlignments.Length - 1 : columnIndex] : _uniformValueAlignment;
         }
     }
 
@@ -86,18 +90,26 @@ namespace TextTabulator
 
     public class UniformHeaderAlignmentProvider : ICellAlignmentProvider
     {
+        private readonly CellAlignment[][] _valueAlignments;
         private readonly CellAlignment _uniformHeaderAlignment;
-        private readonly CellAlignment[] _valueAlignments;
 
-        public UniformHeaderAlignmentProvider(IEnumerable<CellAlignment> valueAlignments, CellAlignment uniformHeaderAlignment = CellAlignment.Left)
+        public UniformHeaderAlignmentProvider(IEnumerable<IEnumerable<CellAlignment>> valueAlignments, CellAlignment uniformHeaderAlignment = CellAlignment.Left)
         {
-            _valueAlignments = valueAlignments.ToArray();
+            _valueAlignments = valueAlignments.Select(i => i.ToArray()).ToArray();
             _uniformHeaderAlignment = uniformHeaderAlignment;
         }
 
         public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex)
         {
-            return rowIndex == 0 ? _uniformHeaderAlignment : _valueAlignments[columnIndex];
+            if (rowIndex == 0)
+            {
+                return _uniformHeaderAlignment;
+            }
+
+            var columnAlignment = _valueAlignments[columnIndex >= _valueAlignments.Length ? _valueAlignments.Length - 1 : columnIndex];
+
+            // Subtract 1 from the rowIndex because the valueAlignments that were given in the ctor did not include the header row.
+            return columnAlignment[rowIndex - 1 >= columnAlignment.Length ? columnAlignment.Length - 1 : rowIndex - 1];
         }
     }
 }

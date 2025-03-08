@@ -6,9 +6,9 @@ internal class Program
     {
         var headers = new string[]
         {
-            "Header1",
-            "Header2",
-            "Header3"
+            "XXXHeader1",
+            "YYYHeader2",
+            "ZZZHeader3"
         };
 
         var values = new string[][]
@@ -20,7 +20,11 @@ internal class Program
 
         var tabulator = new Tabulator();
 
-        var table = tabulator.Tabulate(headers, values);
+        var table = tabulator.Tabulate(headers, values, new TabulatorOptions
+        {
+            //CellAlignmentProvider = new UniformHeaderUniformValueAlignmentProvider(CellAlignment.Left, CellAlignment.Left)
+            CellAlignmentProvider = new UniformColumnAlignmentProvider(new[] {CellAlignment.Left, CellAlignment.Right, CellAlignment.Right}),
+        });
 
         Console.WriteLine(table);
     }
