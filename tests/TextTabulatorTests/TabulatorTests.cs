@@ -674,5 +674,56 @@ namespace TextTabulatorTests
 
             Assert.Equal(expected, table);
         }
+
+        [Fact]
+        public void When_tabulate_called_with_custom_joinery_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "YYYHeader2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "XXXvalue1A", "value2A", "ZZZvalue3A" },
+                new string [] { "XXXvalue1B", "value2B", "ZZZvalue3B" },
+                new string [] { "XXXvalue1C", "value2C", "ZZZvalue3C" },
+            };
+
+            var expected =
+@$"┌──────────┬──────────┬──────────┐
+│{headers[0]}   │{headers[1]}│{headers[2]}   │
+├──────────┼──────────┼──────────┤
+│{values[0][0]}│   {values[0][1]}│{values[0][2]}│
+├──────────┼──────────┼──────────┤
+│{values[1][0]}│   {values[1][1]}│{values[1][2]}│
+├──────────┼──────────┼──────────┤
+│{values[2][0]}│   {values[2][1]}│{values[2][2]}│
+└──────────┴──────────┴──────────┘
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignmentProvider = new UniformHeaderUniformValueAlignmentProvider(),
+                RowSeparator = '─',
+                ColumnSeparator = '│',
+                TopLeftCorner = '┌',
+                TopRightCorner = '┐',
+                BottomLeftCorner = '└',
+                BottomRightCorner = '┘',
+                LeftEdgeJoint = '├',
+                RightEdgeJoint = '┤',
+                TopEdgeJoint = '┬',
+                BottomEdgeJoint = '┴',
+                MiddleJoint = '┼'
+            };
+
+            var table = sut.Tabulate(headers, values, options);
+
+            Assert.Equal(expected, table);
+        }
     }
 }

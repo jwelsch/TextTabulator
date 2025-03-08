@@ -56,6 +56,11 @@ namespace TextTabulator
 
             var rowCount = GetRowAndColumnData(rowValues, ref maxColumnWidths);
 
+            if (headers.Any())
+            {
+                rowCount++;
+            }
+
             if (headerCount != 0 && headerCount != maxColumnWidths.Count)
             {
                 throw new Exception($"The number of headers ({headerCount}) does not match the number of values in each row ({maxColumnWidths.Count}).");
@@ -104,15 +109,17 @@ namespace TextTabulator
 
             var middleRowSeparator = BuildMiddleRowSeparator(options, maxColumnWidths);
 
+            var row = 0;
+
             if (headers.Any())
             {
                 // Add the header row.
                 var headerRow = BuildRowValues(headers, maxColumnWidths, 0, options);
                 table.AppendLine(headerRow);
                 table.AppendLine(middleRowSeparator);
-            }
 
-            var row = 0;
+                row++;
+            }
 
             foreach (var rowValue in rowValues)
             {

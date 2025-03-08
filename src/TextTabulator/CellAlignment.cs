@@ -76,7 +76,7 @@ namespace TextTabulator
         private readonly CellAlignment _headerAlignment;
         private readonly CellAlignment _uniformValueAlignment;
 
-        public UniformHeaderUniformValueAlignmentProvider(CellAlignment headerAlignment = CellAlignment.Left, CellAlignment uniformValueAlignment = CellAlignment.Left)
+        public UniformHeaderUniformValueAlignmentProvider(CellAlignment headerAlignment = CellAlignment.Left, CellAlignment uniformValueAlignment = CellAlignment.Right)
         {
             _headerAlignment = headerAlignment;
             _uniformValueAlignment = uniformValueAlignment;
