@@ -112,4 +112,26 @@ namespace TextTabulator
             return columnAlignment[rowIndex - 1 >= columnAlignment.Length ? columnAlignment.Length - 1 : rowIndex - 1];
         }
     }
+
+    public class UniformHeaderUniformColumnAlignmentProvider : ICellAlignmentProvider
+    {
+        private readonly CellAlignment[] _uniformColumnAlignments;
+        private readonly CellAlignment _uniformHeaderAlignment;
+
+        public UniformHeaderUniformColumnAlignmentProvider(IEnumerable<CellAlignment> uniformColumnAlignments, CellAlignment uniformHeaderAlignment = CellAlignment.Left)
+        {
+            _uniformColumnAlignments = uniformColumnAlignments.ToArray();
+            _uniformHeaderAlignment = uniformHeaderAlignment;
+        }
+
+        public CellAlignment GetColumnAlignment(int columnIndex, int rowIndex)
+        {
+            if (rowIndex == 0)
+            {
+                return _uniformHeaderAlignment;
+            }
+
+            return _uniformColumnAlignments[columnIndex >= _uniformColumnAlignments.Length ? _uniformColumnAlignments.Length - 1 : columnIndex];
+        }
+    }
 }

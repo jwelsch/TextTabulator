@@ -107,5 +107,25 @@ namespace TextTabulatorTests
             Assert.Equal(CellAlignment.Right, sut.GetColumnAlignment(2, 0));
             Assert.Equal(alignments[2][1], sut.GetColumnAlignment(2, 2));
         }
+
+        [Fact]
+        public void When_UniformHeaderUniformColumnAlignmentProvider_called_then_return_expected()
+        {
+            var alignments = new CellAlignment[]
+            {
+                CellAlignment.Left,
+                CellAlignment.Right,
+                CellAlignment.Right
+            };
+
+            var sut = new UniformHeaderUniformColumnAlignmentProvider(alignments, CellAlignment.Left);
+
+            Assert.Equal(CellAlignment.Left, sut.GetColumnAlignment(0, 0));
+            Assert.Equal(CellAlignment.Left, sut.GetColumnAlignment(1, 0));
+            Assert.Equal(CellAlignment.Left, sut.GetColumnAlignment(2, 0));
+            Assert.Equal(alignments[0], sut.GetColumnAlignment(0, 2));
+            Assert.Equal(alignments[1], sut.GetColumnAlignment(1, 2));
+            Assert.Equal(alignments[2], sut.GetColumnAlignment(2, 2));
+        }
     }
 }
