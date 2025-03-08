@@ -96,24 +96,23 @@ namespace TextTabulator
 
         private string TabulateData(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, int[] maxColumnWidths, int rowCount, TabulatorOptions options)
         {
-            var entireRowSeparator = BuildEntireRowSeparator(options, maxColumnWidths);
-
             var table = new StringBuilder();
 
             // Start with the top edge of the table.
-            table.AppendLine(entireRowSeparator);
+            var topEdge = BuildTopEdge(options, maxColumnWidths);
+            table.AppendLine(topEdge);
 
-            var row = 0;
+            var middleRowSeparator = BuildMiddleRowSeparator(options, maxColumnWidths);
 
             if (headers.Any())
             {
                 // Add the header row.
-                var headerRow = BuildRowValues(headers, maxColumnWidths, row, options);
+                var headerRow = BuildRowValues(headers, maxColumnWidths, 0, options);
                 table.AppendLine(headerRow);
-                table.AppendLine(entireRowSeparator);
-
-                row++;
+                table.AppendLine(middleRowSeparator);
             }
+
+            var row = 0;
 
             foreach (var rowValue in rowValues)
             {
@@ -121,31 +120,88 @@ namespace TextTabulator
                 var rowString = BuildRowValues(rowValue, maxColumnWidths, row, options);
                 table.AppendLine(rowString);
 
-                // Add the row separator.
-                // Note that this will also account for the bottom edge of the table.
-                table.AppendLine(entireRowSeparator);
+                if (row < rowCount - 1)
+                {
+                    // Add the row separator.
+                    table.AppendLine(middleRowSeparator);
+                }
 
                 row++;
             }
 
+            var bottomEdge = BuildBottomEdge(options, maxColumnWidths);
+            table.AppendLine(bottomEdge);
+
             return table.ToString();
         }
 
-        private static string BuildEntireRowSeparator(TabulatorOptions options, int[] maxColumnWidths)
+        private string BuildTopEdge(TabulatorOptions options, int[] maxColumnWidths)
         {
-            var entireRowSeparator = new StringBuilder();
+            var sb = new StringBuilder();
 
-            // Account for the left edge of the table.
-            entireRowSeparator.Append(options.RowSeparator);
+            sb.Append(options.TopLeftCorner);
 
-            // Add enough row separators so that the entire row separator takes into account each column, its padding, and its column separator.
-            // This will also account for the right edge of the table.
             for (var i = 0; i < maxColumnWidths.Length; i++)
             {
-                entireRowSeparator.Append(options.RowSeparator, options.ColumnLeftPadding.Length + maxColumnWidths[i] + options.ColumnRightPadding.Length + 1 /* column separator */);
+                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(options.RowSeparator, maxColumnWidths[i]);
+                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+
+                if (i < maxColumnWidths.Length - 1)
+                {
+                    sb.Append(options.TopEdgeJoint);
+                }
             }
 
-            return entireRowSeparator.ToString();
+            sb.Append(options.TopRightCorner);
+
+            return sb.ToString();
+        }
+
+        private string BuildMiddleRowSeparator(TabulatorOptions options, int[] maxColumnWidths)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(options.LeftEdgeJoint);
+
+            for (var i = 0; i < maxColumnWidths.Length; i++)
+            {
+                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(options.RowSeparator, maxColumnWidths[i]);
+                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+
+                if (i < maxColumnWidths.Length - 1)
+                {
+                    sb.Append(options.MiddleJoint);
+                }
+            }
+
+            sb.Append(options.RightEdgeJoint);
+
+            return sb.ToString();
+        }
+
+        private string BuildBottomEdge(TabulatorOptions options, int[] maxColumnWidths)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(options.BottomLeftCorner);
+
+            for (var i = 0; i < maxColumnWidths.Length; i++)
+            {
+                sb.Append(options.RowSeparator, options.ColumnLeftPadding.Length);
+                sb.Append(options.RowSeparator, maxColumnWidths[i]);
+                sb.Append(options.RowSeparator, options.ColumnRightPadding.Length);
+
+                if (i < maxColumnWidths.Length - 1)
+                {
+                    sb.Append(options.BottomEdgeJoint);
+                }
+            }
+
+            sb.Append(options.BottomRightCorner);
+
+            return sb.ToString();
         }
 
         private static string BuildRowValues(IEnumerable<string> values, int[] maxColumnWidths, int row, TabulatorOptions options)

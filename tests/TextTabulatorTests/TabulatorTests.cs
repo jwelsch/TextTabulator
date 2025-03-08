@@ -21,7 +21,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values);
 
-            Assert.Equal($"--------\r\n|{headers[0]}|\r\n--------\r\n|{values[0][0]} |\r\n--------\r\n", table);
+            Assert.Equal($"--------\r\n|{headers[0]}|\r\n|------|\r\n|{values[0][0]} |\r\n--------\r\n", table);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"--------\r\n#{headers[0]}#\r\n--------\r\n#{values[0][0]} #\r\n--------\r\n", table);
+            Assert.Equal($"--------\r\n#{headers[0]}#\r\n|------|\r\n#{values[0][0]} #\r\n--------\r\n", table);
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"---------\r\n|#{headers[0]}|\r\n---------\r\n|#{values[0][0]} |\r\n---------\r\n", table);
+            Assert.Equal($"---------\r\n|#{headers[0]}|\r\n|-------|\r\n|#{values[0][0]} |\r\n---------\r\n", table);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"----------\r\n|__{headers[0]}|\r\n----------\r\n|__{values[0][0]} |\r\n----------\r\n", table);
+            Assert.Equal($"----------\r\n|__{headers[0]}|\r\n|--------|\r\n|__{values[0][0]} |\r\n----------\r\n", table);
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"---------\r\n|{headers[0]}#|\r\n---------\r\n|{values[0][0]} #|\r\n---------\r\n", table);
+            Assert.Equal($"---------\r\n|{headers[0]}#|\r\n|-------|\r\n|{values[0][0]} #|\r\n---------\r\n", table);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"----------\r\n|{headers[0]}__|\r\n----------\r\n|{values[0][0]} __|\r\n----------\r\n", table);
+            Assert.Equal($"----------\r\n|{headers[0]}__|\r\n|--------|\r\n|{values[0][0]} __|\r\n----------\r\n", table);
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"----------\r\n|@{headers[0]}#|\r\n----------\r\n|@{values[0][0]} #|\r\n----------\r\n", table);
+            Assert.Equal($"----------\r\n|@{headers[0]}#|\r\n|--------|\r\n|@{values[0][0]} #|\r\n----------\r\n", table);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"--------------\r\n|@@@{headers[0]}###|\r\n--------------\r\n|@@@{values[0][0]} ###|\r\n--------------\r\n", table);
+            Assert.Equal($"--------------\r\n|@@@{headers[0]}###|\r\n|------------|\r\n|@@@{values[0][0]} ###|\r\n--------------\r\n", table);
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace TextTabulatorTests
 
             var table = sut.Tabulate(headers, values);
 
-            Assert.Equal($"--------\r\n|{headers[0]}|\r\n--------\r\n|{values[0][0]}|\r\n--------\r\n|{values[1][0]}|\r\n--------\r\n|{values[2][0]}|\r\n--------\r\n", table);
+            Assert.Equal($"--------\r\n|{headers[0]}|\r\n|------|\r\n|{values[0][0]}|\r\n|------|\r\n|{values[1][0]}|\r\n|------|\r\n|{values[2][0]}|\r\n--------\r\n", table);
         }
 
         [Fact]
@@ -243,11 +243,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
--------------------------
+|-----------------------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
--------------------------
+|-----------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
--------------------------
+|-----------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -276,7 +276,13 @@ namespace TextTabulatorTests
 
             var options = new TabulatorOptions
             {
-                RowSeparator = '_'
+                RowSeparator = '_',
+                LeftEdgeJoint = '_',
+                RightEdgeJoint = '_',
+                TopLeftCorner = '_',
+                TopRightCorner = '_',
+                BottomLeftCorner = '_',
+                BottomRightCorner = '_',
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -304,11 +310,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-----------------------------------
+|--------------------------------|
 |{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
-----------------------------------
+|--------------------------------|
 |{values[1][0]}   |{values[1][1]}   |{values[1][2]}   |
-----------------------------------
+|--------------------------------|
 |{values[2][0]}   |{values[2][1]}   |{values[2][2]}   |
 ----------------------------------
 ";
@@ -340,11 +346,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}   |{headers[1]}   |{headers[2]}   |
-----------------------------------
+|--------------------------------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-----------------------------------
+|--------------------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-----------------------------------
+|--------------------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
@@ -369,9 +375,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
--------------------------
+|-----------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
--------------------------
+|-----------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -403,11 +409,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]()}|{headers[1]()}|{headers[2]()}|
--------------------------
+|-----------------------|
 |{values[0][0]()}|{values[0][1]()}|{values[0][2]()}|
--------------------------
+|-----------------------|
 |{values[1][0]()}|{values[1][1]()}|{values[1][2]()}|
--------------------------
+|-----------------------|
 |{values[2][0]()}|{values[2][1]()}|{values[2][2]()}|
 -------------------------
 ";
@@ -432,9 +438,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]()}|{values[0][1]()}|{values[0][2]()}|
--------------------------
+|-----------------------|
 |{values[1][0]()}|{values[1][1]()}|{values[1][2]()}|
--------------------------
+|-----------------------|
 |{values[2][0]()}|{values[2][1]()}|{values[2][2]()}|
 -------------------------
 ";
@@ -466,11 +472,11 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
--------------------------
+|-----------------------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
--------------------------
+|-----------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
--------------------------
+|-----------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -495,9 +501,9 @@ namespace TextTabulatorTests
             var expected =
 @$"-------------------------
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
--------------------------
+|-----------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
--------------------------
+|-----------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 -------------------------
 ";
@@ -529,11 +535,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-----------------------------------
+|--------------------------------|
 |{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
-----------------------------------
+|--------------------------------|
 |{values[1][0]}   |{values[1][1]}   |{values[1][2]}   |
-----------------------------------
+|--------------------------------|
 |{values[2][0]}   |{values[2][1]}   |{values[2][2]}   |
 ----------------------------------
 ";
@@ -569,11 +575,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}|{headers[1]}|{headers[2]}|
-----------------------------------
+|--------------------------------|
 |   {values[0][0]}|   {values[0][1]}|   {values[0][2]}|
-----------------------------------
+|--------------------------------|
 |   {values[1][0]}|   {values[1][1]}|   {values[1][2]}|
-----------------------------------
+|--------------------------------|
 |   {values[2][0]}|   {values[2][1]}|   {values[2][2]}|
 ----------------------------------
 ";
@@ -609,11 +615,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |{headers[0]}   |{headers[1]}   |{headers[2]}   |
-----------------------------------
+|--------------------------------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-----------------------------------
+|--------------------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-----------------------------------
+|--------------------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
@@ -649,11 +655,11 @@ namespace TextTabulatorTests
             var expected =
 @$"----------------------------------
 |   {headers[0]}|   {headers[1]}|   {headers[2]}|
-----------------------------------
+|--------------------------------|
 |{values[0][0]}|{values[0][1]}|{values[0][2]}|
-----------------------------------
+|--------------------------------|
 |{values[1][0]}|{values[1][1]}|{values[1][2]}|
-----------------------------------
+|--------------------------------|
 |{values[2][0]}|{values[2][1]}|{values[2][2]}|
 ----------------------------------
 ";
