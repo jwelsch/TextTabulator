@@ -8,6 +8,14 @@ namespace TextTabulator
 {
     public class Tabulator
     {
+        public string Tabulate(ITextTabulatorAdapter adapter, TabulatorOptions? options = null)
+        {
+            var headers = adapter.GetHeaderStrings() ?? Array.Empty<string>();
+            var values = adapter.GetValueStrings();
+
+            return Tabulate(headers, values, options);
+        }
+
         public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));

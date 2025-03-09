@@ -7,13 +7,5 @@ namespace TextTabulator.Adapter
         IEnumerable<string>? GetHeaderStrings();
 
         IEnumerable<IEnumerable<string>> GetValueStrings();
-
-        IEnumerable<object>? GetHeaderObjects();
-
-        IEnumerable<IEnumerable<object>> GetValueObjects();
-
-        IEnumerable<CellValue>? GetHeaderCellValues();
-
-        IEnumerable<IEnumerable<CellValue>> GetValueCellValues();
     }
 }
