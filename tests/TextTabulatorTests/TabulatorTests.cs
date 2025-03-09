@@ -423,18 +423,18 @@ namespace TextTabulatorTests
         [Fact]
         public void When_tabulate_called_with_tablevalue_delegates_for_multiple_headers_and_multiple_rows_then_table_returned()
         {
-            var headers = new TableValue[]
+            var headers = new CellValue[]
             {
                 () => "Header1",
                 () => "Header2",
                 () => "Header3",
             };
 
-            var values = new TableValue[][]
+            var values = new CellValue[][]
             {
-                new TableValue [] { () => "value1A", () => "value1B", () => "value1C" },
-                new TableValue [] { () => "value2A", () => "value2B", () => "value2C" },
-                new TableValue [] { () => "value3A", () => "value3B", () => "value3C" },
+                new CellValue [] { () => "value1A", () => "value1B", () => "value1C" },
+                new CellValue [] { () => "value2A", () => "value2B", () => "value2C" },
+                new CellValue [] { () => "value3A", () => "value3B", () => "value3C" },
             };
 
             var expected =
@@ -459,11 +459,11 @@ namespace TextTabulatorTests
         [Fact]
         public void When_tabulate_called_with_tablevalue_delegates_for_multiple_rows_then_table_returned()
         {
-            var values = new TableValue[][]
+            var values = new CellValue[][]
             {
-                new TableValue [] { () => "value1A", () => "value1B", () => "value1C" },
-                new TableValue [] { () => "value2A", () => "value2B", () => "value2C" },
-                new TableValue [] { () => "value3A", () => "value3B", () => "value3C" },
+                new CellValue [] { () => "value1A", () => "value1B", () => "value1C" },
+                new CellValue [] { () => "value2A", () => "value2B", () => "value2C" },
+                new CellValue [] { () => "value3A", () => "value3B", () => "value3C" },
             };
 
             var expected =

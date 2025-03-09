@@ -5,18 +5,18 @@ using System.Text;
 
 namespace TextTabulator
 {
-    public delegate string TableValue();
+    public delegate string CellValue();
 
     public class Tabulator
     {
-        public string Tabulate(IEnumerable<IEnumerable<TableValue>> rowValues, TabulatorOptions? options = null)
+        public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
 
             return Tabulate(Array.Empty<string>(), rowValueStrings, options);
         }
 
-        public string Tabulate(IEnumerable<TableValue> headers, IEnumerable<IEnumerable<TableValue>> rowValues, TabulatorOptions? options = null)
+        public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var headerStrings = headers.Select(i => i.Invoke());
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
