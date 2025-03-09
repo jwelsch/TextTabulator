@@ -56,11 +56,6 @@ namespace TextTabulator
 
             var rowCount = GetRowAndColumnData(rowValues, ref maxColumnWidths);
 
-            if (headers.Any())
-            {
-                rowCount++;
-            }
-
             if (headerCount != 0 && headerCount != maxColumnWidths.Count)
             {
                 throw new Exception($"The number of headers ({headerCount}) does not match the number of values in each row ({maxColumnWidths.Count}).");
@@ -109,19 +104,17 @@ namespace TextTabulator
 
             var middleRowSeparator = BuildRowSeparator(options, maxColumnWidths, false);
 
-            var row = 0;
-
             if (headers.Any())
             {
                 // Add the header row.
-                var headerRow = BuildRowValues(headers, maxColumnWidths, 0, options);
+                var headerRow = BuildRowHeaders(headers, maxColumnWidths, options);
                 table.AppendLine(headerRow);
 
                 var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
                 table.AppendLine(headerRowSeparator);
-
-                row++;
             }
+
+            var row = 0;
 
             foreach (var rowValue in rowValues)
             {
@@ -216,7 +209,17 @@ namespace TextTabulator
             return sb.ToString();
         }
 
+        private static string BuildRowHeaders(IEnumerable<string> values, int[] maxColumnWidths, TabulatorOptions options)
+        {
+            return BuildRow(values, maxColumnWidths, -1, options, (c, r) => options.CellAlignment.GetHeaderAlignment(c));
+        }
+
         private static string BuildRowValues(IEnumerable<string> values, int[] maxColumnWidths, int row, TabulatorOptions options)
+        {
+            return BuildRow(values, maxColumnWidths, row, options, (c, r) => options.CellAlignment.GetValueAlignment(c, r));
+        }
+
+        private static string BuildRow(IEnumerable<string> values, int[] maxColumnWidths, int row, TabulatorOptions options, Func<int, int, CellAlignment> alignmentProvider)
         {
             var rowString = new StringBuilder();
             var col = 0;
@@ -228,7 +231,7 @@ namespace TextTabulator
             // Note that this will also account for the right edge of the table.
             foreach (var value in values)
             {
-                var cellAlignment = options.CellAlignment.GetColumnAlignment(col, row);
+                var cellAlignment = alignmentProvider(col, row);
 
                 rowString.Append(options.Styling.ColumnLeftPadding);
 

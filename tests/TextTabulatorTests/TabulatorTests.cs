@@ -826,5 +826,37 @@ namespace TextTabulatorTests
 
             Assert.Equal(expected, table);
         }
+
+        [Fact]
+        public void When_tabulate_called_with_no_headers_then_table_returned()
+        {
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"╔══════════╤══════════╤═══════╗
+║{values[0][0]}   │   {values[0][1]}│{values[0][2]}║
+╟──────────┼──────────┼───────╢
+║{values[1][0]}   │{values[1][1]}│{values[1][2]}║
+╟──────────┼──────────┼───────╢
+║{values[2][0]}│   {values[2][1]}│{values[2][2]}║
+╚══════════╧══════════╧═══════╝
+";
+
+            var sut = new Tabulator();
+            var options = new TabulatorOptions
+            {
+                CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias),
+                Styling = new UnicodeTableStyling(),
+            };
+
+            var table = sut.Tabulate(values, options);
+
+            Assert.Equal(expected, table);
+        }
     }
 }

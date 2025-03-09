@@ -91,7 +91,7 @@ There is a configuration class that can be used to control various aspects of th
 
 ### Alignment
 
-If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `Alignment` property in an `ITableOptions` object. The `Alignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
+If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `CellAlignment` property in an `ITableOptions` object. The `CellAlignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
 
 There are four `CellAlignment` values:
 - `Left`: Aligns text to the left of the cell.
@@ -199,7 +199,7 @@ You can set the alignment provider with the following code:
 var tabulator = new TextTabulator();
 var options = new TabulatorOptions
 {
-   Alignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias)
+   CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias)
 };
 
 var table = tabulator.Tabulate(headers, values, options);
@@ -223,7 +223,7 @@ var alignment = new UniformColumnAlignmentProvider(new CellAlignment[] { CellAli
 
 var tabulator = new Tabulator();
 
-var table = tabulator.Tabulate(headers, values, new TabulatorOptions { Alignment = alignment });
+var table = tabulator.Tabulate(headers, values, new TabulatorOptions { CellAlignment = alignment });
 
 Console.WriteLine(table);
 ```
