@@ -3,6 +3,30 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <PackageId>Jwelsch.$(AssemblyName)</PackageId>
+    <Company>Justin Welsch</Company>
+    <Authors>Jwelsch</Authors>
+    <Description>TextTabulator is a library will format data into a string that, when printed, will be displayed as a table.</Description>
+    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <PackageProjectUrl>https://github.com/jwelsch/TextTabulator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
+    <PackageTags>table;tabulate;text</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
