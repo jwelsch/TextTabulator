@@ -1,4 +1,5 @@
 ﻿using TextTabulator;
+using TextTabulator.Adapter;
 
 namespace TextTabulatorTests
 {

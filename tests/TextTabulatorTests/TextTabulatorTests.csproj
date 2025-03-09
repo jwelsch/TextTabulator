@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TextTabulator.Adapter\TextTabulator.Adapter.csproj" />
     <ProjectReference Include="..\..\src\TextTabulator\TextTabulator.csproj" />
   </ItemGroup>
 

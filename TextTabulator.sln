@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "src\Runner\Runner
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulatorTests", "tests\TextTabulatorTests\TextTabulatorTests.csproj", "{33A0D0EE-DC32-4761-A354-4F68621E22E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter", "src\TextTabulator.Adapter\TextTabulator.Adapter.csproj", "{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,18 @@ Global
 		{33A0D0EE-DC32-4761-A354-4F68621E22E4}.Release|x64.Build.0 = Release|Any CPU
 		{33A0D0EE-DC32-4761-A354-4F68621E22E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{33A0D0EE-DC32-4761-A354-4F68621E22E4}.Release|x86.Build.0 = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|x64.Build.0 = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Debug|x86.Build.0 = Debug|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|x64.ActiveCfg = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|x64.Build.0 = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|x86.ActiveCfg = Release|Any CPU
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +81,6 @@ Global
 		{C1E9002F-EE4F-4EC9-B3FB-7E0A2552A213} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
 		{E662E067-12B4-4183-9469-72958FE5FBA2} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
 		{33A0D0EE-DC32-4761-A354-4F68621E22E4} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
+		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
 	EndGlobalSection
 EndGlobal

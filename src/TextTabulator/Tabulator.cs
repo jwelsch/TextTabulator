@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TextTabulator.Adapter;
 
 namespace TextTabulator
 {
-    public delegate string CellValue();
-
     public class Tabulator
     {
         public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
