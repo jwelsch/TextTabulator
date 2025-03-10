@@ -2,7 +2,7 @@
 
 namespace TextTabulator.Adapter
 {
-    public interface ITextTabulatorAdapter
+    public interface ITabulatorAdapter
     {
         IEnumerable<string>? GetHeaderStrings();
 

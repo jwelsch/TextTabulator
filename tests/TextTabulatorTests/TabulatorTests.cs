@@ -890,7 +890,7 @@ namespace TextTabulatorTests
 ----------------------------------
 ";
 
-            var adapter = Substitute.For<ITextTabulatorAdapter>();
+            var adapter = Substitute.For<ITabulatorAdapter>();
 
             adapter.GetHeaderStrings().Returns(headers);
             adapter.GetValueStrings().Returns(values);
@@ -922,7 +922,7 @@ namespace TextTabulatorTests
 -------------------------------
 ";
 
-            var adapter = Substitute.For<ITextTabulatorAdapter>();
+            var adapter = Substitute.For<ITabulatorAdapter>();
 
             adapter.GetHeaderStrings().Returns((IEnumerable<string>?)null);
             adapter.GetValueStrings().Returns(values);

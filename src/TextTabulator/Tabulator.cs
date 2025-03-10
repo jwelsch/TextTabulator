@@ -8,7 +8,7 @@ namespace TextTabulator
 {
     public class Tabulator
     {
-        public string Tabulate(ITextTabulatorAdapter adapter, TabulatorOptions? options = null)
+        public string Tabulate(ITabulatorAdapter adapter, TabulatorOptions? options = null)
         {
             var headers = adapter.GetHeaderStrings() ?? Array.Empty<string>();
             var values = adapter.GetValueStrings();
