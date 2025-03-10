@@ -1,9 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace TextTabulator.Adapter.Reflection
 {
+    /// <summary>
+    /// Specifies which category of members. This enumeration supports bitwise operations.
+    /// </summary>
+    [Flags]
+    public enum TypeMembers : byte
+    {
+        /// <summary>
+        /// Property members.
+        /// </summary>
+        Properties = 0x01,
+
+        /// <summary>
+        /// Field members.
+        /// </summary>
+        Fields = 0x10,
+
+        /// <summary>
+        /// Both field and property members.
+        /// </summary>
+        PropertiesFields = Properties | Fields,
+    }
+
+    /// <summary>
+    /// Specifies which access modifiers. This enumeration supports bitwise operations.
+    /// </summary>
+    [Flags]
+    public enum AccessModifiers : byte
+    {
+        /// <summary>
+        /// Members with the public access modifier.
+        /// </summary>
+        Public = 0x01,
+
+        /// <summary>
+        /// Members with a non-public access modifier.
+        /// </summary>
+        NonPublic = 0x10,
+
+        /// <summary>
+        /// Members with both public and non-public access modifiers.
+        /// </summary>
+        PublicNonPublic = Public | NonPublic,
+    }
+
     public interface IClassReflectionTabulatorAdapter : IReflectionTabulatorAdapter
     {
     }
@@ -11,49 +56,71 @@ namespace TextTabulator.Adapter.Reflection
     public class ClassReflectionTabulatorAdapter<TClass> : IClassReflectionTabulatorAdapter where TClass : class
     {
         private readonly IEnumerable<TClass> _items;
+        private readonly TypeMembers _typeMembers;
+        private readonly AccessModifiers _accessModifiers;
 
         private PropertyInfo[]? _propertyInfos;
+        private FieldInfo[]? _fieldInfos;
 
-        public ClassReflectionTabulatorAdapter(IEnumerable<TClass> items)
+        public ClassReflectionTabulatorAdapter(IEnumerable<TClass> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
         {
             _items = items;
+            _typeMembers = typeMembers;
+            _accessModifiers = accessModifiers;
         }
 
-        private void GetProperties()
+        private void GetMemberInfos()
         {
-            if (_propertyInfos == null)
+            Type? type = null;
+            var bindingFlags = BindingFlags.Instance
+                | ((_accessModifiers & AccessModifiers.Public) == 0 ? 0 : BindingFlags.Public)
+                | ((_accessModifiers & AccessModifiers.NonPublic) == 0 ? 0 : BindingFlags.NonPublic);
+
+            if ((_typeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
             {
-                var type = typeof(TClass);
-                _propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                type ??= typeof(TClass);
+                _propertyInfos = type.GetProperties(bindingFlags);
+            }
+
+            if ((_typeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
+            {
+                type ??= typeof(TClass);
+                // Ignore backing fields.
+                _fieldInfos = type.GetFields(bindingFlags).Where(i => !i.Name.StartsWith("<") || !i.Name.Contains(">k__BackingField")).ToArray();
             }
         }
 
         public IEnumerable<string>? GetHeaderStrings()
         {
-            GetProperties();
-
-            if (_propertyInfos == null
-                || _propertyInfos.Length == 0)
-            {
-                return null;
-            }
+            GetMemberInfos();
 
             var headers = new List<string>();
 
-            for (var i = 0; i < _propertyInfos!.Length; i++)
+            if (_propertyInfos != null)
             {
-                headers.Add(_propertyInfos[i].Name);
+                for (var i = 0; i < _propertyInfos!.Length; i++)
+                {
+                    headers.Add(_propertyInfos[i].Name);
+                }
             }
 
-            return headers;
+            if (_fieldInfos != null)
+            {
+                for (var i = 0; i < _fieldInfos!.Length; i++)
+                {
+                    headers.Add(_fieldInfos[i].Name);
+                }
+            }
+
+            return headers.Count == 0 ? null : headers;
         }
 
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
-            GetProperties();
+            GetMemberInfos();
 
-            if (_propertyInfos == null
-                || _propertyInfos.Length == 0)
+            if ((_propertyInfos == null || _propertyInfos.Length == 0)
+                && (_fieldInfos == null || _fieldInfos.Length == 0))
             {
                 return Array.Empty<IEnumerable<string>>();
             }
@@ -62,11 +129,25 @@ namespace TextTabulator.Adapter.Reflection
 
             foreach (var item in _items)
             {
-                var row = new string[_propertyInfos!.Length];
+                var propertyCount = _propertyInfos?.Length ?? 0;
+                var fieldCount = _fieldInfos?.Length ?? 0;
 
-                for (var i = 0; i < row.Length; i++)
+                var row = new string[propertyCount + fieldCount];
+
+                if (_propertyInfos != null)
                 {
-                    row[i] = _propertyInfos[i].GetValue(item).ToString();
+                    for (var i = 0; i < propertyCount; i++)
+                    {
+                        row[i] = _propertyInfos[i].GetValue(item).ToString();
+                    }
+                }
+
+                if (_fieldInfos != null)
+                {
+                    for (var i = propertyCount; i < fieldCount; i++)
+                    {
+                        row[i] = _fieldInfos[i].GetValue(item).ToString();
+                    }
                 }
 
                 values.Add(row);
