@@ -1,4 +1,6 @@
-﻿using TextTabulator;
+﻿using NSubstitute;
+using TextTabulator;
+using TextTabulator.Adapter;
 
 namespace TextTabulatorTests
 {
@@ -855,6 +857,222 @@ namespace TextTabulatorTests
             };
 
             var table = sut.Tabulate(values, options);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_adapter_used_with_headers_and_values_then_expected_table_is_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                "Header2",
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}    |{headers[1]}   |{headers[2]}|
+|----------+----------+----------|
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
+|----------+----------+----------|
+|{values[1][0]}   |{values[1][1]}|{values[1][2]}   |
+|----------+----------+----------|
+|{values[2][0]}|{values[2][1]}   |{values[2][2]}   |
+----------------------------------
+";
+
+            var adapter = Substitute.For<ITabulatorAdapter>();
+
+            adapter.GetHeaderStrings().Returns(headers);
+            adapter.GetValueStrings().Returns(values);
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(adapter);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_adapter_used_with_values_then_expected_table_is_returned()
+        {
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"-------------------------------
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}|
+|----------+----------+-------|
+|{values[1][0]}   |{values[1][1]}|{values[1][2]}|
+|----------+----------+-------|
+|{values[2][0]}|{values[2][1]}   |{values[2][2]}|
+-------------------------------
+";
+
+            var adapter = Substitute.For<ITabulatorAdapter>();
+
+            adapter.GetHeaderStrings().Returns((IEnumerable<string>?)null);
+            adapter.GetValueStrings().Returns(values);
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(adapter);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_no_headers_and_no_rows_then_empty_string_is_returned()
+        {
+            var headers = new string[0];
+            var values = new string[0][];
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values);
+
+            Assert.Equal(string.Empty, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_only_headers_then_data_is_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                "Header2",
+                "ZZZHeader3"
+            };
+
+            var values = new string[0][];
+
+            var expected =
+@$"---------------------------
+|{headers[0]}|{headers[1]}|{headers[2]}|
+---------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_empty_string_in_header_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                string.Empty,
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", "Value3A" },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}    |{headers[1]}          |{headers[2]}|
+|----------+----------+----------|
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}   |
+|----------+----------+----------|
+|{values[1][0]}   |{values[1][1]}|{values[1][2]}   |
+|----------+----------+----------|
+|{values[2][0]}|{values[2][1]}   |{values[2][2]}   |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var table = sut.Tabulate(headers, values);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_empty_string_in_values_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                "Header2",
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", string.Empty },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}    |{headers[1]}   |{headers[2]}|
+|----------+----------+----------|
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}          |
+|----------+----------+----------|
+|{values[1][0]}   |{values[1][1]}|{values[1][2]}   |
+|----------+----------+----------|
+|{values[2][0]}|{values[2][1]}   |{values[2][2]}   |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var table = sut.Tabulate(headers, values);
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_empty_string_in_headers_and_values_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header",
+                string.Empty,
+                "ZZZHeader3"
+            };
+
+            var values = new string[][]
+            {
+                new string[] { "Value1A", "Value2A", string.Empty },
+                new string[] { "Value1B", "YYYValue2B", "Value3B" },
+                new string[] { "XXXValue1C", "Value2C", "Value3C" },
+            };
+
+            var expected =
+@$"----------------------------------
+|{headers[0]}    |{headers[1]}          |{headers[2]}|
+|----------+----------+----------|
+|{values[0][0]}   |{values[0][1]}   |{values[0][2]}          |
+|----------+----------+----------|
+|{values[1][0]}   |{values[1][1]}|{values[1][2]}   |
+|----------+----------+----------|
+|{values[2][0]}|{values[2][1]}   |{values[2][2]}   |
+----------------------------------
+";
+
+            var sut = new Tabulator();
+            var table = sut.Tabulate(headers, values);
 
             Assert.Equal(expected, table);
         }

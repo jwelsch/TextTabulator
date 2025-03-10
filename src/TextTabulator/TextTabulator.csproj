@@ -19,6 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TextTabulator.Adapter\TextTabulator.Adapter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

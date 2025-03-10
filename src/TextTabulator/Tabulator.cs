@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TextTabulator.Adapter;
 
 namespace TextTabulator
 {
-    public delegate string CellValue();
-
     public class Tabulator
     {
+        public string Tabulate(ITabulatorAdapter adapter, TabulatorOptions? options = null)
+        {
+            var headers = adapter.GetHeaderStrings() ?? Array.Empty<string>();
+            var values = adapter.GetValueStrings();
+
+            return Tabulate(headers, values, options);
+        }
+
         public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
@@ -96,6 +103,14 @@ namespace TextTabulator
 
         private string TabulateData(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, int[] maxColumnWidths, int rowCount, TabulatorOptions options)
         {
+            var hasHeaders = headers.Any();
+            var hasRowValues = rowValues.Any();
+
+            if (!hasHeaders && !hasRowValues)
+            {
+                return string.Empty;
+            }
+
             var table = new StringBuilder();
 
             // Start with the top edge of the table.
@@ -104,14 +119,17 @@ namespace TextTabulator
 
             var middleRowSeparator = BuildRowSeparator(options, maxColumnWidths, false);
 
-            if (headers.Any())
+            if (hasHeaders)
             {
                 // Add the header row.
                 var headerRow = BuildRowHeaders(headers, maxColumnWidths, options);
                 table.AppendLine(headerRow);
 
-                var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
-                table.AppendLine(headerRowSeparator);
+                if (hasRowValues)
+                {
+                    var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
+                    table.AppendLine(headerRowSeparator);
+                }
             }
 
             var row = 0;
