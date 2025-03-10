@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.CsvHelper", "src\TextTabulator.Adapter.CsvHelper\TextTabulator.Adapter.CsvHelper.csproj", "{F9614542-3E8D-4FA4-8150-773832AC476C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.CsvHelperTests", "tests\TextTabulator.Adapter.CsvHelperTests\TextTabulator.Adapter.CsvHelperTests.csproj", "{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{F9614542-3E8D-4FA4-8150-773832AC476C}.Release|x64.Build.0 = Release|Any CPU
 		{F9614542-3E8D-4FA4-8150-773832AC476C}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9614542-3E8D-4FA4-8150-773832AC476C}.Release|x86.Build.0 = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|x64.Build.0 = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|x64.ActiveCfg = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|x64.Build.0 = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,5 +111,6 @@ Global
 		{33A0D0EE-DC32-4761-A354-4F68621E22E4} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
 		{C617F0DC-F675-40B6-ADCC-DFFB72749FF7} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
 		{F9614542-3E8D-4FA4-8150-773832AC476C} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
+		{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
 	EndGlobalSection
 EndGlobal
