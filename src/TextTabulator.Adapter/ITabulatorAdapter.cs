@@ -10,7 +10,7 @@ namespace TextTabulator.Adapter
         /// <summary>
         /// Called to return the header strings, if any, of the data. If the data does not contain headers, then null should be returned.
         /// </summary>
-        /// <returns>An enumerable containing the header strings that will appear from left to right in the table, or null if the data contains no header strings.</returns>
+        /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         IEnumerable<string>? GetHeaderStrings();
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace TextTabulator.Adapter.Reflection
     }
 
     /// <summary>
-    /// Class that implements the ITabulatorAdapter interface in order to adapt an enumeration to be consumed by Tabulator.Tabulate.
+    /// Class that implements the ITabulatorAdapter interface in order to adapt an enumeration of types to be consumed by Tabulator.Tabulate.
     /// The type 'T' will be reflected and the names of its properties and/or fields will be adapted to headers. The values contained
     /// in each object in the enumeration will be adapted to the row values.
     /// </summary>
@@ -116,6 +116,10 @@ namespace TextTabulator.Adapter.Reflection
             }
         }
 
+        /// <summary>
+        /// Called to return the header strings, if any, of the data. If the data does not contain headers, then null should be returned.
+        /// </summary>
+        /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
             GetMemberInfos();
@@ -141,6 +145,11 @@ namespace TextTabulator.Adapter.Reflection
             return headers.Count == 0 ? null : headers;
         }
 
+        /// <summary>
+        /// Called to return the row values. The outer enumeration is the rows, while the inner enumeration contains the values in each row.
+        /// Can be an empty enumeration if the data contains no rows.
+        /// </summary>
+        /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
             GetMemberInfos();
