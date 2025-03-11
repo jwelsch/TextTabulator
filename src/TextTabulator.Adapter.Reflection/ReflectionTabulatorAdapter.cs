@@ -17,14 +17,14 @@ namespace TextTabulator.Adapter.Reflection
         Properties = 0x01,
 
         /// <summary>
-        /// Field members.
+        /// Field members, not including backing fields.
         /// </summary>
         Fields = 0x10,
 
         /// <summary>
         /// Both field and property members.
         /// </summary>
-        PropertiesFields = Properties | Fields,
+        PropertiesAndFields = Properties | Fields,
     }
 
     /// <summary>
@@ -46,23 +46,32 @@ namespace TextTabulator.Adapter.Reflection
         /// <summary>
         /// Members with both public and non-public access modifiers.
         /// </summary>
-        PublicNonPublic = Public | NonPublic,
+        PublicAndNonPublic = Public | NonPublic,
     }
 
-    public interface IClassReflectionTabulatorAdapter : IReflectionTabulatorAdapter
+    /// <summary>
+    /// Public interface for IReflectionTabulatorAdapter.
+    /// </summary>
+    public interface IReflectionTabulatorAdapter : ITabulatorAdapter
     {
     }
 
-    public class ClassReflectionTabulatorAdapter<TClass> : IClassReflectionTabulatorAdapter where TClass : class
+    /// <summary>
+    /// Class that implements the ITabulatorAdapter interface in order to adapt an enumeration to be consumed by Tabulator.Tabulate.
+    /// The type 'T' will be reflected and the names of its properties and/or fields will be adapted to headers. The values contained
+    /// in each object in the enumeration will be adapted to the row values.
+    /// </summary>
+    /// <typeparam name="T">Type that will be reflected.</typeparam>
+    public class ReflectionTabulatorAdapter<T> : IReflectionTabulatorAdapter
     {
-        private readonly IEnumerable<TClass> _items;
+        private readonly IEnumerable<T> _items;
         private readonly TypeMembers _typeMembers;
         private readonly AccessModifiers _accessModifiers;
 
         private PropertyInfo[]? _propertyInfos;
         private FieldInfo[]? _fieldInfos;
 
-        public ClassReflectionTabulatorAdapter(IEnumerable<TClass> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
+        public ReflectionTabulatorAdapter(IEnumerable<T> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
         {
             _items = items;
             _typeMembers = typeMembers;
@@ -78,13 +87,13 @@ namespace TextTabulator.Adapter.Reflection
 
             if ((_typeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
             {
-                type ??= typeof(TClass);
+                type ??= typeof(T);
                 _propertyInfos = type.GetProperties(bindingFlags);
             }
 
             if ((_typeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
             {
-                type ??= typeof(TClass);
+                type ??= typeof(T);
                 // Ignore backing fields.
                 _fieldInfos = type.GetFields(bindingFlags).Where(i => !i.Name.StartsWith("<") || !i.Name.Contains(">k__BackingField")).ToArray();
             }
