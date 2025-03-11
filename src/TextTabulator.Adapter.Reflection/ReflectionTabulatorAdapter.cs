@@ -71,6 +71,12 @@ namespace TextTabulator.Adapter.Reflection
         private PropertyInfo[]? _propertyInfos;
         private FieldInfo[]? _fieldInfos;
 
+        /// <summary>
+        /// ReflectionTabulatorAdapter constructor that takes an enumerable.
+        /// </summary>
+        /// <param name="items">Enumerable of items to adapt.</param>
+        /// <param name="typeMembers">Specifies which type members to include in the output.</param>
+        /// <param name="accessModifiers">Specifies the type members with the specified access modifiers to include in the output.</param>
         public ReflectionTabulatorAdapter(IEnumerable<T> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
         {
             _items = items;
@@ -78,6 +84,12 @@ namespace TextTabulator.Adapter.Reflection
             _accessModifiers = accessModifiers;
         }
 
+        /// <summary>
+        /// ReflectionTabulatorAdapter constructor that takes an enumerable.
+        /// </summary>
+        /// <param name="item">Item to adapt.</param>
+        /// <param name="typeMembers">Specifies which type members to include in the output.</param>
+        /// <param name="accessModifiers">Specifies the type members with the specified access modifiers to include in the output.</param>
         public ReflectionTabulatorAdapter(T item, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
             : this(new T[] { item }, typeMembers, accessModifiers)
         {
