@@ -78,6 +78,11 @@ namespace TextTabulator.Adapter.Reflection
             _accessModifiers = accessModifiers;
         }
 
+        public ReflectionTabulatorAdapter(T item, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
+            : this(new T[] { item }, typeMembers, accessModifiers)
+        {
+        }
+
         private void GetMemberInfos()
         {
             Type? type = null;

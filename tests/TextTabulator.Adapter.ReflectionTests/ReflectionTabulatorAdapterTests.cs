@@ -347,6 +347,8 @@ namespace TextTabulator.Adapter.ReflectionTests
             });
         }
 
+        ///////////////////////////////////////////////////////////////////////
+
         [Fact]
         public void When_called_with_empty_enumberable_of_struct_with_properties_then_data_returned()
         {
@@ -686,6 +688,42 @@ namespace TextTabulator.Adapter.ReflectionTests
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], stringFieldName), j),
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], intFieldName)?.ToString(), j),
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], enumerableFieldName)?.ToString(), j),
+                }),
+            });
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        [Fact]
+        public void When_called_with_single_class_item_then_data_is_returned()
+        {
+            var item = new TestClass2
+            {
+                StringProperty = "Hello",
+                IntProperty = 123,
+                EnumerableProperty = new string[] { "foo", "bar" },
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TestClass2>(item);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestClass2.StringProperty), i),
+                i => Assert.Equal(nameof(TestClass2.IntProperty), i),
+                i => Assert.Equal(nameof(TestClass2.EnumerableProperty), i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(item.StringProperty, j),
+                    j => Assert.Equal(item.IntProperty.ToString(), j),
+                    j => Assert.Equal(item.EnumerableProperty.ToString(), j),
                 }),
             });
         }
