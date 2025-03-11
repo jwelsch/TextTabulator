@@ -1,4 +1,4 @@
-﻿namespace TextTabulator.Adapter
+﻿namespace TextTabulator
 {
     /// <summary>
     /// Delegate for generating the content of a cell dynamically.
