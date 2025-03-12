@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TextTabulator.Adapter.CsvHelper\TextTabulator.Adapter.CsvHelper.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapter.Reflection\TextTabulator.Adapter.Reflection.csproj" />
     <ProjectReference Include="..\TextTabulator\TextTabulator.csproj" />
   </ItemGroup>
 
