@@ -115,7 +115,7 @@ namespace TextTabulator
 
             // Start with the top edge of the table.
             var topEdge = BuildTopEdge(options, maxColumnWidths);
-            table.AppendLine(topEdge);
+            table.Append(topEdge + options.NewLine);
 
             var middleRowSeparator = BuildRowSeparator(options, maxColumnWidths, false);
 
@@ -123,12 +123,12 @@ namespace TextTabulator
             {
                 // Add the header row.
                 var headerRow = BuildRowHeaders(headers, maxColumnWidths, options);
-                table.AppendLine(headerRow);
+                table.Append(headerRow + options.NewLine);
 
                 if (hasRowValues)
                 {
                     var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
-                    table.AppendLine(headerRowSeparator);
+                    table.Append(headerRowSeparator + options.NewLine);
                 }
             }
 
@@ -138,19 +138,19 @@ namespace TextTabulator
             {
                 // Add the row values.
                 var rowString = BuildRowValues(rowValue, maxColumnWidths, row, options);
-                table.AppendLine(rowString);
+                table.Append(rowString + options.NewLine);
 
                 if (row < rowCount - 1)
                 {
                     // Add the row separator.
-                    table.AppendLine(middleRowSeparator);
+                    table.Append(middleRowSeparator + options.NewLine);
                 }
 
                 row++;
             }
 
             var bottomEdge = BuildBottomEdge(options, maxColumnWidths);
-            table.AppendLine(bottomEdge);
+            table.Append(bottomEdge + options.NewLine);
 
             return table.ToString();
         }

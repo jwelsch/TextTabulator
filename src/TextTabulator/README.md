@@ -293,3 +293,7 @@ An example table looks like:
 ║value1C│value2C│value3C║
 ╚═══════╧═══════╧═══════╝
 ```
+
+### New Lines
+
+By default `TextTabulator.Tabulate` uses the system default for new lines. However, characters to use for new lines can be set by assigning a value to `TableOptions.NewLines`.

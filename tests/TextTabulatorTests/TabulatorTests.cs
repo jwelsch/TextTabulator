@@ -4,6 +4,11 @@ using TextTabulator.Adapter;
 
 namespace TextTabulatorTests
 {
+    /// <summary>
+    /// Note for these tests, the NewLine should be set since the new lines in
+    /// TabulatorTests.cs can be controlled, but the new lines in
+    /// Environment.NewLine is dependent on what type of system runs the tests.
+    /// </summary>
     public class TabulatorTests
     {
         [Fact]
@@ -21,9 +26,9 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\n" });
 
-            Assert.Equal($"--------\r\n|{headers[0]}|\r\n|------|\r\n|{values[0][0]} |\r\n--------\r\n", table);
+            Assert.Equal($"--------\n|{headers[0]}|\n|------|\n|{values[0][0]} |\n--------\n", table);
         }
 
         [Fact]
@@ -48,12 +53,13 @@ namespace TextTabulatorTests
                     ColumnSeparator = '#',
                     LeftEdge = '#',
                     RightEdge = '#',
-                }
+                },
+                NewLine = "\r",
             };
 
             var table = sut.Tabulate(headers, values, options);
 
-            Assert.Equal($"--------\r\n#{headers[0]}#\r\n|------|\r\n#{values[0][0]} #\r\n--------\r\n", table);
+            Assert.Equal($"--------\r#{headers[0]}#\r|------|\r#{values[0][0]} #\r--------\r", table);
         }
 
         [Fact]
@@ -76,7 +82,8 @@ namespace TextTabulatorTests
                 Styling = new AsciiTableStyling
                 {
                     ColumnLeftPadding = "#"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -104,7 +111,8 @@ namespace TextTabulatorTests
                 Styling = new AsciiTableStyling
                 {
                     ColumnLeftPadding = "__"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -132,7 +140,8 @@ namespace TextTabulatorTests
                 Styling = new AsciiTableStyling
                 {
                     ColumnRightPadding = "#"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -160,7 +169,8 @@ namespace TextTabulatorTests
                 Styling = new AsciiTableStyling
                 {
                     ColumnRightPadding = "__"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -189,7 +199,8 @@ namespace TextTabulatorTests
                 {
                     ColumnLeftPadding = "@",
                     ColumnRightPadding = "#"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -218,7 +229,8 @@ namespace TextTabulatorTests
                 {
                     ColumnLeftPadding = "@@@",
                     ColumnRightPadding = "###"
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -243,7 +255,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal($"--------\r\n|{headers[0]}|\r\n|------|\r\n|{values[0][0]}|\r\n|------|\r\n|{values[1][0]}|\r\n|------|\r\n|{values[2][0]}|\r\n--------\r\n", table);
         }
@@ -279,7 +291,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -315,7 +327,8 @@ namespace TextTabulatorTests
                     BottomLeftCorner = '_',
                     BottomRightCorner = '_',
                     BottomEdge = '_',
-                }
+                },
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -354,7 +367,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -390,7 +403,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -417,7 +430,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(values);
+            var table = sut.Tabulate(values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -453,7 +466,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -480,7 +493,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(values);
+            var table = sut.Tabulate(values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -516,7 +529,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -543,7 +556,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(values);
+            var table = sut.Tabulate(values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -580,7 +593,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -620,7 +634,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -660,7 +675,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Left),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -700,7 +716,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.Right),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -742,6 +759,7 @@ namespace TextTabulatorTests
             {
                 CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
                 Styling = new UnicodeTableStyling(),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -781,7 +799,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterLeftBias)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterLeftBias),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -821,7 +840,8 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
             var options = new TabulatorOptions
             {
-                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterRightBias)
+                CellAlignment = new UniformAlignmentProvider(CellAlignment.CenterRightBias),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(headers, values, options);
@@ -854,6 +874,7 @@ namespace TextTabulatorTests
             {
                 CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias),
                 Styling = new UnicodeTableStyling(),
+                NewLine = "\r\n",
             };
 
             var table = sut.Tabulate(values, options);
@@ -897,7 +918,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(adapter);
+            var table = sut.Tabulate(adapter, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -929,7 +950,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(adapter);
+            var table = sut.Tabulate(adapter, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -967,7 +988,7 @@ namespace TextTabulatorTests
 
             var sut = new Tabulator();
 
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -1002,7 +1023,7 @@ namespace TextTabulatorTests
 ";
 
             var sut = new Tabulator();
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -1037,7 +1058,7 @@ namespace TextTabulatorTests
 ";
 
             var sut = new Tabulator();
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }
@@ -1072,7 +1093,7 @@ namespace TextTabulatorTests
 ";
 
             var sut = new Tabulator();
-            var table = sut.Tabulate(headers, values);
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }

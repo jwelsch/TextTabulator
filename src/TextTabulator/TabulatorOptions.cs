@@ -1,10 +1,14 @@
-﻿namespace TextTabulator
+﻿using System;
+
+namespace TextTabulator
 {
     public interface ITabulatorOptions
     {
         ITableStyling Styling { get; set; }
 
         ICellAlignmentProvider CellAlignment { get; set; }
+
+        string NewLine { get; set; }
     }
 
     public class TabulatorOptions : ITabulatorOptions
@@ -12,5 +16,7 @@
         public ITableStyling Styling { get; set; } = new AsciiTableStyling();
 
         public ICellAlignmentProvider CellAlignment { get; set; } = new UniformAlignmentProvider(TextTabulator.CellAlignment.Left);
+
+        public string NewLine { get; set; } = Environment.NewLine;
     }
 }
