@@ -18,7 +18,7 @@ Tyrannosaurus Rex,6.7,Carnivore,66 mya
 Triceratops,8,Herbivore,66 mya
 Apatosaurus,33,Herbivore,147 mya
 Archaeopteryx,0.001,Omnivore,147 mya
-Ankyosaurus,4.8,Herbivore,66 mya
+Anklyosaurus,4.8,Herbivore,66 mya
 Stegosaurus,3.8,Herbivore,147 mya
 Hadrosaurus,3,Herbivore,66 mya
 ";
@@ -46,7 +46,7 @@ This will produce the output:
 |-----------------+-------------+---------+----------|
 |Archaeopteryx    |0.001        |Omnivore |147 mya   |
 |-----------------+-------------+---------+----------|
-|Ankyosaurus      |4.8          |Herbivore|66 mya    |
+|Anklyosaurus     |4.8          |Herbivore|66 mya    |
 |-----------------+-------------+---------+----------|
 |Stegosaurus      |3.8          |Herbivore|147 mya   |
 |-----------------+-------------+---------+----------|
@@ -56,9 +56,11 @@ This will produce the output:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
+The API consits of the `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
 
-### `TextTabulator.Adapters.CsvHelperTabulatorAdapter`
+### `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter`
+
+The adapter class that accepts a `CsvHelper` object and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
 
 **Constructors**
 
@@ -79,10 +81,15 @@ Parameters
 
 Return
 
-`IEnumerable<string>?`: An enumerable containing the header strings, or null if the CSV data did not have headers.
+- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the CSV data did not have headers.
 
 > `public IEnumerable<IEnumerable<string>> GetValueStrings()`
 
-Called to return the row values. The outer enumeration is the rows, while the inner enumeration contains the values in each row.
-Can be an empty enumeration if the data contains no rows.
+Called to return the row values. The outer enumeration is the rows, while the inner enumeration contains the values in each row. Can be an empty enumeration if the data contains no rows.
 
+Parameters
+- None
+
+Return
+
+- `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
