@@ -1,7 +1,6 @@
-﻿using CsvHelper;
-using System.Globalization;
+﻿using Runner;
 using TextTabulator;
-using TextTabulator.Adapters.CsvHelper;
+using TextTabulator.Adapters.Reflection;
 
 internal class Program
 {
@@ -35,20 +34,33 @@ internal class Program
         //    new string[] { "XXXValue1C", "Value2C", "Value3C" },
         //};
 
-        var csvData =
-        @"Name,Weight (tons),Diet,Extinction
-Tyrannosaurus Rex,6.7,Carnivore,66 mya
-Triceratops,8,Herbivore,66 mya
-Apatosaurus,33,Herbivore,147 mya
-Archaeopteryx,0.001,Omnivore,147 mya
-Ankyosaurus,4.8,Herbivore,66 mya
-Stegosaurus,3.8,Herbivore,147 mya
-Hadrosaurus,3,Herbivore,66 mya
-";
+        //        var csvData =
+        //        @"Name,Weight (tons),Diet,Extinction
+        //Tyrannosaurus Rex,6.7,Carnivore,66 mya
+        //Triceratops,8,Herbivore,66 mya
+        //Apatosaurus,33,Herbivore,147 mya
+        //Archaeopteryx,0.001,Omnivore,147 mya
+        //Anklyosaurus,4.8,Herbivore,66 mya
+        //Stegosaurus,3.8,Herbivore,147 mya
+        //Hadrosaurus,3,Herbivore,66 mya
+        //";
 
-        using var textReader = new StringReader(csvData);
-        using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
-        var csvAdapter = new CsvHelperTabulatorAdapter(csvReader, true);
+        //        using var textReader = new StringReader(csvData);
+        //        using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
+        //        var csvAdapter = new CsvHelperTabulatorAdapter(csvReader, true);
+
+        var data = new Dinosaur[]
+        {
+            new Dinosaur("Tyrannosaurus Rex", 6.7, Diet.Carnivore, 66),
+            new Dinosaur("Triceratops", 8, Diet.Herbivore, 66),
+            new Dinosaur("Apatosaurus", 33, Diet.Herbivore, 147),
+            new Dinosaur("Archaeopteryx", 0.001, Diet.Omnivore, 147),
+            new Dinosaur("Anklyosaurus", 4.8, Diet.Herbivore, 66),
+            new Dinosaur("Stegosaurus", 3.8, Diet.Herbivore, 147),
+            new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
+        };
+
+        var reflectionAdapter = new ReflectionTabulatorAdapter<Dinosaur>(data);
 
         var tabulator = new Tabulator();
 
@@ -99,7 +111,7 @@ Hadrosaurus,3,Herbivore,66 mya
             //    //BottomEdgeJoint = '╧',
         };
 
-        var table = tabulator.Tabulate(csvAdapter);
+        var table = tabulator.Tabulate(reflectionAdapter);
 
         Console.WriteLine(table);
     }
