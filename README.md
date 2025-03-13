@@ -50,6 +50,7 @@ var table = tabulator.Tabulate(headers, values);
 
 Console.WriteLine(table);
 ```
+
 The output of the above code would be:
 ```
 -------------------------
@@ -81,6 +82,7 @@ public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<C
 For the `object` type overloads, the type's `ToString` method will be called to generate the content of the cell. Each object will have its `ToString` method called once for each call to `Tabulator.Tabulate`.
 
 For the `CellValue` delegate type overloads, the delegate will be invoked to generate the content of the cell. It can be used to generate content dynamically. Each `CellValue` will be invoked only once per call to `Tabulator.Tabulate`. The delegate `CellValue` has the signature:
+
 ```
 public delegate string CellValue();
 ```
@@ -102,6 +104,7 @@ There are four `CellAlignment` values:
 There are numerous preconfigured `ICellAlignmentProvider` implementations that come built-in.
 
 `UniformAlignmentProvider` aligns all cells the same.
+
 ```
 ----------------------------------
 |Header    |Header2   |ZZZHeader3|
@@ -115,6 +118,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 `IndividualCellAlignmentProvider` allows each cell to be aligned separately.
+
 ```
 ----------------------------------
 |  Header  |  Header2 |ZZZHeader3|
@@ -128,6 +132,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 `UniformColumnAlignmentProvider` aligns all cells in a column the same.
+
 ```
 ----------------------------------
 |Header    |  Header2 |ZZZHeader3|
@@ -141,6 +146,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 `UniformValueAlignmentProvider` aligns all values the same, while allowing the alignment of each header to vary.
+
 ```
 ----------------------------------
 |Header    |  Header2 |ZZZHeader3|
@@ -154,6 +160,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 `UniformHeaderAlignmentProvider` aligns all headers the same way, while allowing the alignment of each value to vary.
+
 ```
 ----------------------------------
 |  Header  | Header2  |ZZZHeader3|
@@ -167,6 +174,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 `UniformHeaderUniformValueAlignmentProvider` allows a single alignment to be set for all headers and another one to be set for all values.
+
 ```
 ----------------------------------
 |Header    |Header2   |ZZZHeader3|
@@ -179,7 +187,8 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ----------------------------------
 ```
 
-`UniformHeaderUniformColumnAlignmentProvider` aligns all headers the same, while aligning the values in each column separately. 
+`UniformHeaderUniformColumnAlignmentProvider` aligns all headers the same, while aligning the values in each column separately.
+
 ```
 ----------------------------------
 |  Header  | Header2  |ZZZHeader3|
@@ -193,6 +202,7 @@ There are numerous preconfigured `ICellAlignmentProvider` implementations that c
 ```
 
 You can set the `ICellAlignmentProvider` with the following code:
+
 ```
 var tabulator = new TextTabulator();
 var options = new TabulatorOptions
@@ -204,6 +214,7 @@ var table = tabulator.Tabulate(headers, values, options);
 ```
 
 As a convenience, the last `CellAlignment` value in a collection passed to one of the built-in `ICellAlignmentProvider` implementations will be used if the number of alignments is less than the number of actual cells to align. For example, say that a table has three columns and a `UniformColumnAlignmentProvider` is used. If the `UniformColumnAlignmentProvider` constructor is only given two column alignments, the last column will be aligned using the last alignment value in the collection that it was passed.
+
 ```
 // Given these headers.
 var headers = new string[] { "Header", "Header2", "ZZZHeader3" };
@@ -225,7 +236,9 @@ var table = tabulator.Tabulate(headers, values, new TabulatorOptions { CellAlign
 
 Console.WriteLine(table);
 ```
+
 The output will look like this:
+
 ```
 ----------------------------------
 |Header    |   Header2|ZZZHeader3|
@@ -245,6 +258,7 @@ The style of the table structure can be controlled by setting the `Styling` prop
 `AsciiTableStyling` will only use traditional ASCII characters to build the table. Note that this does not mean that the characters are ASCII encoded, the actual characters are encoded as standard Unicode, like all .NET characters. This only uses characters within the traditional ASCII 1-byte range of 0-255.
 
 The default styling uses `AsciiTableStyling`, but you can also set this styling with the following code:
+
 ```
 var tabulator = new TextTabulator();
 var options = new TabulatorOptions
@@ -256,6 +270,7 @@ var table = tabulator.Tabulate(headers, values, options);
 ```
 
 An example table looks like:
+
 ```
 -------------------------
 |Header1|Header2|Header3|
@@ -271,6 +286,7 @@ An example table looks like:
 `UnicodeTableStyling` uses character values that are outside of the traditional ASCII range. There are Unicode characters that are specifically designed to create tables, which is what the properties in `UnicodeTableStyling` default to.
 
 You can set this styling with the following code:
+
 ```
 var tabulator = new TextTabulator();
 var options = new TabulatorOptions
@@ -282,6 +298,7 @@ var table = tabulator.Tabulate(headers, values, options);
 ```
 
 An example table looks like:
+
 ```
 ╔═══════╤═══════╤═══════╗
 ║Header1│Header2│Header3║
@@ -296,4 +313,16 @@ An example table looks like:
 
 ### New Lines
 
-By default `TextTabulator.Tabulate` uses the system default for new lines. However, characters to use for new lines can be set by assigning a value to `TableOptions.NewLines`.
+By default `TextTabulator.Tabulate` uses the `Environment.NewLine` for new lines. However, characters to use for new lines can be set by assigning a value to `TableOptions.NewLines`.
+
+Example:
+
+```
+var tabulator = new TextTabulator();
+var options = new TabulatorOptions
+{
+   NewLine = "\n",
+};
+
+var table = tabulator.Tabulate(headers, values, options);
+```
