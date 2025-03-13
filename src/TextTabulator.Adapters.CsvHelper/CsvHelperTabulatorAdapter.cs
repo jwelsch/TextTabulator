@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TextTabulator.Adapter.CsvHelper
+namespace TextTabulator.Adapters.CsvHelper
 {
     /// <summary>
     /// Public interface for ICsvHelperTabulatorAdapter.

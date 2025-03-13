@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextTabulator.Adapter\TextTabulator.Adapter.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
   </ItemGroup>
 
   <ItemGroup>

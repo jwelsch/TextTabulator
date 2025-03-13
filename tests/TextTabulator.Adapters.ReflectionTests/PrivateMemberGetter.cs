@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TextTabulator.Adapter.ReflectionTests
+namespace TextTabulator.Adapters.ReflectionTests
 {
     internal static class PrivateMemberGetter
     {

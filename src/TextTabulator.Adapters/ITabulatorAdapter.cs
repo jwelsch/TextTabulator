@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextTabulator.Adapter
+namespace TextTabulator.Adapters
 {
     /// <summary>
     /// Interface for adapting different kinds of data to the format that the method Tabulator.Tabulate accepts.

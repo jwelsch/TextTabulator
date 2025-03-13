@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TextTabulator.Adapter.CsvHelper\TextTabulator.Adapter.CsvHelper.csproj" />
+    <ProjectReference Include="..\..\src\TextTabulator.Adapters.CsvHelper\TextTabulator.Adapters.CsvHelper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

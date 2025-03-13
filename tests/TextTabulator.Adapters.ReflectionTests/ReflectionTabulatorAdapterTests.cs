@@ -1,6 +1,6 @@
-﻿using TextTabulator.Adapter.Reflection;
+﻿using TextTabulator.Adapters.Reflection;
 
-namespace TextTabulator.Adapter.ReflectionTests
+namespace TextTabulator.Adapters.ReflectionTests
 {
     public class ReflectionTabulatorAdapterTests
     {

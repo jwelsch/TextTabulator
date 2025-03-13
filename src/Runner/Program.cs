@@ -1,7 +1,7 @@
 ﻿using CsvHelper;
 using System.Globalization;
 using TextTabulator;
-using TextTabulator.Adapter.CsvHelper;
+using TextTabulator.Adapters.CsvHelper;
 
 internal class Program
 {

@@ -1,6 +1,6 @@
 ﻿using NSubstitute;
 using TextTabulator;
-using TextTabulator.Adapter;
+using TextTabulator.Adapters;
 
 namespace TextTabulatorTests
 {

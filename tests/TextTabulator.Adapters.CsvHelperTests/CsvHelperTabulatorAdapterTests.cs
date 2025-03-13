@@ -1,8 +1,8 @@
 ﻿using CsvHelper;
 using System.Globalization;
-using TextTabulator.Adapter.CsvHelper;
+using TextTabulator.Adapters.CsvHelper;
 
-namespace TextTabulator.Adapter.CsvHelperTests
+namespace TextTabulator.Adapters.CsvHelperTests
 {
     public class CsvHelperTabulatorAdapterTests
     {

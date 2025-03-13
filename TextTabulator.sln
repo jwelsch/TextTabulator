@@ -13,15 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "src\Runner\Runner
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulatorTests", "tests\TextTabulatorTests\TextTabulatorTests.csproj", "{33A0D0EE-DC32-4761-A354-4F68621E22E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter", "src\TextTabulator.Adapter\TextTabulator.Adapter.csproj", "{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters", "src\TextTabulator.Adapters\TextTabulator.Adapters.csproj", "{C617F0DC-F675-40B6-ADCC-DFFB72749FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.CsvHelper", "src\TextTabulator.Adapter.CsvHelper\TextTabulator.Adapter.CsvHelper.csproj", "{F9614542-3E8D-4FA4-8150-773832AC476C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.CsvHelper", "src\TextTabulator.Adapters.CsvHelper\TextTabulator.Adapters.CsvHelper.csproj", "{F9614542-3E8D-4FA4-8150-773832AC476C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.CsvHelperTests", "tests\TextTabulator.Adapter.CsvHelperTests\TextTabulator.Adapter.CsvHelperTests.csproj", "{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.CsvHelperTests", "tests\TextTabulator.Adapters.CsvHelperTests\TextTabulator.Adapters.CsvHelperTests.csproj", "{6A4B28FE-D2C8-4A8A-9C72-903AB86D6928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.Reflection", "src\TextTabulator.Adapter.Reflection\TextTabulator.Adapter.Reflection.csproj", "{353218CF-DD88-4B07-9810-06F9B34807F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.Reflection", "src\TextTabulator.Adapters.Reflection\TextTabulator.Adapters.Reflection.csproj", "{353218CF-DD88-4B07-9810-06F9B34807F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapter.ReflectionTests", "tests\TextTabulator.Adapter.ReflectionTests\TextTabulator.Adapter.ReflectionTests.csproj", "{473CC828-187A-4CC4-8973-7D274B870868}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.ReflectionTests", "tests\TextTabulator.Adapters.ReflectionTests\TextTabulator.Adapters.ReflectionTests.csproj", "{473CC828-187A-4CC4-8973-7D274B870868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

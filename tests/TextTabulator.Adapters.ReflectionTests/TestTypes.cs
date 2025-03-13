@@ -1,4 +1,4 @@
-﻿namespace TextTabulator.Adapter.ReflectionTests
+﻿namespace TextTabulator.Adapters.ReflectionTests
 {
     internal class TestClass1
     {

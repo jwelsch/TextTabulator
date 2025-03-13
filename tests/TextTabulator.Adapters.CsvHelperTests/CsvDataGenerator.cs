@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace TextTabulator.Adapter.CsvHelperTests
+namespace TextTabulator.Adapters.CsvHelperTests
 {
     internal class CsvTestData
     {

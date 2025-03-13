@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextTabulator.Adapter\TextTabulator.Adapter.csproj" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
   </ItemGroup>
 
 </Project>

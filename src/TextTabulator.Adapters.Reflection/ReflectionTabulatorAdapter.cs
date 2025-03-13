@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace TextTabulator.Adapter.Reflection
+namespace TextTabulator.Adapters.Reflection
 {
     /// <summary>
     /// Specifies which category of members. This enumeration supports bitwise operations.

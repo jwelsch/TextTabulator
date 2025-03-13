@@ -1,4 +1,4 @@
-# TextTabulator.Adapter.CsvHelper
+# TextTabulator.Adapters.CsvHelper
 
 This is an auxillary library for TextTabulator that provides an integration with the popular [CsvHelper](https://github.com/JoshClose/CsvHelper) library that allows TextTabulator to consume CSV data.
 
@@ -10,7 +10,7 @@ You can call the code like this:
 
 ```
 using TextTabulator;
-using TextTabulator.Adapter.CsvHelper;
+using TextTabulator.Adapters.CsvHelper;
 
 var csvData =
 @"Name,Weight (tons),Diet,Extinction
@@ -56,9 +56,9 @@ This will produce the output:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapter.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
+The API consits of the `TextTabulator.Adapters.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
 
-### `TextTabulator.Adapter.CsvHelperTabulatorAdapter`
+### `TextTabulator.Adapters.CsvHelperTabulatorAdapter`
 
 **Constructors**
 
