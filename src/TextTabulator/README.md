@@ -47,24 +47,50 @@ The output of the above code would be:
 
 The `Tabulator.Tabulate` method is overloaded. It can be called with collections of `string` types, `object` types, or `CellValue` delegate types. All three additionally have overloads with or without headers.
 
+A final category of overload accepts an `ITabulatorAdapter` interface.
+
+### String type overloads
+
 ```
 public string Tabulate(IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
 public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
+```
 
+For the `string` type overloads, the value of each string object will be used as each cell's content. Each `string` will be read once for each call to `Tabulator.Tabulate`.
+
+### Object type overloads
+
+```
 public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
 public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
+```
 
+For the `object` type overloads, the type's `ToString` method will be called to generate the content of the cell. Each `object` will have its `ToString` method called once for each call to `Tabulator.Tabulate`.
+
+### CellValue delegate type overloads
+
+```
 public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null);
 public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
 ```
 
-For the `object` type overloads, the type's `ToString` method will be called to generate the content of the cell. Each object will have its `ToString` method called once for each call to `Tabulator.Tabulate`.
+For the `CellValue` delegate type overloads, the delegate will be invoked to generate the content of the cell. It can be used to generate content dynamically. Each `CellValue` will be invoked only once per call to `Tabulator.Tabulate`.
 
-For the `CellValue` delegate type overloads, the delegate will be invoked to generate the content of the cell. It can be used to generate content dynamically. Each `CellValue` will be invoked only once per call to `Tabulator.Tabulate`. The delegate `CellValue` has the signature:
+The delegate `CellValue` has the signature:
 
 ```
 public delegate string CellValue();
 ```
+
+### `ITabulatorAdapter` type overloads
+
+```
+public string Tabulte(ITabulatorAdapter adapter, TabulatorOptions? options = null)
+```
+
+This overload allows `Tabulator.Tabulate` to more easily integrate with other types of formats of data. Currently supported adapters include CSV and reflection over objects. More information can be found in each adapter's project:
+- [CsvHelper adapter](../TextTabulator.Adapters.CsvHelper)
+- [Reflection adapter](../TextTabulator.Adapters.Reflection)
 
 ## Tabulation Options
 

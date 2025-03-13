@@ -6,8 +6,17 @@ using TextTabulator.Adapters;
 
 namespace TextTabulator
 {
+    /// <summary>
+    /// Main class that performs the tabulation of data.
+    /// </summary>
     public class Tabulator
     {
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="adapter">Adapter object that the method can get data from.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(ITabulatorAdapter adapter, TabulatorOptions? options = null)
         {
             var headers = adapter.GetHeaderStrings() ?? Array.Empty<string>();
@@ -16,6 +25,12 @@ namespace TextTabulator
             return Tabulate(headers, values, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing CellValues delegates for each value in each row.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
@@ -23,6 +38,13 @@ namespace TextTabulator
             return Tabulate(Array.Empty<string>(), rowValueStrings, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing CellValues delegates for each header.</param>
+        /// <param name="rowValues">Enumeration containing CellValues delegates for each value in each row.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
         {
             var headerStrings = headers.Select(i => i.Invoke());
@@ -31,6 +53,12 @@ namespace TextTabulator
             return Tabulate(headerStrings, rowValueStrings, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
         {
             var rowValueStrings = rowValues.Select(i => i.Select(j => j.ToString()));
@@ -38,6 +66,13 @@ namespace TextTabulator
             return Tabulate(Array.Empty<string>(), rowValueStrings, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing objects for each header.</param>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
         {
             var headerStrings = headers.Select(i => i.ToString());
@@ -46,11 +81,25 @@ namespace TextTabulator
             return Tabulate(headerStrings, rowValueStrings, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing strings for each value in each row.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
         {
             return Tabulate(Array.Empty<string>(), rowValues, options);
         }
 
+        /// <summary>
+        /// Tabulates data and outputs a string representation of a table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing strings for each header.</param>
+        /// <param name="rowValues"></param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        /// <returns>String representation of a table.</returns>
+        /// <exception cref="Exception">Thrown when the number of headers does not match the number of values in each row.</exception>
         public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
         {
             options ??= new TabulatorOptions();
