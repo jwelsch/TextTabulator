@@ -29,4 +29,4 @@ There are also separate libraries that adapt different types of data to be consu
 
 `TextTabulator.Adapters`
 - [CsvHelper](/src/TextTabulator.Adapters.CsvHelper/README.md) adapter
-- [Reflection](/src/TextTabulator.Adapters.CsvHelper/README.md) adapter
+- [Reflection](/src/TextTabulator.Adapters.Reflection/README.md) adapter
