@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageId>Jwelsch.$(AssemblyName)</PackageId>
-    <Version>$(AssemblyVersion)</Version>
+    <Version>1.2.0</Version>
     <Title>$(AssemblyName)</Title>
     <Authors>Jwelsch</Authors>
     <Company>Justin Welsch</Company>

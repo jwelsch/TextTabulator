@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <PackageId>Jwelsch.$(AssemblyName)</PackageId>
     <Title>$(AssemblyName)</Title>
-    <Version>$(AssemblyVersion)</Version>
+    <Version>1.2.0</Version>
     <Authors>Jwelsch</Authors>
     <Company>Justin Welsch</Company>
     <Description>A .NET Standard 2.1 library that adapts CSV data read by CsvHelper to a format that can be consumed by TextTabulator.</Description>
