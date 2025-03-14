@@ -1,0 +1,30 @@
+name: Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x' # SDK Version to use.
+          source-url: https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
+      - name: Build and pack the project
+        run: dotnet build --configuration Release
+      #- name: Create the package
+      #  run: dotnet pack --configuration Release <my project>
+      - name: Publish TextTabulator package to nuget.org
+        run: dotnet nuget push src/TextTabulator/bin/Release/*.nupkg
+      - name: Publish TextTabulator.Adapters.CsvHelper package to nuget.org
+        run: dotnet nuget push src/TextTabulator.Adapters.CsvHelper/bin/Release/*.nupkg
+      - name: Publish TextTabulator.Adapters.Reflection package to nuget.org
+        run: dotnet nuget push src/TextTabulator.Adapters.Reflection/bin/Release/*.nupkg
