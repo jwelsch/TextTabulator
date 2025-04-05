@@ -82,6 +82,7 @@ The delegate `CellValue` has the signature:
 public delegate string CellValue();
 ```
 
+
 ### `ITabulatorAdapter` type overloads
 
 ```
@@ -89,8 +90,9 @@ public string Tabulte(ITabulatorAdapter adapter, TabulatorOptions? options = nul
 ```
 
 This overload allows `Tabulator.Tabulate` to more easily integrate with other types of formats of data. Currently supported adapters include CSV and reflection over objects. More information can be found in each adapter's project:
-- [CsvHelper adapter](../TextTabulator.Adapters.CsvHelper)
-- [Reflection adapter](../TextTabulator.Adapters.Reflection)
+- [CsvHelper adapter](../TextTabulator.Adapters.CsvHelper/README.md)
+- [JSON adapter](../TextTabulator.Adapters.Json/README.md)
+- [Reflection adapter](../TextTabulator.Adapters.Reflection/README.md)
 
 ## Tabulation Options
 

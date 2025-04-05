@@ -28,6 +28,6 @@ The core project can be found here: [TextTabulator](/src/TextTabulator/README.md
 There are also separate libraries that adapt different types of data to be consumed by the `TextTabulator` API. They can be found here:
 
 `TextTabulator.Adapters`
-- [CsvHelper](/src/TextTabulator.Adapters.CsvHelper/README.md) adapter
-- [Reflection](/src/TextTabulator.Adapters.Reflection/README.md) adapter
-- [JSON](/src/TextTabulator.Adapters.Json/README.md) adapter
+- [CsvHelper adapter](/src/TextTabulator.Adapters.CsvHelper/README.md)
+- [JSON adapter](/src/TextTabulator.Adapters.Json/README.md)
+- [Reflection adapter](/src/TextTabulator.Adapters.Reflection/README.md)
