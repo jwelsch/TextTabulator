@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using TextTabulator.Testing;
 
 namespace TextTabulator.Adapters.CsvHelperTests
 {
@@ -30,28 +31,6 @@ namespace TextTabulator.Adapters.CsvHelperTests
 
     internal static class CsvDataGenerator
     {
-        private static readonly char[] _characters =
-        [
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-        ];
-
-        private static string GenerateString(int minColumnLength, int maxLength)
-        {
-            var sb = new StringBuilder();
-            var rand = new Random((int)DateTime.Now.Ticks);
-
-            var length = rand.Next(minColumnLength, maxLength);
-
-            for (var i = 0; i < length; i++)
-            {
-                sb.Append(_characters[rand.Next(_characters.Length)]);
-            }
-
-            return sb.ToString();
-        }
-
         private static CsvRowTestData GenerateRow(int columns, int minColumnLength, int maxColumnLength)
         {
             var sb = new StringBuilder();
@@ -59,11 +38,11 @@ namespace TextTabulator.Adapters.CsvHelperTests
 
             for (var i = 0; i < columns - 1; i++)
             {
-                rowData.Add(GenerateString(minColumnLength, maxColumnLength));
+                rowData.Add(DataGenerator.GetString(minColumnLength, maxColumnLength));
                 sb.Append(rowData[^1] + ',');
             }
 
-            rowData.Add(GenerateString(minColumnLength, maxColumnLength));
+            rowData.Add(DataGenerator.GetString(minColumnLength, maxColumnLength));
             sb.AppendLine(rowData[^1]);
 
             return new CsvRowTestData(sb.ToString(), rowData.ToArray());
