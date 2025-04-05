@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using TextTabulator;
-using TextTabulator.Adapters.SystemTextJson;
+using TextTabulator.Adapters.Json;
 
 internal class Program
 {
@@ -62,7 +62,7 @@ internal class Program
 
         using var stream = new FileStream(@"D:\Justin\Projects\Data\dinosaur-three.json", FileMode.Open, FileAccess.Read);
 
-        var adapter = new SystemTextJsonTabulatorAdapter(stream);
+        var adapter = new JsonTabulatorAdapter(stream);
 
         //var individualAlignments = new CellAlignment[][]
         //{

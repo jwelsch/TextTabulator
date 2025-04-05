@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TextTabulator.Adapters.SystemTextJson\TextTabulator.Adapters.SystemTextJson.csproj" />
+    <ProjectReference Include="..\..\src\TextTabulator.Adapters.Json\TextTabulator.Adapters.Json.csproj" />
     <ProjectReference Include="..\TextTabulator.Testing\TextTabulator.Testing.csproj" />
   </ItemGroup>
 

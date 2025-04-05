@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 
-namespace TextTabulator.Adapters.SystemTextJson
+namespace TextTabulator.Adapters.Json
 {
     /// <summary>
-    /// Public interface for ISystemTextJsonTabulatorAdapter.
+    /// Public interface for IJsonTabulatorAdapter.
     /// </summary>
-    public interface ISystemTextJsonTabulatorAdapter : ITabulatorAdapter
+    public interface IJsonTabulatorAdapter : ITabulatorAdapter
     {
     }
 
@@ -33,7 +34,7 @@ namespace TextTabulator.Adapters.SystemTextJson
     ///   }
     /// ]
     /// </summary>
-    public class SystemTextJsonTabulatorAdapter : ISystemTextJsonTabulatorAdapter
+    public class JsonTabulatorAdapter : IJsonTabulatorAdapter
     {
         private const int BufferSize = 4096;
 
@@ -42,27 +43,37 @@ namespace TextTabulator.Adapters.SystemTextJson
         private readonly List<string> _headers = new List<string>();
 
         /// <summary>
-        /// Creates an object of type SystemTextJsonTabulatorAdapter.
+        /// Creates an object of type JsonTabulatorAdapter.
         /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
         /// </summary>
         /// <param name="jsonStreamProvider">Function that provides a stream containing an array containing homogeneous objects of UTF-8 encoded JSON data.</param>
         /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public SystemTextJsonTabulatorAdapter(Func<Stream> jsonStreamProvider, JsonReaderOptions options = default)
+        public JsonTabulatorAdapter(Func<Stream> jsonStreamProvider, JsonReaderOptions options = default)
         {
             _jsonStreamProvider = jsonStreamProvider;
             _options = options;
         }
 
         /// <summary>
-        /// Creates an object of type SystemTextJsonTabulatorAdapter.
+        /// Creates an object of type JsonTabulatorAdapter.
         /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
         /// </summary>
         /// <param name="jsonStream">Stream containing UTF-8 encoded JSON data.</param>
         /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public SystemTextJsonTabulatorAdapter(Stream jsonStream, JsonReaderOptions options = default)
+        public JsonTabulatorAdapter(Stream jsonStream, JsonReaderOptions options = default)
+            : this(() => jsonStream, options)
         {
-            _jsonStreamProvider = () => jsonStream;
-            _options = options;
+        }
+
+        /// <summary>
+        /// Creates an object of type JsonTabulatorAdapter.
+        /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
+        /// </summary>
+        /// <param name="json">String containing raw JSON data.</param>
+        /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
+        public JsonTabulatorAdapter(string json, JsonReaderOptions options = default)
+            : this(() => new MemoryStream(UTF8Encoding.UTF8.GetBytes(json)), options)
+        {
         }
 
         /// <summary>

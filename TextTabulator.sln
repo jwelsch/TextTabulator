@@ -23,9 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.Refl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.ReflectionTests", "tests\TextTabulator.Adapters.ReflectionTests\TextTabulator.Adapters.ReflectionTests.csproj", "{473CC828-187A-4CC4-8973-7D274B870868}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.SystemTextJson", "src\TextTabulator.Adapters.SystemTextJson\TextTabulator.Adapters.SystemTextJson.csproj", "{83588136-483B-45A0-BEB2-9D9A9547515A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.Json", "src\TextTabulator.Adapters.Json\TextTabulator.Adapters.Json.csproj", "{83588136-483B-45A0-BEB2-9D9A9547515A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.SystemTextJsonTests", "tests\TextTabulator.Adapters.SystemTextJsonTests\TextTabulator.Adapters.SystemTextJsonTests.csproj", "{FEC772EF-7E33-416F-B722-282B1FCA51F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.JsonTests", "tests\TextTabulator.Adapters.JsonTests\TextTabulator.Adapters.JsonTests.csproj", "{FEC772EF-7E33-416F-B722-282B1FCA51F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Testing", "tests\TextTabulator.Testing\TextTabulator.Testing.csproj", "{AEBEA57B-CE2A-4B70-B975-C70DCEF5E280}"
 EndProject

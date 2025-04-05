@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using TextTabulator.Adapters.SystemTextJson;
+using TextTabulator.Adapters.Json;
 
-namespace TextTabulator.Adapters.SystemTextJsonTests
+namespace TextTabulator.Adapters.JsonTests
 {
-    public class SystemTextJsonTabulatorAdapterTests
+    public class JsonTabulatorAdapterTests
     {
         #region JSON Data
 
@@ -203,9 +203,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_single_simple_object_then_headers_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithSingleSimpleObject);
 
             var headers = sut.GetHeaderStrings();
 
@@ -221,9 +219,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_single_simple_object_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithSingleSimpleObject);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -244,9 +240,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_single_complex_object_then_headers_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleComplexObject));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithSingleComplexObject);
 
             var headers = sut.GetHeaderStrings();
 
@@ -266,9 +260,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_single_complex_object_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleComplexObject));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithSingleComplexObject);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -293,9 +285,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_multiple_simple_objects_then_headers_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithMultipleSimpleObjects));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithMultipleSimpleObjects);
 
             var headers = sut.GetHeaderStrings();
 
@@ -311,9 +301,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_multiple_simple_objects_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithMultipleSimpleObjects));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithMultipleSimpleObjects);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -352,9 +340,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_multiple_complex_objects_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithMultipleComplexObjects));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithMultipleComplexObjects);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -405,9 +391,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_objects_with_an_extra_property_then_throw()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithObjectsWithAnExtraProperty));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithObjectsWithAnExtraProperty);
 
             _ = sut.GetHeaderStrings();
 
@@ -419,9 +403,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_objects_missing_a_property_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithObjectsMissingAProperty));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithObjectsMissingAProperty);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -451,9 +433,7 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
         [Fact]
         public void When_json_is_objects_with_out_of_order_properties_then_values_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithObjectsWithOutOfOrderProperties));
-
-            var sut = new SystemTextJsonTabulatorAdapter(stream);
+            var sut = new JsonTabulatorAdapter(JsonWithObjectsWithOutOfOrderProperties);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -478,6 +458,42 @@ namespace TextTabulator.Adapters.SystemTextJsonTests
                         j => Assert.Equal("66", j)
                     );
                 });
+        }
+
+        [Fact]
+        public void When_json_is_from_streamprovider_then_headers_returned()
+        {
+            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
+            Func<Stream> provider = () => stream;
+
+            var sut = new JsonTabulatorAdapter(provider);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("name", i),
+                i => Assert.Equal("weight", i),
+                i => Assert.Equal("diet", i),
+                i => Assert.Equal("extinction", i)
+            );
+        }
+
+        [Fact]
+        public void When_json_is_from_stream_then_headers_returned()
+        {
+            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
+            var sut = new JsonTabulatorAdapter(stream);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("name", i),
+                i => Assert.Equal("weight", i),
+                i => Assert.Equal("diet", i),
+                i => Assert.Equal("extinction", i)
+            );
         }
     }
 }
