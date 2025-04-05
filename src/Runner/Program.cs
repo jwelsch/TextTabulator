@@ -1,6 +1,6 @@
-﻿using Runner;
+﻿using System.Text;
 using TextTabulator;
-using TextTabulator.Adapters.Reflection;
+using TextTabulator.Adapters.Json;
 
 internal class Program
 {
@@ -49,20 +49,20 @@ internal class Program
         //        using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
         //        var csvAdapter = new CsvHelperTabulatorAdapter(csvReader, true);
 
-        var data = new Dinosaur[]
-        {
-            new Dinosaur("Tyrannosaurus Rex", 6.7, Diet.Carnivore, 66),
-            new Dinosaur("Triceratops", 8, Diet.Herbivore, 66),
-            new Dinosaur("Apatosaurus", 33, Diet.Herbivore, 147),
-            new Dinosaur("Archaeopteryx", 0.001, Diet.Omnivore, 147),
-            new Dinosaur("Anklyosaurus", 4.8, Diet.Herbivore, 66),
-            new Dinosaur("Stegosaurus", 3.8, Diet.Herbivore, 147),
-            new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
-        };
+        //var data = new Dinosaur[]
+        //{
+        //    new Dinosaur("Tyrannosaurus Rex", 6.7, Diet.Carnivore, 66),
+        //    new Dinosaur("Triceratops", 8, Diet.Herbivore, 66),
+        //    new Dinosaur("Apatosaurus", 33, Diet.Herbivore, 147),
+        //    new Dinosaur("Archaeopteryx", 0.001, Diet.Omnivore, 147),
+        //    new Dinosaur("Anklyosaurus", 4.8, Diet.Herbivore, 66),
+        //    new Dinosaur("Stegosaurus", 3.8, Diet.Herbivore, 147),
+        //    new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
+        //};
 
-        var reflectionAdapter = new ReflectionTabulatorAdapter<Dinosaur>(data);
+        using var stream = new FileStream(@"D:\Justin\Projects\Data\dinosaur-three.json", FileMode.Open, FileAccess.Read);
 
-        var tabulator = new Tabulator();
+        var adapter = new JsonTabulatorAdapter(stream);
 
         //var individualAlignments = new CellAlignment[][]
         //{
@@ -111,7 +111,8 @@ internal class Program
             //    //BottomEdgeJoint = '╧',
         };
 
-        var table = tabulator.Tabulate(reflectionAdapter);
+        var tabulator = new Tabulator();
+        var table = tabulator.Tabulate(adapter);
 
         Console.WriteLine(table);
     }
