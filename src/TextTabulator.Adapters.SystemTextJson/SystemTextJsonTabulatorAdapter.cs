@@ -242,10 +242,10 @@ namespace TextTabulator.Adapters.SystemTextJson
                 }
                 else if (jsonReader.TokenType == JsonTokenType.StartObject)
                 {
-                    
                     if (jsonReader.CurrentDepth == targetDepth - 1)
                     {
                         values = new string[_headers.Count];
+                        Array.Fill(values, "");
                     }
                     else if (jsonReader.CurrentDepth == targetDepth)
                     {
