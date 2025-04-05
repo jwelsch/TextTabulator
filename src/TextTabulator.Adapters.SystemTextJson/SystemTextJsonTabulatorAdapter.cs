@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Text.Json;
 
@@ -36,6 +35,8 @@ namespace TextTabulator.Adapters.SystemTextJson
     /// </summary>
     public class SystemTextJsonTabulatorAdapter : ISystemTextJsonTabulatorAdapter
     {
+        private const int BufferSize = 4096;
+
         private readonly Func<Stream> _jsonStreamProvider;
         private readonly JsonReaderOptions _options;
         private readonly List<string> _headers = new List<string>();
@@ -70,7 +71,7 @@ namespace TextTabulator.Adapters.SystemTextJson
         /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
-            var buffer = new byte[4096];
+            var buffer = new byte[BufferSize];
 
             var stream = _jsonStreamProvider.Invoke();
 
@@ -81,7 +82,7 @@ namespace TextTabulator.Adapters.SystemTextJson
                 return null;
             }
 
-            var jsonReader = new Utf8JsonReader(buffer, _options);
+            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options));
 
             // Need to read the first JSON object in order to get the headers.
 
@@ -101,16 +102,35 @@ namespace TextTabulator.Adapters.SystemTextJson
             var depthDelta = 2;
             var targetDepth = startDepth + depthDelta;
 
-            while (loop && jsonReader.Read())
+            _headers.Clear();
+
+            // Since the ITabulatorAdapter interface reads the data in two steps - headers then values - state
+            // needs to be maintained between the calls to GetHeaderStrings() and GetValueStrings(). Because
+            // Utf8JsonReader is a ref struct, it can only exist on the stack. It is also only forward reading.
+            // All this means that this loop only reads the properties of the first JSON object, which it
+            // assumes are the headers. These are then returned as the headers. The reading of the actual
+            // property values is done in GetValueStrings(). An entirely new Utf8JsonReader will be created,
+            // and the first JSON object will be read again - this time recording the values.
+            while (loop)
             {
+                if (!jsonReader.Read())
+                {
+                    GetMoreBytesFromStream(stream, ref buffer, ref jsonReader);
+
+                    if (!jsonReader.Read())
+                    {
+                        throw new InvalidOperationException($"Failed to read additional JSON after refreshing buffer.");
+                    }
+                }
+
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
                     var header = jsonReader.GetString() ?? string.Empty;
                     _headers.Add(header);
                 }
-                else if (jsonReader.TokenType == JsonTokenType.EndObject && jsonReader.CurrentDepth == targetDepth)
+                else if (jsonReader.TokenType == JsonTokenType.EndObject)
                 {
-                    loop = jsonReader.CurrentDepth != startDepth;
+                    loop = jsonReader.CurrentDepth != targetDepth - 1;
                 }
                 else if (jsonReader.TokenType == JsonTokenType.EndArray)
                 {
@@ -128,7 +148,7 @@ namespace TextTabulator.Adapters.SystemTextJson
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
-            var buffer = new byte[4096];
+            var buffer = new byte[BufferSize];
 
             var stream = _jsonStreamProvider.Invoke();
 
@@ -140,7 +160,7 @@ namespace TextTabulator.Adapters.SystemTextJson
                 return Array.Empty<string[]>();
             }
 
-            var jsonReader = new Utf8JsonReader(buffer, _options);
+            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options));
 
             var loop = true;
             var startDepth = jsonReader.CurrentDepth;
@@ -150,8 +170,20 @@ namespace TextTabulator.Adapters.SystemTextJson
             var rowValues = new List<string[]>();
             var values = new string[_headers.Count];
 
-            while (loop && jsonReader.Read())
+            // This loop will read the values of the properties in JSON objects. It uses the property names as
+            // headers, that were read in GetHeaderStrings().
+            while (loop)
             {
+                if (!jsonReader.Read())
+                {
+                    GetMoreBytesFromStream(stream, ref buffer, ref jsonReader);
+
+                    if (!jsonReader.Read())
+                    {
+                        throw new InvalidOperationException($"Failed to read additional JSON after refreshing buffer.");
+                    }
+                }
+
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
                     var header = jsonReader.GetString() ?? string.Empty;

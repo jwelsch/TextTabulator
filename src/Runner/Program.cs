@@ -60,7 +60,7 @@ internal class Program
         //    new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
         //};
 
-        using var stream = new FileStream(@"D:\Justin\Projects\Data\dinosaur-one.json", FileMode.Open, FileAccess.Read);
+        using var stream = new FileStream(@"D:\Justin\Projects\Data\dinosaur-three.json", FileMode.Open, FileAccess.Read);
 
         var adapter = new SystemTextJsonTabulatorAdapter(stream);
 
