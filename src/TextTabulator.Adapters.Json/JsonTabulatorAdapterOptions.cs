@@ -4,13 +4,14 @@ namespace TextTabulator.Adapters.Json
 {
     public class JsonTabulatorAdapterOptions
     {
-        private readonly IJsonPropertyNameTransform _jsonPropertyNameTransform;
-        private readonly JsonReaderOptions _jsonReaderOptions;
+        public IJsonPropertyNameTransform JsonPropertyNameTransform { get; }
 
-        public JsonTabulatorAdapterOptions(IJsonPropertyNameTransform? jsonPropertyNameTransform = default, JsonReaderOptions jsonReaderOptions = default)
+        public JsonReaderOptions JsonReaderOptions { get; }
+
+        public JsonTabulatorAdapterOptions(IJsonPropertyNameTransform? jsonPropertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)
         {
-            _jsonPropertyNameTransform = jsonPropertyNameTransform ?? new PassThruJsonPropertyNameTransform();
-            _jsonReaderOptions = jsonReaderOptions;
+            JsonPropertyNameTransform = jsonPropertyNameTransform ?? new PassThruJsonPropertyNameTransform();
+            JsonReaderOptions = jsonReaderOptions;
         }
     }
 }
