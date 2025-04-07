@@ -9,7 +9,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-bar";
 
-            var sut = new BasicJsonPropertyNameTransform(true, false, null);
+            var sut = new KebabJsonPropertyNameTransform(true, false, null);
 
             var result = sut.Apply(name);
 
@@ -21,7 +21,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "Foo-bar";
 
-            var sut = new BasicJsonPropertyNameTransform(true, false, null);
+            var sut = new KebabJsonPropertyNameTransform(true, false, null);
 
             var result = sut.Apply(name);
 
@@ -33,7 +33,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-bar";
 
-            var sut = new BasicJsonPropertyNameTransform(false, true, null);
+            var sut = new KebabJsonPropertyNameTransform(false, true, null);
 
             var result = sut.Apply(name);
 
@@ -45,7 +45,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-Bar";
 
-            var sut = new BasicJsonPropertyNameTransform(false, true, null);
+            var sut = new KebabJsonPropertyNameTransform(false, true, null);
 
             var result = sut.Apply(name);
 
@@ -57,7 +57,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-bar";
 
-            var sut = new BasicJsonPropertyNameTransform(false, false, '_');
+            var sut = new KebabJsonPropertyNameTransform(false, false, '_');
 
             var result = sut.Apply(name);
 
@@ -69,7 +69,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foobar";
 
-            var sut = new BasicJsonPropertyNameTransform(false, false, '_');
+            var sut = new KebabJsonPropertyNameTransform(false, false, '_');
 
             var result = sut.Apply(name);
 
@@ -81,7 +81,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-bar";
 
-            var sut = new BasicJsonPropertyNameTransform(true, true, ' ');
+            var sut = new KebabJsonPropertyNameTransform(true, true, ' ');
 
             var result = sut.Apply(name);
 
@@ -93,7 +93,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "FooBar";
 
-            var sut = new BasicJsonPropertyNameTransform(true, true, ' ');
+            var sut = new KebabJsonPropertyNameTransform(true, true, ' ');
 
             var result = sut.Apply(name);
 
