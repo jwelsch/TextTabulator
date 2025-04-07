@@ -18,6 +18,11 @@
     /// </summary>
     public class PassThruJsonPropertyNameTransform : IJsonPropertyNameTransform
     {
+        /// <summary>
+        /// Applies the transform to the property name.
+        /// </summary>
+        /// <param name="propertyName">Property name upon which to apply the tranform.</param>
+        /// <returns>The transformed name.</returns>
         public string Apply(string propertyName) => propertyName;
     }
 }

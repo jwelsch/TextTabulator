@@ -99,5 +99,41 @@ namespace TextTabulator.Adapters.JsonTests
 
             Assert.Equal("FooBar", result);
         }
+
+        [Fact]
+        public void When_number_is_first_and_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
+        {
+            var name = "123_foo_bar";
+
+            var sut = new SnakeJsonPropertyNameTransform(true, true, ' ');
+
+            var result = sut.Apply(name);
+
+            Assert.Equal("123 Foo Bar", result);
+        }
+
+        [Fact]
+        public void When_number_is_in_middle_and_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
+        {
+            var name = "foo_123_bar";
+
+            var sut = new SnakeJsonPropertyNameTransform(true, true, ' ');
+
+            var result = sut.Apply(name);
+
+            Assert.Equal("Foo 123 Bar", result);
+        }
+
+        [Fact]
+        public void When_number_is_last_and_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
+        {
+            var name = "foo_bar_123";
+
+            var sut = new SnakeJsonPropertyNameTransform(true, true, ' ');
+
+            var result = sut.Apply(name);
+
+            Assert.Equal("Foo Bar 123", result);
+        }
     }
 }
