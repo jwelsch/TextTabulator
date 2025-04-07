@@ -1,7 +1,7 @@
 ﻿namespace TextTabulator.Adapters.Json
 {
     /// <summary>
-    /// A JSON property name transform that when given kebab case names can capitalize the first letter of words and replace dashes.
+    /// A JSON property name transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
     /// </summary>
     public class KebabJsonPropertyNameTransform : SeparatorJsonPropertyNameTransform
     {

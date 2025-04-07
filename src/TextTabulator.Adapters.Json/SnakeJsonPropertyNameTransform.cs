@@ -1,7 +1,7 @@
 ﻿namespace TextTabulator.Adapters.Json
 {
     /// <summary>
-    /// A JSON property name transform that when given snake case names can capitalize the first letter of words and replace underscores.
+    /// A JSON property name transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
     /// </summary>
     public class SnakeJsonPropertyNameTransform : SeparatorJsonPropertyNameTransform
     {

@@ -3,7 +3,7 @@
 namespace TextTabulator.Adapters.Json
 {
     /// <summary>
-    /// A JSON property name transform that can capitalize the first letter of words and replace separator characters.
+    /// Abstract base class of JSON property name transform that can capitalize the first letter of words and replace separator characters.
     /// </summary>
     public abstract class SeparatorJsonPropertyNameTransform : IJsonPropertyNameTransform
     {
