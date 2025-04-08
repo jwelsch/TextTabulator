@@ -36,11 +36,24 @@ namespace TextTabulator.Adapters.Json
     /// </summary>
     public class JsonTabulatorAdapter : IJsonTabulatorAdapter
     {
+        private class Header
+        {
+            public string TransformedName { get; }
+
+            public int Index { get; }
+
+            public Header(string transformedName, int index)
+            {
+                TransformedName = transformedName;
+                Index = index;
+            }   
+        }
+
         private const int BufferSize = 4096;
 
         private readonly Func<Stream> _jsonStreamProvider;
-        private readonly JsonReaderOptions _options;
-        private readonly List<string> _headers = new List<string>();
+        private readonly JsonTabulatorAdapterOptions _options;
+        private readonly Dictionary<string, Header> _headers = new Dictionary<string, Header>();
 
         /// <summary>
         /// Creates an object of type JsonTabulatorAdapter.
@@ -48,10 +61,10 @@ namespace TextTabulator.Adapters.Json
         /// </summary>
         /// <param name="jsonStreamProvider">Function that provides a stream containing an array containing homogeneous objects of UTF-8 encoded JSON data.</param>
         /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public JsonTabulatorAdapter(Func<Stream> jsonStreamProvider, JsonReaderOptions options = default)
+        public JsonTabulatorAdapter(Func<Stream> jsonStreamProvider, JsonTabulatorAdapterOptions? options = null)
         {
             _jsonStreamProvider = jsonStreamProvider;
-            _options = options;
+            _options = options ?? new JsonTabulatorAdapterOptions();
         }
 
         /// <summary>
@@ -60,7 +73,7 @@ namespace TextTabulator.Adapters.Json
         /// </summary>
         /// <param name="jsonStream">Stream containing UTF-8 encoded JSON data.</param>
         /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public JsonTabulatorAdapter(Stream jsonStream, JsonReaderOptions options = default)
+        public JsonTabulatorAdapter(Stream jsonStream, JsonTabulatorAdapterOptions? options = null)
             : this(() => jsonStream, options)
         {
         }
@@ -71,7 +84,7 @@ namespace TextTabulator.Adapters.Json
         /// </summary>
         /// <param name="json">String containing raw JSON data.</param>
         /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public JsonTabulatorAdapter(string json, JsonReaderOptions options = default)
+        public JsonTabulatorAdapter(string json, JsonTabulatorAdapterOptions? options = null)
             : this(() => new MemoryStream(UTF8Encoding.UTF8.GetBytes(json)), options)
         {
         }
@@ -93,7 +106,7 @@ namespace TextTabulator.Adapters.Json
                 return null;
             }
 
-            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options));
+            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options.JsonReaderOptions));
 
             // Need to read the first JSON object in order to get the headers.
 
@@ -114,6 +127,8 @@ namespace TextTabulator.Adapters.Json
             var targetDepth = startDepth + depthDelta;
 
             _headers.Clear();
+
+            var transformedHeaders = new List<string>();
 
             // Since the ITabulatorAdapter interface reads the data in two steps - headers then values - state
             // needs to be maintained between the calls to GetHeaderStrings() and GetValueStrings(). Because
@@ -136,8 +151,10 @@ namespace TextTabulator.Adapters.Json
 
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
-                    var header = jsonReader.GetString() ?? string.Empty;
-                    _headers.Add(header);
+                    var rawHeader = jsonReader.GetString() ?? string.Empty;
+                    var transformed = _options.JsonPropertyNameTransform.Apply(rawHeader);
+                    transformedHeaders.Add(transformed);
+                    _headers.Add(rawHeader, new Header(transformed, transformedHeaders.Count - 1));
                 }
                 else if (jsonReader.TokenType == JsonTokenType.EndObject)
                 {
@@ -149,7 +166,7 @@ namespace TextTabulator.Adapters.Json
                 }
             }
 
-            return _headers;
+            return transformedHeaders;
         }
 
         /// <summary>
@@ -171,7 +188,7 @@ namespace TextTabulator.Adapters.Json
                 return Array.Empty<string[]>();
             }
 
-            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options));
+            var jsonReader = new Utf8JsonReader(buffer, false, new JsonReaderState(_options.JsonReaderOptions));
 
             var loop = true;
             var startDepth = jsonReader.CurrentDepth;
@@ -197,19 +214,19 @@ namespace TextTabulator.Adapters.Json
 
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
-                    var header = jsonReader.GetString() ?? string.Empty;
+                    var rawHeader = jsonReader.GetString() ?? string.Empty;
 
-                    if (string.IsNullOrEmpty(header))
+                    if (string.IsNullOrEmpty(rawHeader))
                     {
                         throw new InvalidOperationException("Empty header value.");
                     }
 
-                    index = _headers.IndexOf(header);
-
-                    if (index == -1)
+                    if (!_headers.TryGetValue(rawHeader, out Header header))
                     {
-                        throw new InvalidOperationException($"Unknown header '{header}' encountered while parsing values.");
+                        throw new InvalidOperationException($"Unknown header '{rawHeader}' encountered while parsing values.");
                     }
+
+                    index = header.Index;
                 }
                 else if (jsonReader.TokenType == JsonTokenType.String && jsonReader.CurrentDepth == targetDepth)
                 {
