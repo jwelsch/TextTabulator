@@ -1097,5 +1097,42 @@ namespace TextTabulatorTests
 
             Assert.Equal(expected, table);
         }
+
+        [Fact]
+        public void When_tabulate_called_with_row_value_with_new_line_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "Header2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B\r\nvalue2B2", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" },
+            };
+
+            var expected =
+@$"--------------------------
+|{headers[0]}|{headers[1]} |{headers[2]}|
+|-------+--------+-------|
+|{values[0][0]}|{values[0][1]} |{values[0][2]}|
+|-------+--------+-------|
+|{values[1][0]}|value2B |{values[1][2]}|
+|       |value2B2|       |
+|-------+--------+-------|
+|{values[2][0]}|{values[2][1]} |{values[2][2]}|
+--------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table);
+        }
     }
 }

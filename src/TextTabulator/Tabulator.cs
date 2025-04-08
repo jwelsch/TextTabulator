@@ -105,12 +105,13 @@ namespace TextTabulator
             options ??= new TabulatorOptions();
 
             var maxColumnWidths = new List<int>();
+            var maxRowHeights = new List<int>();
 
-            GetRowAndColumnData(new List<IEnumerable<string>> { headers }, ref maxColumnWidths);
+            GetRowAndColumnData(new List<IEnumerable<string>> { headers }, ref maxColumnWidths, ref maxRowHeights);
 
             var headerCount = maxColumnWidths.Count;
 
-            var rowCount = GetRowAndColumnData(rowValues, ref maxColumnWidths);
+            var rowCount = GetRowAndColumnData(rowValues, ref maxColumnWidths, ref maxRowHeights);
 
             if (headerCount != 0 && headerCount != maxColumnWidths.Count)
             {
@@ -120,7 +121,7 @@ namespace TextTabulator
             return TabulateData(headers, rowValues, maxColumnWidths.ToArray(), rowCount, options);
         }
 
-        private int GetRowAndColumnData(IEnumerable<IEnumerable<string>> rowValues, ref List<int> maxColumnWidths)
+        private int GetRowAndColumnData(IEnumerable<IEnumerable<string>> rowValues, ref List<int> maxColumnWidths, ref List<int> maxRowHeights)
         {
             var row = 0;
             int col;
@@ -136,9 +137,21 @@ namespace TextTabulator
                         maxColumnWidths.Add(0);
                     }
 
-                    if (maxColumnWidths[col] < value.Length)
+                    if (maxRowHeights.Count <= row)
                     {
-                        maxColumnWidths[col] = value.Length;
+                        maxRowHeights.Add(0);
+                    }
+
+                    var dimension = GetRowValueDimension(value);
+
+                    if (maxColumnWidths[col] < dimension.Width)
+                    {
+                        maxColumnWidths[col] = dimension.Width;
+                    }
+
+                    if (maxRowHeights[row] < dimension.Height)
+                    {
+                        maxRowHeights[row] = dimension.Height;
                     }
 
                     col++;
@@ -148,6 +161,60 @@ namespace TextTabulator
             }
 
             return row;
+        }
+
+        private static Dimension GetRowValueDimension(string rowValue)
+        {
+            var carriageReturn = false;
+            var maxWidth = 0;
+            var width = 0;
+            var height = 1;
+
+            for (var i = 0; i < rowValue.Length; i++)
+            {
+                var c = rowValue[i];
+
+                if (c == '\r')
+                {
+                    carriageReturn = true;
+                }
+                else if (c == '\n')
+                {
+                    if (carriageReturn)
+                    {
+                        carriageReturn = false;
+                    }
+                    height++;
+                    if (width > maxWidth)
+                    {
+                        maxWidth = width;
+                    }
+                    width = 0;
+                }
+                else
+                {
+                    if (carriageReturn)
+                    {
+                        carriageReturn = false;
+                        height++;
+                        if (width > maxWidth)
+                        {
+                            maxWidth = width;
+                        }
+                        width = 0;
+                        continue;
+                    }
+
+                    width++;
+                }
+            }
+
+            if (width > maxWidth)
+            {
+                maxWidth = width;
+            }
+
+            return new Dimension(maxWidth, height);
         }
 
         private string TabulateData(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, int[] maxColumnWidths, int rowCount, TabulatorOptions options)
