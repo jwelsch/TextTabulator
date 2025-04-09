@@ -1099,6 +1099,30 @@ namespace TextTabulatorTests
         }
 
         [Fact]
+        public void When_tabulate_called_with_single_column_and_single_row_value_with_new_line_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A\r\nvalue1A1" }
+            };
+
+            var expected =
+@$"----------
+|value1A |
+|value1A1|
+----------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
         public void When_tabulate_called_with_row_value_with_new_line_then_table_returned()
         {
             var headers = new string[]

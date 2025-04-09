@@ -377,9 +377,16 @@ namespace TextTabulator
             // Note that this will also account for the right edge of the table.
             foreach (var value in values)
             {
-                foreach (var line in value.Value.Lines)
+                for (var i = 0; i < value.Value.Lines.Count; i++)
                 {
+                    var line = value.Value.Lines[i];
+
                     var cellAlignment = alignmentProvider(col, row);
+
+                    if (i != 0)
+                    {
+                        rowString.Append(options.Styling.LeftEdge);
+                    }
 
                     rowString.Append(options.Styling.ColumnLeftPadding);
 
@@ -387,15 +394,15 @@ namespace TextTabulator
 
                     if (cellAlignment == CellAlignment.Right)
                     {
-                        leftOffset = maxColumnWidths[col] - value.Value.Size.Width;
+                        leftOffset = maxColumnWidths[col] - line.Length;
                     }
                     else if (cellAlignment == CellAlignment.CenterLeftBias)
                     {
-                        leftOffset = (maxColumnWidths[col] - value.Value.Size.Width) / 2;
+                        leftOffset = (maxColumnWidths[col] - line.Length) / 2;
                     }
                     else if (cellAlignment == CellAlignment.CenterRightBias)
                     {
-                        leftOffset = ((maxColumnWidths[col] - value.Value.Size.Width) / 2) + ((maxColumnWidths[col] - value.Value.Size.Width) % 2 == 0 ? 0 : 1);
+                        leftOffset = ((maxColumnWidths[col] - line.Length) / 2) + ((maxColumnWidths[col] - line.Length) % 2 == 0 ? 0 : 1);
                     }
 
                     rowString.Append(' ', leftOffset);
@@ -406,15 +413,15 @@ namespace TextTabulator
 
                     if (cellAlignment == CellAlignment.Left)
                     {
-                        rightOffset = maxColumnWidths[col] - value.Value.Size.Width;
+                        rightOffset = maxColumnWidths[col] - line.Length;
                     }
                     else if (cellAlignment == CellAlignment.CenterLeftBias)
                     {
-                        rightOffset = ((maxColumnWidths[col] - value.Value.Size.Width) / 2) + ((maxColumnWidths[col] - value.Value.Size.Width) % 2 == 0 ? 0 : 1);
+                        rightOffset = ((maxColumnWidths[col] - line.Length) / 2) + ((maxColumnWidths[col] - line.Length) % 2 == 0 ? 0 : 1);
                     }
                     else if (cellAlignment == CellAlignment.CenterRightBias)
                     {
-                        rightOffset = (maxColumnWidths[col] - value.Value.Size.Width) / 2;
+                        rightOffset = (maxColumnWidths[col] - line.Length) / 2;
                     }
 
                     rowString.Append(' ', rightOffset);
@@ -425,8 +432,13 @@ namespace TextTabulator
                     // Add the right column separator or, if this is the last value in the row, the right edge of the table.
                     rowString.Append(col < maxColumnWidths.Length - 1 ? options.Styling.ColumnSeparator : options.Styling.RightEdge);
 
-                    col++;
+                    if (i < value.Value.Lines.Count - 1)
+                    {
+                        rowString.Append(options.NewLine);
+                    }
                 }
+
+                col++;
             }
 
             return rowString.ToString();
