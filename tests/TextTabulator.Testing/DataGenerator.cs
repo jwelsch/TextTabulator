@@ -33,7 +33,34 @@ namespace TextTabulator.Testing
             return sb.ToString();
         }
 
-        public static int GetInt(int minValue = 0, int maxValue = int.MaxValue)
+        public static string GetString(int length)
+        {
+            return GetString(length, length);
+        }
+
+        public static string GetString()
+        {
+            return GetString(10, 10);
+        }
+
+        public static string[] GetStrings(int minLength, int maxLength, int count)
+        {
+            var strings = new string[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                strings[i] = GetString(minLength, maxLength);
+            }
+
+            return strings;
+        }
+
+        public static string[] GetStrings(int count)
+        {
+            return GetStrings(10, 10, count);
+        }
+
+        public static int GetInt(int minValue, int maxValue)
         {
             if (minValue > maxValue)
             {
@@ -43,6 +70,28 @@ namespace TextTabulator.Testing
             _random ??= new Random((int)DateTime.Now.Ticks);
 
             return _random.Next(minValue, maxValue);
+        }
+
+        public static int GetInt(int maxValue = int.MaxValue)
+        {
+            return GetInt(0, maxValue);
+        }
+
+        public static int[] GetInts(int minValue, int maxValue, int count)
+        {
+            var ints = new int[count];
+
+            for (var i = 0; i < count; i++)
+            {
+                ints[i] = GetInt(minValue, maxValue);
+            }
+
+            return ints;
+        }
+
+        public static int[] GetInts(int maxValue, int count)
+        {
+            return GetInts(0, maxValue, count);
         }
     }
 }
