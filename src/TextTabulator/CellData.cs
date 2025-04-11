@@ -8,7 +8,7 @@ namespace TextTabulator
 
         int Row { get; }
 
-        IReadOnlyList<string> Lines { get; }
+        IReadOnlyList<string>? Lines { get; }
 
         int Width { get; }
 
@@ -21,13 +21,13 @@ namespace TextTabulator
 
         public int Row { get; }
 
-        public IReadOnlyList<string> Lines { get; }
+        public IReadOnlyList<string>? Lines { get; }
 
         public int Width { get; }
 
         public int Height { get; }
 
-        public CellData(int column, int row, IReadOnlyList<string> lines, int width, int height)
+        public CellData(int column, int row, IReadOnlyList<string>? lines, int width, int height)
         {
             Column = column;
             Row = row;

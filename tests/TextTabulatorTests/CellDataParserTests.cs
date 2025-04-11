@@ -16,7 +16,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
-            Assert.Empty(result.Lines);
+            Assert.Null(result.Lines);
             Assert.Equal(0, result.Width);
             Assert.Equal(0, result.Height);
         }
@@ -32,9 +32,10 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
-            Assert.Empty(result.Lines);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, string.Empty);
             Assert.Equal(0, result.Width);
-            Assert.Equal(0, result.Height);
+            Assert.Equal(1, result.Height);
         }
 
         [Fact]
@@ -48,6 +49,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Single(result.Lines, text);
             Assert.Equal(text.Length, result.Width);
             Assert.Equal(1, result.Height);
@@ -66,6 +68,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -94,6 +97,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -122,6 +126,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -150,6 +155,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -172,6 +178,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -194,6 +201,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -216,6 +224,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -239,6 +248,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -262,6 +272,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),
@@ -285,6 +296,7 @@ namespace TextTabulatorTests
 
             Assert.Equal(0, result.Column);
             Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
             Assert.Collection(result.Lines,
                 i => Assert.Equal(specimins[0], i),
                 i => Assert.Equal(specimins[1], i),

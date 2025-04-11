@@ -23,9 +23,9 @@ namespace TextTabulator
                 throw new ArgumentOutOfRangeException(nameof(row), $"Row must be greater than or equal to zero.");
             }
 
-            if (text == null || text.Length == 0)
+            if (text == null)
             {
-                return new CellData(column, row, new List<string>(), 0, 0);
+                return new CellData(column, row, null, 0, 0);
             }
 
             var lines = new List<string>();
