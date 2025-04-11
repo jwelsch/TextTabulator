@@ -4,14 +4,14 @@ namespace TextTabulator
 {
     public interface IRowDataParser
     {
-        IRowData Parse(int row, IEnumerable<string>? cells);
+        IRowData Parse(int row, IEnumerable<string>? cells, ref List<int> maxWidths);
     }
 
     public class RowDataParser : IRowDataParser
     {
         private readonly ICellDataParser _cellDataParser = new CellDataParser();
 
-        public IRowData Parse(int row, IEnumerable<string>? cells)
+        public IRowData Parse(int row, IEnumerable<string>? cells, ref List<int> maxWidths)
         {
             if (cells == null)
             {
@@ -30,6 +30,21 @@ namespace TextTabulator
                 if (cellData.Height > maxHeight)
                 {
                     maxHeight = cellData.Height;
+                }
+
+                //
+                // Record maximum widths here to reduce the number of times looping through the cells is required.
+                // Once all the rows in the table have been parsed, maxWidths will have accurate data.
+                //
+
+                while (maxWidths.Count <= columnIndex)
+                {
+                    maxWidths.Add(0);
+                }
+
+                if (cellData.Width > maxWidths[columnIndex])
+                {
+                    maxWidths[columnIndex] = cellData.Width;
                 }
 
                 columnIndex++;

@@ -25,7 +25,7 @@ namespace TextTabulator
 
             if (text == null)
             {
-                return new CellData(column, row, null, 0, 0);
+                return new IndividualCellData(column, row, null, 0, 0);
             }
 
             var lines = new List<string>();
@@ -87,7 +87,7 @@ namespace TextTabulator
                 maxWidth = sb.Length;
             }
 
-            return new CellData(column, row, lines, maxWidth, height);
+            return new IndividualCellData(column, row, lines, maxWidth, height);
         }
     }
 }

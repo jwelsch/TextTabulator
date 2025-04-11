@@ -55,6 +55,11 @@ namespace TextTabulator.Testing
             return strings;
         }
 
+        public static string[] GetStrings(int length, int count)
+        {
+            return GetStrings(length, length, count);
+        }
+
         public static string[] GetStrings(int count)
         {
             return GetStrings(10, 10, count);
