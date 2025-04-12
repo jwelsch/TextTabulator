@@ -65,6 +65,18 @@ namespace TextTabulator.Testing
             return GetStrings(10, 10, count);
         }
 
+        public static string[] GetStrings(IEnumerable<int> lengths)
+        {
+            var strings = new List<string>();
+
+            foreach (var length in lengths)
+            {
+                strings.Add(GetString(length));
+            }
+
+            return strings.ToArray();
+        }
+
         public static int GetInt(int minValue, int maxValue)
         {
             if (minValue > maxValue)
