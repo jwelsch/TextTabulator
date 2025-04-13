@@ -65,41 +65,7 @@ namespace TextTabulator
                 }
             }
 
-            if (tableHeaders?.Cells != null)
-            {
-                var headerDataList = new ICellData[tableHeaders.Cells.Count];
-
-                for (var i = 0; i < tableHeaders.Cells.Count; i++)
-                {
-                    headerDataList[i] = new CellData(tableHeaders.Cells[i], maxWidths[i]);
-                }
-
-                tableHeaders = new RowData(tableHeaders.Row, headerDataList, tableHeaders.MaxHeight);
-            }
-
-            if (tableRows != null)
-            {
-                for (var i = 0; i < tableRows.Count; i++)
-                {
-                    var cells = tableRows[i].Cells;
-
-                    if (cells == null)
-                    {
-                        continue;
-                    }
-
-                    var rowDataList = new ICellData[cells.Count];
-
-                    for (var j = 0; j < cells.Count; j++)
-                    {
-                        rowDataList[j] = new CellData(cells[j], maxWidths[j]);
-                    }
-
-                    tableRows[i] = new RowData(tableRows[i].Row, rowDataList, tableRows[i].MaxHeight);
-                }
-            }
-
-            return new TableData(tableHeaders, tableRows);
+            return new TableData(tableHeaders, tableRows, maxWidths);
         }
     }
 }

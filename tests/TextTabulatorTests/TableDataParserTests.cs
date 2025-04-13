@@ -80,7 +80,6 @@ namespace TextTabulatorTests
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
             Assert.Single(result.Headers.Cells);
-            Assert.Equal(headers[0].Length, result.Headers.Cells[0].MaxWidth);
             Assert.NotNull(result.ValueRows);
             Assert.Empty(result.ValueRows);
         }
@@ -99,10 +98,6 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(cellLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(cellLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(cellLengths[2], result.Headers.Cells[2].MaxWidth));
             Assert.NotNull(result.ValueRows);
             Assert.Empty(result.ValueRows);
         }
@@ -130,7 +125,6 @@ namespace TextTabulatorTests
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
             Assert.Single(cells);
-            Assert.Equal(cellLength, cells[0].MaxWidth);
         }
 
         [Fact]
@@ -154,11 +148,6 @@ namespace TextTabulatorTests
             Assert.NotNull(result.ValueRows);
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(cellLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(cellLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(cellLengths[2], cells[2].MaxWidth)
-            );
         }
 
         [Fact]
@@ -211,12 +200,10 @@ namespace TextTabulatorTests
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
             Assert.Single(result.Headers.Cells);
-            Assert.Equal(cellLengths[0], result.Headers.Cells[0].MaxWidth);
             Assert.NotNull(result.ValueRows);
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
             Assert.Single(cells);
-            Assert.Equal(cellLengths[0], cells[0].MaxWidth);
         }
 
         [Fact]
@@ -236,19 +223,10 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(cellLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(cellLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(cellLengths[2], result.Headers.Cells[2].MaxWidth)
-            );
             Assert.NotNull(result.ValueRows);
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(cellLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(cellLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(cellLengths[2], cells[2].MaxWidth)
-            );
+
         }
 
         [Fact]
@@ -270,19 +248,9 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(headerLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], result.Headers.Cells[2].MaxWidth)
-            );
             Assert.NotNull(result.ValueRows);
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(headerLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], cells[2].MaxWidth)
-            );
         }
 
         [Fact]
@@ -304,19 +272,9 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(valueLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], result.Headers.Cells[2].MaxWidth)
-            );
             Assert.NotNull(result.ValueRows);
             var cells = result.ValueRows[0].Cells;
             Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(valueLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], cells[2].MaxWidth)
-            );
         }
 
         [Fact]
@@ -340,33 +298,10 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(headerLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], result.Headers.Cells[2].MaxWidth)
-            );
             Assert.NotNull(result.ValueRows);
-            var cells = result.ValueRows[0].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(headerLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], cells[2].MaxWidth)
-            );
-            cells = result.ValueRows[1].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(headerLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], cells[2].MaxWidth)
-            );
-            cells = result.ValueRows[2].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(headerLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(headerLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(headerLengths[2], cells[2].MaxWidth)
-            );
+            Assert.NotNull(result.ValueRows[0].Cells);
+            Assert.NotNull(result.ValueRows[1].Cells);
+            Assert.NotNull(result.ValueRows[2].Cells);
         }
 
         [Fact]
@@ -390,33 +325,10 @@ namespace TextTabulatorTests
 
             Assert.NotNull(result.Headers);
             Assert.NotNull(result.Headers.Cells);
-            Assert.Collection(result.Headers.Cells,
-                i => Assert.Equal(valueLengths[0], result.Headers.Cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], result.Headers.Cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], result.Headers.Cells[2].MaxWidth)
-            );
             Assert.NotNull(result.ValueRows);
-            var cells = result.ValueRows[0].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(valueLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], cells[2].MaxWidth)
-            );
-            cells = result.ValueRows[1].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(valueLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], cells[2].MaxWidth)
-            );
-            cells = result.ValueRows[2].Cells;
-            Assert.NotNull(cells);
-            Assert.Collection(cells,
-                i => Assert.Equal(valueLengths[0], cells[0].MaxWidth),
-                i => Assert.Equal(valueLengths[1], cells[1].MaxWidth),
-                i => Assert.Equal(valueLengths[2], cells[2].MaxWidth)
-            );
+            Assert.NotNull(result.ValueRows[0].Cells);
+            Assert.NotNull(result.ValueRows[1].Cells);
+            Assert.NotNull(result.ValueRows[2].Cells);
         }
     }
 }

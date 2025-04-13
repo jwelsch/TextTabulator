@@ -11,6 +11,8 @@ namespace TextTabulator
     /// </summary>
     public class Tabulator
     {
+        private readonly ITableDataParser _tableDataParser = new TableDataParser();
+
         /// <summary>
         /// Tabulates data and outputs a string representation of a table.
         /// </summary>
@@ -104,135 +106,15 @@ namespace TextTabulator
         {
             options ??= new TabulatorOptions();
 
-            var maxColumnWidths = new List<int>();
-            var maxRowHeights = new List<int>();
+            var tableData = _tableDataParser.Parse(headers, rowValues);
 
-            var headerRowColumnData = GetRowAndColumnData(headers.Any() ? new List<IEnumerable<string>> { headers } : new List<IEnumerable<string>>(), ref maxColumnWidths, ref maxRowHeights);
-
-            var headerCount = maxColumnWidths.Count;
-
-            var rowValuesData = GetRowAndColumnData(rowValues, ref maxColumnWidths, ref maxRowHeights);
-
-            if (headerCount != 0 && headerCount != maxColumnWidths.Count)
-            {
-                throw new Exception($"The number of headers ({headerCount}) does not match the number of values in each row ({maxColumnWidths.Count}).");
-            }
-
-            return TabulateData(headerRowColumnData, rowValuesData, maxColumnWidths.ToArray(), maxRowHeights.ToArray(), options);
+            return TabulateData(tableData, options);
         }
 
-        private IRowColumnData GetRowAndColumnData(IEnumerable<IEnumerable<string>> rowValues, ref List<int> maxColumnWidths, ref List<int> maxRowHeights)
+        private string TabulateData(ITableData tableData, TabulatorOptions options)
         {
-            var rowValuesData = new List<IList<IRowValue>>();
-            var row = 0;
-            var col = 0;
-
-            foreach (var rowValue in rowValues)
-            {
-                var rowValueList = new List<IRowValue>();
-
-                col = 0;
-
-                foreach (var value in rowValue)
-                {
-                    if (maxColumnWidths.Count <= col)
-                    {
-                        maxColumnWidths.Add(0);
-                    }
-
-                    if (maxRowHeights.Count <= row)
-                    {
-                        maxRowHeights.Add(0);
-                    }
-
-                    var valueBlock = GetValueBlock(value);
-
-                    if (maxColumnWidths[col] < valueBlock.Size.Width)
-                    {
-                        maxColumnWidths[col] = valueBlock.Size.Width;
-                    }
-
-                    if (maxRowHeights[row] < valueBlock.Size.Height)
-                    {
-                        maxRowHeights[row] = valueBlock.Size.Height;
-                    }
-
-                    rowValueList.Add(new RowValue(row, col, valueBlock));
-
-                    col++;
-                }
-
-                rowValuesData.Add(rowValueList);
-
-                row++;
-            }
-
-            return new RowColumnData(rowValuesData, row, col, maxColumnWidths, maxRowHeights);
-        }
-
-        private static IValueBlock GetValueBlock(string rowValue)
-        {
-            var lines = new List<string>();
-            var carriageReturn = false;
-            var maxWidth = 0;
-            var height = 1;
-            var sb = new StringBuilder();
-
-            for (var i = 0; i < rowValue.Length; i++)
-            {
-                var c = rowValue[i];
-
-                if (c == '\r')
-                {
-                    carriageReturn = true;
-                }
-                else if (c == '\n')
-                {
-                    if (carriageReturn)
-                    {
-                        carriageReturn = false;
-                    }
-                    height++;
-                    if (sb.Length > maxWidth)
-                    {
-                        maxWidth = sb.Length;
-                    }
-                    lines.Add(sb.ToString());
-                    sb.Clear();
-                }
-                else
-                {
-                    if (carriageReturn)
-                    {
-                        carriageReturn = false;
-                        height++;
-                        if (sb.Length > maxWidth)
-                        {
-                            maxWidth = sb.Length;
-                        }
-                        lines.Add(sb.ToString());
-                        sb.Clear();
-                        continue;
-                    }
-
-                    sb.Append(c);
-                }
-            }
-
-            lines.Add(sb.ToString());
-
-            if (sb.Length > maxWidth)
-            {
-                maxWidth = sb.Length;
-            }
-
-            return new ValueBlock(lines, new Dimension(maxWidth, height));
-        }
-
-        private string TabulateData(IRowColumnData headersRowColumnData, IRowColumnData valuesRowColumnData, int[] maxColumnWidths, int[] maxRowHeights, TabulatorOptions options)
-        {
-            var hasHeaders = headersRowColumnData.RowCount > 0;
-            var hasRowValues = valuesRowColumnData.RowCount > 0;
+            var hasHeaders = !(tableData.Headers == null || tableData.Headers.Cells == null || tableData.Headers.Cells.Count == 0);
+            var hasRowValues = !(tableData.ValueRows == null || tableData.ValueRows.Count == 0);
 
             if (!hasHeaders && !hasRowValues)
             {
@@ -242,71 +124,81 @@ namespace TextTabulator
             var table = new StringBuilder();
 
             // Start with the top edge of the table.
-            var topEdge = BuildTopEdge(options, maxColumnWidths);
+            var topEdge = BuildTopEdge(tableData, options);
             table.Append(topEdge + options.NewLine);
 
-            var middleRowSeparator = BuildRowSeparator(options, maxColumnWidths, false);
+            var middleRowSeparator = BuildRowSeparator(tableData, options, false);
 
             if (hasHeaders)
             {
                 // Add the header row.
-                var headerRow = BuildRowHeaders(headersRowColumnData.RowValues[0], maxColumnWidths, maxRowHeights, options);
+                var headerRow = BuildRowHeaders(tableData, options);
                 table.Append(headerRow + options.NewLine);
 
                 if (hasRowValues)
                 {
-                    var headerRowSeparator = BuildRowSeparator(options, maxColumnWidths, true);
+                    var headerRowSeparator = BuildRowSeparator(tableData, options, true);
                     table.Append(headerRowSeparator + options.NewLine);
                 }
             }
 
-            var row = 0;
-
-            foreach (var rowValue in valuesRowColumnData.RowValues)
+            for (var i = 0; tableData.ValueRows != null && i < tableData.ValueRows.Count; i++)
             {
                 // Add the row values.
-                var rowString = BuildRowValues(rowValue, maxColumnWidths, maxRowHeights, row, options);
+                var rowString = BuildRowValues(tableData.ValueRows[i], tableData.MaxColumnWidths, options);
                 table.Append(rowString + options.NewLine);
 
-                if (row < valuesRowColumnData.RowCount - 1)
+                if (i < tableData.ValueRows.Count - 1)
                 {
                     // Add the row separator.
                     table.Append(middleRowSeparator + options.NewLine);
                 }
-
-                row++;
             }
 
-            var bottomEdge = BuildBottomEdge(options, maxColumnWidths);
+            var bottomEdge = BuildBottomEdge(tableData, options);
             table.Append(bottomEdge + options.NewLine);
 
             return table.ToString();
         }
 
-        private string BuildTopEdge(TabulatorOptions options, int[] maxColumnWidths)
+        private string BuildTopEdge(ITableData tableData, TabulatorOptions options)
         {
             var sb = new StringBuilder();
+            IRowData? rowData = tableData.Headers;
+
+            if (rowData == null || (rowData.Cells?.Count ?? 0) == 0)
+            {
+                if (tableData.ValueRows == null || tableData.ValueRows.Count == 0 || (tableData.ValueRows[0].Cells?.Count ?? 0) == 0)
+                {
+                    return sb.ToString();
+                }
+
+                rowData = tableData.ValueRows[0];
+            }
 
             sb.Append(options.Styling.TopLeftCorner);
 
-            for (var i = 0; i < maxColumnWidths.Length; i++)
+            if (rowData != null && rowData.Cells != null)
             {
-                sb.Append(options.Styling.TopEdge, options.Styling.ColumnLeftPadding.Length);
-                sb.Append(options.Styling.TopEdge, maxColumnWidths[i]);
-                sb.Append(options.Styling.TopEdge, options.Styling.ColumnRightPadding.Length);
-
-                if (i < maxColumnWidths.Length - 1)
+                for (var i = 0; i < rowData.Cells.Count; i++)
                 {
-                    sb.Append(options.Styling.TopEdgeJoint);
-                }
-            }
+                    sb.Append(options.Styling.TopEdge, options.Styling.ColumnLeftPadding.Length);
+                    sb.Append(options.Styling.TopEdge, tableData.MaxColumnWidths[rowData.Cells[i].Column]);
+                    sb.Append(options.Styling.TopEdge, options.Styling.ColumnRightPadding.Length);
 
-            sb.Append(options.Styling.TopRightCorner);
+                    if (i < rowData.Cells.Count - 1)
+                    {
+                        sb.Append(options.Styling.TopEdgeJoint);
+                    }
+                }
+
+                sb.Append(options.Styling.TopRightCorner);
+            }
 
             return sb.ToString();
         }
 
-        private string BuildRowSeparator(TabulatorOptions options, int[] maxColumnWidths, bool isHeaderRow)
+        private string BuildRowSeparator(ITableData tableData, TabulatorOptions options, bool isHeaderRow)
         {
             var sb = new StringBuilder();
 
@@ -315,13 +207,13 @@ namespace TextTabulator
             var rowSeparator = isHeaderRow ? options.Styling.HeaderRowSeparator : options.Styling.ValueRowSeparator;
             var middleJoint = isHeaderRow ? options.Styling.HeaderMiddleJoint : options.Styling.ValueMiddleJoint;
 
-            for (var i = 0; i < maxColumnWidths.Length; i++)
+            for (var i = 0; i < tableData.MaxColumnWidths.Count; i++)
             {
                 sb.Append(rowSeparator, options.Styling.ColumnLeftPadding.Length);
-                sb.Append(rowSeparator, maxColumnWidths[i]);
+                sb.Append(rowSeparator, tableData.MaxColumnWidths[i]);
                 sb.Append(rowSeparator, options.Styling.ColumnRightPadding.Length);
 
-                if (i < maxColumnWidths.Length - 1)
+                if (i < tableData.MaxColumnWidths.Count - 1)
                 {
                     sb.Append(middleJoint);
                 }
@@ -332,19 +224,19 @@ namespace TextTabulator
             return sb.ToString();
         }
 
-        private string BuildBottomEdge(TabulatorOptions options, int[] maxColumnWidths)
+        private string BuildBottomEdge(ITableData tableData, TabulatorOptions options)
         {
             var sb = new StringBuilder();
 
             sb.Append(options.Styling.BottomLeftCorner);
 
-            for (var i = 0; i < maxColumnWidths.Length; i++)
+            for (var i = 0; i < tableData.MaxColumnWidths.Count; i++)
             {
                 sb.Append(options.Styling.BottomEdge, options.Styling.ColumnLeftPadding.Length);
-                sb.Append(options.Styling.BottomEdge, maxColumnWidths[i]);
+                sb.Append(options.Styling.BottomEdge, tableData.MaxColumnWidths[i]);
                 sb.Append(options.Styling.BottomEdge, options.Styling.ColumnRightPadding.Length);
 
-                if (i < maxColumnWidths.Length - 1)
+                if (i < tableData.MaxColumnWidths.Count - 1)
                 {
                     sb.Append(options.Styling.BottomEdgeJoint);
                 }
@@ -355,38 +247,46 @@ namespace TextTabulator
             return sb.ToString();
         }
 
-        private static string BuildRowHeaders(IEnumerable<IRowValue> headers, int[] maxColumnWidths, int[] maxRowHeights, TabulatorOptions options)
+        private static string BuildRowHeaders(ITableData tableData, TabulatorOptions options)
         {
-            return BuildRow(headers, maxColumnWidths, maxRowHeights, -1, options, (c, r) => options.CellAlignment.GetHeaderAlignment(c));
+            return BuildRow(tableData.Headers, tableData.MaxColumnWidths, options, (c, r) => options.CellAlignment.GetHeaderAlignment(c));
         }
 
-        private static string BuildRowValues(IEnumerable<IRowValue> values, int[] maxColumnWidths, int[] maxRowHeights, int row, TabulatorOptions options)
+        private static string BuildRowValues(IRowData? rowData, IReadOnlyList<int> maxColumnWidths, TabulatorOptions options)
         {
-            return BuildRow(values, maxColumnWidths, maxRowHeights, row, options, (c, r) => options.CellAlignment.GetValueAlignment(c, r));
+            return BuildRow(rowData, maxColumnWidths, options, (c, r) => options.CellAlignment.GetValueAlignment(c, r));
         }
 
-        private static string BuildRow(IEnumerable<IRowValue> values, int[] maxColumnWidths, int[] maxRowHeights, int row, TabulatorOptions options, Func<int, int, CellAlignment> alignmentProvider)
+        private static string BuildRow(IRowData? rowData, IReadOnlyList<int> maxColumnWidths, TabulatorOptions options, Func<int, int, CellAlignment> alignmentProvider)
         {
             var rowString = new StringBuilder();
-            var col = 0;
 
-            // Account for the left edge of the table.
-            rowString.Append(options.Styling.LeftEdge);
-
-            // Add the value, padding, and the right column separator for each column.
-            // Note that this will also account for the right edge of the table.
-            foreach (var value in values)
+            if (rowData == null || rowData.Cells == null || rowData.Cells.Count == 0)
             {
-                for (var i = 0; i < value.Value.Lines.Count; i++)
+                return rowString.ToString();
+            }
+
+            for (var i = 0; i < rowData.MaxHeight; i++)
+            {
+                for (var j = 0; j < rowData.Cells.Count; j++)
                 {
-                    var line = value.Value.Lines[i];
+                    var cell = rowData.Cells[j];
 
-                    var cellAlignment = alignmentProvider(col, row);
+                    if (cell.Lines == null)
+                    {
+                        continue;
+                    }
 
-                    if (i != 0)
+                    // Account for the left edge of the table.
+                    if (cell.Column == 0)
                     {
                         rowString.Append(options.Styling.LeftEdge);
                     }
+
+                    // If the cell has less lines that the tallest cell in the row substitute an empty string.
+                    var line = i >= cell.Height ? string.Empty : cell.Lines[i];
+
+                    var cellAlignment = alignmentProvider(cell.Column, cell.Row);
 
                     rowString.Append(options.Styling.ColumnLeftPadding);
 
@@ -394,15 +294,15 @@ namespace TextTabulator
 
                     if (cellAlignment == CellAlignment.Right)
                     {
-                        leftOffset = maxColumnWidths[col] - line.Length;
+                        leftOffset = maxColumnWidths[cell.Column] - line.Length;
                     }
                     else if (cellAlignment == CellAlignment.CenterLeftBias)
                     {
-                        leftOffset = (maxColumnWidths[col] - line.Length) / 2;
+                        leftOffset = (maxColumnWidths[cell.Column] - line.Length) / 2;
                     }
                     else if (cellAlignment == CellAlignment.CenterRightBias)
                     {
-                        leftOffset = ((maxColumnWidths[col] - line.Length) / 2) + ((maxColumnWidths[col] - line.Length) % 2 == 0 ? 0 : 1);
+                        leftOffset = ((maxColumnWidths[cell.Column] - line.Length) / 2) + ((maxColumnWidths[cell.Column] - line.Length) % 2 == 0 ? 0 : 1);
                     }
 
                     rowString.Append(' ', leftOffset);
@@ -413,15 +313,15 @@ namespace TextTabulator
 
                     if (cellAlignment == CellAlignment.Left)
                     {
-                        rightOffset = maxColumnWidths[col] - line.Length;
+                        rightOffset = maxColumnWidths[cell.Column] - line.Length;
                     }
                     else if (cellAlignment == CellAlignment.CenterLeftBias)
                     {
-                        rightOffset = ((maxColumnWidths[col] - line.Length) / 2) + ((maxColumnWidths[col] - line.Length) % 2 == 0 ? 0 : 1);
+                        rightOffset = ((maxColumnWidths[cell.Column] - line.Length) / 2) + ((maxColumnWidths[cell.Column] - line.Length) % 2 == 0 ? 0 : 1);
                     }
                     else if (cellAlignment == CellAlignment.CenterRightBias)
                     {
-                        rightOffset = (maxColumnWidths[col] - line.Length) / 2;
+                        rightOffset = (maxColumnWidths[cell.Column] - line.Length) / 2;
                     }
 
                     rowString.Append(' ', rightOffset);
@@ -429,16 +329,16 @@ namespace TextTabulator
                     // Add the right padding for the column.
                     rowString.Append(options.Styling.ColumnRightPadding);
 
-                    // Add the right column separator or, if this is the last value in the row, the right edge of the table.
-                    rowString.Append(col < maxColumnWidths.Length - 1 ? options.Styling.ColumnSeparator : options.Styling.RightEdge);
-
-                    if (i < value.Value.Lines.Count - 1)
-                    {
-                        rowString.Append(options.NewLine);
-                    }
+                    // If the cell is not the last cell in the row add a column separator.
+                    // If the cell is the last cell in the roww add a right edge.
+                    rowString.Append(cell.Column < maxColumnWidths.Count - 1 ? options.Styling.ColumnSeparator : options.Styling.RightEdge);
                 }
 
-                col++;
+                // If there are more lines add a new line.
+                if (i < rowData.MaxHeight - 1)
+                {
+                    rowString.Append(options.NewLine);
+                }
             }
 
             return rowString.ToString();
