@@ -1097,5 +1097,202 @@ namespace TextTabulatorTests
 
             Assert.Equal(expected, table);
         }
+
+        [Fact]
+        public void When_tabulate_called_with_single_column_and_single_row_value_with_one_new_line_and_cell_alignment_left_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A\r\nvalue1A1" }
+            };
+
+            var expected =
+@$"----------
+|value1A |
+|value1A1|
+----------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n", CellAlignment = new UniformAlignmentProvider(CellAlignment.Left) });
+
+            Assert.Equal(expected, table);
+        }
+
+
+        [Fact]
+        public void When_tabulate_called_with_single_column_and_single_row_value_with_two_new_lines_and_cell_alignment_left_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A\r\nvalue2AA\r\nvalue3A" }
+            };
+
+            var expected =
+@$"----------
+|value1A |
+|value2AA|
+|value3A |
+----------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n", CellAlignment = new UniformAlignmentProvider(CellAlignment.Left) });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_single_column_and_single_row_value_with_one_new_line_and_cell_alignment_right_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A\r\nvalue1A1" }
+            };
+
+            var expected =
+@$"----------
+| value1A|
+|value1A1|
+----------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n", CellAlignment = new UniformAlignmentProvider(CellAlignment.Right) });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_single_column_and_single_row_value_with_two_new_lines_and_cell_alignment_right_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A\r\nvalue2AA\r\nvalue3A" }
+            };
+
+            var expected =
+@$"----------
+| value1A|
+|value2AA|
+| value3A|
+----------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n", CellAlignment = new UniformAlignmentProvider(CellAlignment.Right) });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_two_columns_and_row_value_with_new_line_and_cell_alignment_right_then_table_returned()
+        {
+            var headers = new string[0];
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value2A\r\nvalue2AA" }
+            };
+
+            var expected =
+@$"------------------
+|value1A| value2A|
+|       |value2AA|
+------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n", CellAlignment = new UniformAlignmentProvider(CellAlignment.Right) });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_multiple_headers_and_multiple_rows_with_one_row_value_with_new_line_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "Header2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B\r\nvalue2B2", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" },
+            };
+
+            var expected =
+@$"--------------------------
+|{headers[0]}|{headers[1]} |{headers[2]}|
+|-------+--------+-------|
+|{values[0][0]}|{values[0][1]} |{values[0][2]}|
+|-------+--------+-------|
+|{values[1][0]}|value2B |{values[1][2]}|
+|       |value2B2|       |
+|-------+--------+-------|
+|{values[2][0]}|{values[2][1]} |{values[2][2]}|
+--------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_multiple_headers_with_one_header_with_new_line_and_multiple_rows_then_table_returned()
+        {
+            var headers = new string[]
+            {
+                "Header1",
+                "Header2A\r\nHeader2",
+                "Header3",
+            };
+
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" },
+            };
+
+            var expected =
+@$"--------------------------
+|{headers[0]}|Header2A|{headers[2]}|
+|       |Header2 |       |
+|-------+--------+-------|
+|{values[0][0]}|{values[0][1]} |{values[0][2]}|
+|-------+--------+-------|
+|{values[1][0]}|{values[1][1]} |{values[1][2]}|
+|-------+--------+-------|
+|{values[2][0]}|{values[2][1]} |{values[2][2]}|
+--------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table);
+        }
     }
 }
