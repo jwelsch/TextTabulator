@@ -10,7 +10,7 @@ namespace TextTabulator.Adapters.Json
         /// <summary>
         /// Gets the transform to apply to JSON property names.
         /// </summary>
-        public INameTransform JsonPropertyNameTransform { get; }
+        public INameTransform PropertyNameTransform { get; }
 
         /// <summary>
         /// Gets options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.
@@ -20,11 +20,11 @@ namespace TextTabulator.Adapters.Json
         /// <summary>
         /// Creates an object of type JsonTabulatorAdapterOptions.
         /// </summary>
-        /// <param name="jsonPropertyNameTransform">Transform to apply to JSON property names. Passing null will cause the JSON property names to not be altered.</param>
+        /// <param name="propertyNameTransform">Transform to apply to JSON property names. Passing null will cause the JSON property names to not be altered.</param>
         /// <param name="jsonReaderOptions">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public JsonTabulatorAdapterOptions(INameTransform? jsonPropertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)
+        public JsonTabulatorAdapterOptions(INameTransform? propertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)
         {
-            JsonPropertyNameTransform = jsonPropertyNameTransform ?? new PassThruNameTransform();
+            PropertyNameTransform = propertyNameTransform ?? new PassThruNameTransform();
             JsonReaderOptions = jsonReaderOptions;
         }
     }

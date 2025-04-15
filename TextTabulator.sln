@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.Xml"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.Adapters.XmlTests", "tests\TextTabulator.Adapters.XmlTests\TextTabulator.Adapters.XmlTests.csproj", "{D53249E2-B4C3-45CA-9D7E-2C426184E327}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTabulator.AdaptersTests", "tests\TextTabulator.AdaptersTests\TextTabulator.AdaptersTests.csproj", "{51AB2340-F85D-472F-B70B-14EE8F4336C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +201,18 @@ Global
 		{D53249E2-B4C3-45CA-9D7E-2C426184E327}.Release|x64.Build.0 = Release|Any CPU
 		{D53249E2-B4C3-45CA-9D7E-2C426184E327}.Release|x86.ActiveCfg = Release|Any CPU
 		{D53249E2-B4C3-45CA-9D7E-2C426184E327}.Release|x86.Build.0 = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|x64.Build.0 = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,5 +231,6 @@ Global
 		{AEBEA57B-CE2A-4B70-B975-C70DCEF5E280} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
 		{CC7A29C5-EFE5-48CF-9180-ED4C0F47025B} = {90E4208A-847D-4A2D-A1FB-3DF6EE99F67F}
 		{D53249E2-B4C3-45CA-9D7E-2C426184E327} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
+		{51AB2340-F85D-472F-B70B-14EE8F4336C3} = {9FA13641-51A9-4429-9AFB-2D5F5F3C32C7}
 	EndGlobalSection
 EndGlobal

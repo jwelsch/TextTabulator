@@ -1,4 +1,4 @@
-﻿namespace TextTabulator.Adapters.Json
+﻿namespace TextTabulator.Adapters
 {
     /// <summary>
     /// A name transform that, when given snake case names, can capitalize the first letter of words and replace underscores.

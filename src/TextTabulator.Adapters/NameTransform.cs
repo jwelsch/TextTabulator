@@ -1,4 +1,4 @@
-﻿namespace TextTabulator.Adapters.Json
+﻿namespace TextTabulator.Adapters
 {
     /// <summary>
     /// Interface for defining a transform for a name.

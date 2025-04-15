@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace TextTabulator.Adapters.Json
+namespace TextTabulator.Adapters
 {
     /// <summary>
     /// Abstract base class of name transforms where the name has no separator.

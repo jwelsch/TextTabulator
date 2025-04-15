@@ -151,7 +151,7 @@ namespace TextTabulator.Adapters.Json
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
                     var rawHeader = jsonReader.GetString() ?? string.Empty;
-                    var transformed = _options.JsonPropertyNameTransform.Apply(rawHeader);
+                    var transformed = _options.PropertyNameTransform.Apply(rawHeader);
                     transformedHeaders.Add(transformed);
                     _headers.Add(rawHeader, new Header(transformed, transformedHeaders.Count - 1));
                 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TextTabulator.Adapters.Json
+namespace TextTabulator.Adapters
 {
     /// <summary>
     /// A name transform that maps an existing name to a new name.

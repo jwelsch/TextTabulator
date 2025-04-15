@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace TextTabulator.Adapters.Json
+namespace TextTabulator.Adapters
 {
     /// <summary>
     /// Abstract base class of name transform that can capitalize the first letter of words and replace separator characters.

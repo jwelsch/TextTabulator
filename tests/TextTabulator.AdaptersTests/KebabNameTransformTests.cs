@@ -1,6 +1,6 @@
-﻿using TextTabulator.Adapters.Json;
+﻿using TextTabulator.Adapters;
 
-namespace TextTabulator.Adapters.JsonTests
+namespace TextTabulator.AdaptersTests
 {
     public class KebabNameTransformTests
     {
