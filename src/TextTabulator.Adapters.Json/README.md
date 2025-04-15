@@ -112,6 +112,19 @@ The data should be in the following format:
 ]
 ```
 
+## Header Names
+
+When constructing the table, the names of the JSON properties are used as the header names. The names can be transformed by passing a transform as the `jsonPropertyNameTransform` parameter in the `JsonTabulatorAdapterOptions` constructor.
+
+There are various transforms available to alter the property names:
+
+- `PassThruJsonPropertyNameTransform`: Transform that does not alter the property name. This is the default.
+- `MapJsonPropertyNameTransform`: Transform that maps a property name in JSON to a new name.
+- `KebabJsonPropertyNameTransform`: Transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
+- `SnakeJsonPropertyNameTransform`: Transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
+- `CamelJsonPropertyNameTransform`: Transform that, when given camel case names, can capitalize the first letter of words and insert separators.
+- `PascalJsonPropertyNameTransform`: Transform that, when given Pascal case names, can capitalize the first letter of words and insert separators.
+
 ## Public API
 
 The API consits of the `TextTabulator.Adapters.Json.JsonTabulatorAdapter` class. `JsonTabulatorAdapter` derives from the `IJsonTabulatorAdapter` to allow easy mocking for testing.
@@ -122,23 +135,23 @@ The adapter class that accepts JSON data and presents the data that it reads in 
 
 **Constructors**
 
-> `public JsonTabulatorAdapter..ctor(Func<Stream> jsonStreamProvider, JsonReaderOptions options = default)`
+> `public JsonTabulatorAdapter..ctor(Func<Stream> jsonStreamProvider, JsonTabulatorAdapterOptions options = default)`
 
 Parameters
 - `Func<Stream> jsonStreamProvider`: A method that returns a Stream containing UTF-8 encoded JSON data.
-- `JsonReaderOptions options`: Options to pass to the Utf8JsonReader.
+- `JsonTabulatorAdapterOptions options`: Options for the adapter.
 
 > `public JsonTabulatorAdapter..ctor(Stream jsonStream, JsonReaderOptions options = default)`
 
 Parameters
 - `Stream jsonStream`: A Stream containing UTF-8 encoded JSON data.
-- `JsonReaderOptions options`: Options to pass to the Utf8JsonReader.
+- `JsonReaderOptions options`: Options for the adapter.
 
 > `public JsonTabulatorAdapter..ctor(string json, JsonReaderOptions options = default)`
 
 Parameters
 - `string json`: A string containing raw JSON data.
-- `JsonReaderOptions options`: Options to pass to the Utf8JsonReader.
+- `JsonReaderOptions options`: Options for the adapter.
 
 **Methods**
 
@@ -161,5 +174,188 @@ Parameters
 - None
 
 Return
-
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+### `TextTabulator.Adapters.Json.JsonTabulatorAdapterOptions`
+
+Options to allow configuration of the JsonTabulatorAdapter class.
+
+**Constructors**
+
+> `public JsonTabulatorAdapterOptions(IJsonPropertyNameTransform? jsonPropertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)`
+
+Parameters
+- `IJsonPropertyNameTransform? jsonPropertyNameTransform`: Transform to apply to JSON property names. Passing null will cause the JSON property names to not be altered.
+- `JsonReaderOptions jsonReaderOptions`: Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.
+
+**Properties**
+
+> `IJsonPropertyNameTransform JsonPropertyNameTransform { get; }`
+
+Gets the transform to apply to JSON property names.
+
+> `JsonReaderOptions JsonReaderOptions { get; }`
+
+Gets options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.
+
+### `IJsonPropertyNameTransform`
+
+Interface for defining a transform for a JSON property name.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `KebabJsonPropertyNameTransform`
+
+A JSON property name transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
+
+**Constructors**
+
+`public KebabJsonPropertyNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? dashReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? dashReplacement`: Specifies a character used to replace a dash. Pass in null to not replace a dash.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `SnakeJsonPropertyNameTransform`
+
+A JSON property name transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
+
+**Constructors**
+
+`public SnakeJsonPropertyNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? underscoreReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? underscoreReplacement`: Specifies a character used to replace an underscore. Pass in null to not replace an underscore.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `CamelJsonPropertyNameTransform`
+
+A JSON property name transform that, when given camel case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelJsonPropertyNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PascalJsonPropertyNameTransform`
+
+A JSON property name transform that, when given Pascal case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelJsonPropertyNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `MapJsonPropertyNameTransform`
+
+A JSON property name transform that maps a property name in JSON to a new name.
+
+**Constructors**
+
+`public MapJsonPropertyNameTransform(IDictionary<string, string> map)`
+
+Parameters
+- `IDictionary<string, string> map`: The mapping of the property names in JSON to the new names.
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PassThruJsonPropertyNameTransform`
+
+A JSON property name transform that does not alter the property name.
+
+**Constructors**
+
+`public PassThruJsonPropertyNameTransform()`
+
+Parameters
+- None
+
+**Methods**
+
+> `string Apply(string propertyName)`
+
+Applies the transform to the property name.
+
+Parameters
+- `string propertyName`: Property name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.

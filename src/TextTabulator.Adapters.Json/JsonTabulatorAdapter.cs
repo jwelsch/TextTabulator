@@ -60,7 +60,7 @@ namespace TextTabulator.Adapters.Json
         /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
         /// </summary>
         /// <param name="jsonStreamProvider">Function that provides a stream containing an array containing homogeneous objects of UTF-8 encoded JSON data.</param>
-        /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
+        /// <param name="options">Options for the adapter.</param>
         public JsonTabulatorAdapter(Func<Stream> jsonStreamProvider, JsonTabulatorAdapterOptions? options = null)
         {
             _jsonStreamProvider = jsonStreamProvider;
@@ -72,7 +72,7 @@ namespace TextTabulator.Adapters.Json
         /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
         /// </summary>
         /// <param name="jsonStream">Stream containing UTF-8 encoded JSON data.</param>
-        /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
+        /// <param name="options">Options for the adapter.</param>
         public JsonTabulatorAdapter(Stream jsonStream, JsonTabulatorAdapterOptions? options = null)
             : this(() => jsonStream, options)
         {
@@ -83,7 +83,7 @@ namespace TextTabulator.Adapters.Json
         /// In order for the adpater to function correctly, make sure the JSON data only contains an array of homogeneous JSON objects.
         /// </summary>
         /// <param name="json">String containing raw JSON data.</param>
-        /// <param name="options">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
+        /// <param name="options">Options for the adapter.</param>
         public JsonTabulatorAdapter(string json, JsonTabulatorAdapterOptions? options = null)
             : this(() => new MemoryStream(UTF8Encoding.UTF8.GetBytes(json)), options)
         {
