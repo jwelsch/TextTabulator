@@ -2,7 +2,7 @@
 
 namespace TextTabulator.Adapters.JsonTests
 {
-    public class MapJsonPropertyNameTransformTests
+    public class MapNameTransformTests
     {
         [Fact]
         public void When_propertyname_matches_then_return_transformed_name()
@@ -16,7 +16,7 @@ namespace TextTabulator.Adapters.JsonTests
 
             var name = "foobar2";
 
-            var sut = new MapJsonPropertyNameTransform(map);
+            var sut = new MapNameTransform(map);
 
             var result = sut.Apply(name);
 
@@ -35,7 +35,7 @@ namespace TextTabulator.Adapters.JsonTests
 
             var name = "foobar4";
 
-            var sut = new MapJsonPropertyNameTransform(map);
+            var sut = new MapNameTransform(map);
 
             var result = sut.Apply(name);
 

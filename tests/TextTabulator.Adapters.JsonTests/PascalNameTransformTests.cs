@@ -2,14 +2,14 @@
 
 namespace TextTabulator.Adapters.JsonTests
 {
-    public class CamelJsonPropertyNameTransformTests
+    public class PascalNameTransformTests
     {
         [Fact]
         public void When_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
         {
-            var name = "fooBar";
+            var name = "FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true, ' ');
+            var sut = new PascalNameTransform(true, true, ' ');
 
             var result = sut.Apply(name);
 
@@ -21,7 +21,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(false, true, ' ');
+            var sut = new PascalNameTransform(false, true, ' ');
 
             var result = sut.Apply(name);
 
@@ -31,9 +31,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_capitalize_first_letter_of_subsequent_word_is_false_and_two_words_exist_then_return_transformed_name()
         {
-            var name = "fooBar";
+            var name = "FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, false, ' ');
+            var sut = new PascalNameTransform(true, false, ' ');
 
             var result = sut.Apply(name);
 
@@ -43,9 +43,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_capitalize_first_letter_of_first_word_is_false_and_first_letter_of_first_word_is_upper_case_and_capitalize_first_letter_of_subsequent_word_is_false_and_two_words_exist_then_return_transformed_name()
         {
-            var name = "fooBar";
+            var name = "FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(false, false, ' ');
+            var sut = new PascalNameTransform(false, false, ' ');
 
             var result = sut.Apply(name);
 
@@ -57,7 +57,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "123FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true);
+            var sut = new PascalNameTransform(true, true);
 
             var result = sut.Apply(name);
 
@@ -67,9 +67,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_number_is_in_middle_and_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
         {
-            var name = "foo123Bar";
+            var name = "Foo123Bar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true, ' ');
+            var sut = new PascalNameTransform(true, true, ' ');
 
             var result = sut.Apply(name);
 
@@ -79,9 +79,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_number_is_last_and_capitalize_first_letter_of_first_word_is_true_and_first_letter_of_first_word_is_upper_case_then_return_transformed_name()
         {
-            var name = "fooBar123";
+            var name = "FooBar123";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true, ' ');
+            var sut = new PascalNameTransform(true, true, ' ');
 
             var result = sut.Apply(name);
 
@@ -91,9 +91,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_separator_is_null_then_return_transformed_name()
         {
-            var name = "fooBar";
+            var name = "FooBar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true, null);
+            var sut = new PascalNameTransform(true, true, null);
 
             var result = sut.Apply(name);
 
@@ -103,9 +103,9 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_number_is_in_middle_separator_is_null_then_return_transformed_name()
         {
-            var name = "foo123Bar";
+            var name = "Foo123Bar";
 
-            var sut = new CamelJsonPropertyNameTransform(true, true, null);
+            var sut = new PascalNameTransform(true, true, null);
 
             var result = sut.Apply(name);
 

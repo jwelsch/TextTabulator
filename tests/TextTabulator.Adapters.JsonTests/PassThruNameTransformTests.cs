@@ -2,14 +2,14 @@
 
 namespace TextTabulator.Adapters.JsonTests
 {
-    public class PassThruJsonPropertyNameTransformTests
+    public class PassThruNameTransformTests
     {
         [Fact]
         public void When_transform_applied_to_name_then_return_transformed_name()
         {
             var name = "foobar";
 
-            var sut = new PassThruJsonPropertyNameTransform();
+            var sut = new PassThruNameTransform();
 
             var result = sut.Apply(name);
 
@@ -21,7 +21,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "foo-bar";
 
-            var sut = new PassThruJsonPropertyNameTransform();
+            var sut = new PassThruNameTransform();
 
             var result = sut.Apply(name);
 
@@ -33,7 +33,7 @@ namespace TextTabulator.Adapters.JsonTests
         {
             var name = "Foobar";
 
-            var sut = new PassThruJsonPropertyNameTransform();
+            var sut = new PassThruNameTransform();
 
             var result = sut.Apply(name);
 
