@@ -14,8 +14,7 @@ namespace TextTabulator.Adapters.Json
     }
 
     /// <summary>
-    /// Class that implements the ITabulatorAdapter interface in order to adapt JSON data ready by
-    /// System.Text.Json to be consumed by Tabulator.Tabulate.
+    /// The adapter class that accepts JSON data and presents the data that it reads in a format that TextTabulator.Tabulate can consume.
     /// 
     /// The data should be in the following format:
     /// 
