@@ -85,6 +85,7 @@ namespace TextTabulator.Adapters.Json
 
             var stream = _jsonStreamProvider.Invoke();
 
+            stream.Seek(0, SeekOrigin.Begin);
             var bytesRead = stream.Read(buffer, 0, buffer.Length);
 
             if (bytesRead <= 0)

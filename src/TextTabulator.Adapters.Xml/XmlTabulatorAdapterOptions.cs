@@ -13,7 +13,7 @@ namespace TextTabulator.Adapters.Xml
         public INameTransform NodeNameTransform { get; }
 
         /// <summary>
-        /// Gets options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.
+        /// Gets settings that specify a set of features to support on the XmlReader object created by the Create method.
         /// </summary>
         public XmlReaderSettings XmlReaderSettings { get; }
 

@@ -84,7 +84,12 @@ namespace TextTabulator.Adapters.Xml
         {
             _headers.Clear();
 
-            using var xmlReader = XmlReader.Create(_xmlStreamProvider.Invoke(), _options.XmlReaderSettings);
+            // Ensure that the stream is reset to the beginning.
+            var stream = _xmlStreamProvider.Invoke();
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            using var xmlReader = XmlReader.Create(stream, _options.XmlReaderSettings);
 
             // Read until the first element is encountered. This should be the root node that contains the list
             // of XML nodes that will go in the table.
@@ -129,7 +134,12 @@ namespace TextTabulator.Adapters.Xml
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
-            using var xmlReader = XmlReader.Create(_xmlStreamProvider.Invoke(), _options.XmlReaderSettings);
+            // Ensure that the stream is reset to the beginning.
+            var stream = _xmlStreamProvider.Invoke();
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            using var xmlReader = XmlReader.Create(stream, _options.XmlReaderSettings);
 
             // Read until the first element is encountered. This should be the root node that contains the list
             // of XML nodes that will go in the table.
@@ -149,7 +159,7 @@ namespace TextTabulator.Adapters.Xml
             string[]? rowValues = null;
             TableHeader? tableHeader = null;
 
-            while (xmlReader.Read())
+            while (xmlReader.Read(XmlSkip.Whitespace | XmlSkip.Comment))
             {
                 if (xmlReader.Name == listName && xmlReader.Depth == listDepth && xmlReader.NodeType == XmlNodeType.EndElement)
                 {
