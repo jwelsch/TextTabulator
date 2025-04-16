@@ -11,7 +11,7 @@ namespace TextTabulator.Adapters.Xml
         Comment = 0x10
     }
 
-    internal static class Extensions
+    internal static class XmlReaderExtensions
     {
         internal static bool Read(this XmlReader xmlReader, XmlSkip skip)
         {
@@ -32,6 +32,21 @@ namespace TextTabulator.Adapters.Xml
                     }
                 }
                 else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool ReadToNode(this XmlReader xmlReader, XmlNodeType nodeType, Func<XmlReader, bool>? test = null)
+        {
+            while (xmlReader.Read())
+            {
+                if (xmlReader.NodeType == nodeType
+                    && (test == null
+                        || test.Invoke(xmlReader)))
                 {
                     return true;
                 }
