@@ -93,26 +93,33 @@ namespace TextTabulator.Adapters.Xml
                 throw new InvalidOperationException($"No root node found in XML document.");
             }
 
-            var headers = new List<string>();
+            var transformedHeaders = new List<string>();
 
             // Read first node in the list.
             if (xmlReader.ReadToNode(XmlNodeType.Element))
             {
-                var innerDepth = 0;
+                int? depth = null;
+                var name = xmlReader.Name;
 
-                // Read node names within the XML node that will go in the table.
-                while (xmlReader.ReadToNode(XmlNodeType.Element, x => innerDepth == 0 || xmlReader.Depth == innerDepth))
+                while (xmlReader.Read())
                 {
-                    if (innerDepth == 0)
+                    if (xmlReader.NodeType == XmlNodeType.Element && (depth ??= xmlReader.Depth) == xmlReader.Depth)
                     {
-                        innerDepth = xmlReader.Depth;
+                        // Add the first occurances at this depth of the names of the XML nodes as the table headers.
+                        var rawHeader = xmlReader.Name;
+                        var transformed = _options.NodeNameTransform.Apply(rawHeader);
+                        transformedHeaders.Add(transformed);
+                        _headers.Add(rawHeader, new TableHeader(transformed, transformedHeaders.Count - 1));
                     }
-
-                    headers.Add(xmlReader.Name);
+                    else if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Depth == depth - 1 && xmlReader.Name == name)
+                    {
+                        // Once the end of the containing list node has been read, do not read any more nodes.
+                        break;
+                    }
                 }
             }
 
-            return headers;
+            return transformedHeaders;
         }
 
         /// <summary>
@@ -131,27 +138,109 @@ namespace TextTabulator.Adapters.Xml
                 throw new InvalidOperationException($"No root node found in XML document.");
             }
 
-            var values = new List<List<string>>();
-            int? listDepth = null;
+            var values = new List<string[]>();
+            var listDepth = xmlReader.Depth;
+            var listName = xmlReader.Name;
+            var itemDepth = listDepth + 1;
+            string? itemName = null;
+            var valueDepth = itemDepth + 1;
+            string? valueName = null;
+            var addedValue = false;
+            string[]? rowValues = null;
+            TableHeader? tableHeader = null;
 
-            // Read all nodes in the list.
-            while (xmlReader.ReadToNode(XmlNodeType.Element, x => (listDepth ??= xmlReader.Depth) == xmlReader.Depth))
+            while (xmlReader.Read())
             {
-                int? innerDepth = null;
-                var rowValues = new List<string>();
-
-                // Read nodes within the XML node that will go in the table.
-                // This only reads the nodes that are direct children of the list node.
-                while (xmlReader.ReadToNode(XmlNodeType.Element, x => (innerDepth ??= xmlReader.Depth) == xmlReader.Depth))
+                if (xmlReader.Name == listName && xmlReader.Depth == listDepth && xmlReader.NodeType == XmlNodeType.EndElement)
                 {
-                    var content = xmlReader.ReadElementContentAsString();
-                    rowValues.Add(content);
+                    // The end of the list element has been reached.
+                    break;
                 }
 
-                values.Add(rowValues);
+                if (xmlReader.Depth == itemDepth)
+                {
+                    if (xmlReader.NodeType == XmlNodeType.Element)
+                    {
+                        // New XML list item.
+                        itemName ??= xmlReader.Name;
+
+                        rowValues = new string[_headers.Count];
+                        Array.Fill(rowValues, "");
+                        continue;
+                    }
+
+                    if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Name == itemName)
+                    {
+                        if (rowValues != null)
+                        {
+                            values.Add(rowValues);
+                            rowValues = null;
+                        }
+
+                        // Reached the end element of the XML list item.
+                        continue;
+                    }
+                }
+
+                if (xmlReader.Depth == valueDepth)
+                {
+                    if (xmlReader.NodeType == XmlNodeType.Element)
+                    {
+                        if (!_headers.TryGetValue(xmlReader.Name, out tableHeader))
+                        {
+                            throw new InvalidOperationException($"Unknown header '{xmlReader.Name}' encountered while parsing values.");
+                        }
+
+                        if (xmlReader.IsEmptyElement && rowValues != null)
+                        {
+                            rowValues[tableHeader.Index] = string.Empty;
+                            continue;
+                        }
+
+                        // New value in the list item. This should be a header.
+                        valueName ??= xmlReader.Name;
+                        continue;
+                    }
+
+                    if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Name == valueName)
+                    {
+                        // Reached the end element of the value item.
+                        valueName = null;
+                        addedValue = false;
+                        continue;
+                    }
+                }
+
+                if (xmlReader.Depth == valueDepth + 1 && !addedValue)
+                {
+                    if (xmlReader.NodeType == XmlNodeType.Text && tableHeader != null && rowValues != null)
+                    {
+                        rowValues[tableHeader.Index] = NormalizeValue(xmlReader.Value);
+                        addedValue = true;
+                    }
+                    else if (xmlReader.NodeType == XmlNodeType.Element && tableHeader != null && rowValues != null)
+                    {
+                        rowValues[tableHeader.Index] = "<XML Nodes>";
+                        addedValue = true;
+                    }
+                }
             }
 
             return values;
+        }
+
+        private static string NormalizeValue(string value)
+        {
+            if (value.Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return "True";
+            }
+            else if (value.Equals("false", StringComparison.OrdinalIgnoreCase))
+            {
+                return "False";
+            }
+
+            return value;
         }
     }
 }

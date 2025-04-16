@@ -21,56 +21,42 @@ var xmlData =
         <weight>6.7</weight>
         <diet>Carnivore</diet>
         <extinction>66</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Triceratops</name>
         <weight>8</weight>
         <diet>Herbivore</diet>
         <extinction>66</extinction>
-        <test />
-    </dinosaur>
-    <dinosaur>
-        <name></name>
-        <weight></weight>
-        <diet>Herbivore</diet>
-        <extinction>66</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Apatosaurus</name>
         <weight>33</weight>
         <diet>Herbivore</diet>
         <extinction>147</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Archaeopteryx</name>
         <weight>0.001</weight>
         <diet>Omnivore</diet>
         <extinction>147</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Anklyosaurus</name>
         <weight>4.8</weight>
         <diet>Herbivore</diet>
         <extinction>66</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Stegosaurus</name>
         <weight>3.8</weight>
         <diet>Herbivore</diet>
         <extinction>147</extinction>
-        <test />
     </dinosaur>
     <dinosaur>
         <name>Hadrosaurus</name>
         <weight>3</weight>
         <diet>Herbivore</diet>
         <extinction>66</extinction>
-        <test />
     </dinosaur>
 </dinosaurs>
 """;
