@@ -19,10 +19,13 @@
     <AssemblyVersion>1.3.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>$(AssemblyVersion)</Version>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeProjectReferenceDlls</TargetsForTfmSpecificBuildOutput>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeReferenceAssemblies</TargetsForTfmSpecificContentInPackage>
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,5 +38,19 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <Target Name="IncludeProjectReferenceDlls" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'all'))"
+                            TargetPath="%(ReferenceCopyLocalPaths.DestinationSubDirectory)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Add a ref folder to the package which only exposes the library so that the referenced class library doesn't get exposed. -->
+  <Target Name="IncludeReferenceAssemblies">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(TargetPath)" PackagePath="ref/$(TargetFramework)" />
+    </ItemGroup>
+  </Target>
 
 </Project>
