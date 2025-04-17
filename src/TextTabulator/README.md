@@ -333,3 +333,6 @@ var options = new TabulatorOptions
 
 var table = tabulator.Tabulate(headers, values, options);
 ```
+
+---
+Copyright 2025 Justin Welsch

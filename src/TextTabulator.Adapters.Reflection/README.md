@@ -147,3 +147,6 @@ Values
 - Public = 0x01: Members with the public access modifier.
 - NonPublic = 0x10: Members with a non-public access modifier.
 - PublicAndNonPublic = Public | NonPublic: Members with both public and non-public access modifiers.
+
+---
+Copyright 2025 Justin Welsch

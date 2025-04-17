@@ -93,3 +93,6 @@ Parameters
 Return
 
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+---
+Copyright 2025 Justin Welsch
