@@ -1,0 +1,1 @@
+.\version.ps1 list -Directory ..\src -Recurse
