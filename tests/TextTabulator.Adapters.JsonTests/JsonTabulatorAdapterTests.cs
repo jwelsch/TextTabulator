@@ -53,20 +53,18 @@ namespace TextTabulator.Adapters.JsonTests
     "extinction": 66,
     "formations":
     [
-        "Evanston",
-        "Scollard",
-        "Laramie",
+        "Hell Creek",
         "Lance",
-        "Denver",
-        "Hell Creek"
+        "North Horn",
+        "Javelina"
     ],
     "bipedal": true,
     "teeth":
     {
-        "shape": "battery",
-        "length": 4.5,
-        "serrated": false,
-        "count": 800
+        "shape": "conical",
+        "length": 30,
+        "serrated": true,
+        "count": 60
     },
     "test": null
   }

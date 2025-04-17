@@ -14,8 +14,7 @@ namespace TextTabulator.Adapters.Json
     }
 
     /// <summary>
-    /// Class that implements the ITabulatorAdapter interface in order to adapt JSON data ready by
-    /// System.Text.Json to be consumed by Tabulator.Tabulate.
+    /// The adapter class that accepts JSON data and presents the data that it reads in a format that TextTabulator.Tabulate can consume.
     /// 
     /// The data should be in the following format:
     /// 
@@ -36,24 +35,11 @@ namespace TextTabulator.Adapters.Json
     /// </summary>
     public class JsonTabulatorAdapter : IJsonTabulatorAdapter
     {
-        private class Header
-        {
-            public string TransformedName { get; }
-
-            public int Index { get; }
-
-            public Header(string transformedName, int index)
-            {
-                TransformedName = transformedName;
-                Index = index;
-            }   
-        }
-
         private const int BufferSize = 4096;
 
         private readonly Func<Stream> _jsonStreamProvider;
         private readonly JsonTabulatorAdapterOptions _options;
-        private readonly Dictionary<string, Header> _headers = new Dictionary<string, Header>();
+        private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
 
         /// <summary>
         /// Creates an object of type JsonTabulatorAdapter.
@@ -99,6 +85,7 @@ namespace TextTabulator.Adapters.Json
 
             var stream = _jsonStreamProvider.Invoke();
 
+            stream.Seek(0, SeekOrigin.Begin);
             var bytesRead = stream.Read(buffer, 0, buffer.Length);
 
             if (bytesRead <= 0)
@@ -152,9 +139,9 @@ namespace TextTabulator.Adapters.Json
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
                     var rawHeader = jsonReader.GetString() ?? string.Empty;
-                    var transformed = _options.JsonPropertyNameTransform.Apply(rawHeader);
+                    var transformed = _options.PropertyNameTransform.Apply(rawHeader);
                     transformedHeaders.Add(transformed);
-                    _headers.Add(rawHeader, new Header(transformed, transformedHeaders.Count - 1));
+                    _headers.Add(rawHeader, new TableHeader(transformed, transformedHeaders.Count - 1));
                 }
                 else if (jsonReader.TokenType == JsonTokenType.EndObject)
                 {
@@ -221,7 +208,7 @@ namespace TextTabulator.Adapters.Json
                         throw new InvalidOperationException("Empty header value.");
                     }
 
-                    if (!_headers.TryGetValue(rawHeader, out Header header))
+                    if (!_headers.TryGetValue(rawHeader, out TableHeader header))
                     {
                         throw new InvalidOperationException($"Unknown header '{rawHeader}' encountered while parsing values.");
                     }

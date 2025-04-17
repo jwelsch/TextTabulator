@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using TextTabulator;
+using TextTabulator.Adapters;
 using TextTabulator.Adapters.Json;
+using TextTabulator.Adapters.Xml;
 
 internal class Program
 {
@@ -60,9 +62,15 @@ internal class Program
         //    new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
         //};
 
-        using var stream = new FileStream(@"D:\Justin\Projects\Data\dinosaur-three.json", FileMode.Open, FileAccess.Read);
+        using var stream = new FileStream(@"D:\Justin\Projects\Data\books.xml", FileMode.Open, FileAccess.Read);
 
-        var adapter = new JsonTabulatorAdapter(stream);
+        var options = new XmlTabulatorAdapterOptions(new SnakeNameTransform(), new System.Xml.XmlReaderSettings
+        {
+            ConformanceLevel = System.Xml.ConformanceLevel.Fragment,
+        });
+
+        var adapter = new XmlTabulatorAdapter(stream, options);
+        //var adapter = new JsonTabulatorAdapter(stream);
 
         //var individualAlignments = new CellAlignment[][]
         //{
@@ -80,36 +88,36 @@ internal class Program
         //};
 
         //var options = new TabulatorOptions();
-        var options = new TabulatorOptions
-        {
-            //CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias),
-            //CellAlignment = new IndividualCellAlignmentProvider(individualAlignments),
-            //CellAlignment = new UniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.CenterRightBias, CellAlignment.Right }),
-            //CellAlignment = new UniformValueAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.CenterRightBias, CellAlignment.Right }, CellAlignment.CenterLeftBias),
-            //CellAlignment = new UniformHeaderUniformValueAlignmentProvider(CellAlignment.Left, CellAlignment.Right),
-            //CellAlignment = new UniformHeaderAlignmentProvider(valueAlignments, CellAlignment.CenterLeftBias),
-            CellAlignment = new UniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
-            //    Styling = new UnicodeTableStyling(),
-            //    //ValueRowSeparator = '─',
-            //    //ValueLeftEdgeJoint = '╟',
-            //    //ValueMiddleJoint = '┼',
-            //    //ValueRightEdgeJoint = '╢',
-            //    //HeaderRowSeparator = '═',
-            //    //HeaderLeftEdgeJoint = '╠',
-            //    //HeaderMiddleJoint = '╪',
-            //    //HeaderRightEdgeJoint = '╣',
-            //    //LeftEdge = '║',
-            //    //RightEdge = '║',
-            //    //TopEdge = '═',
-            //    //BottomEdge = '═',
-            //    //ColumnSeparator = '│',
-            //    //TopLeftCorner = '╔',
-            //    //TopRightCorner = '╗',
-            //    //BottomLeftCorner = '╚',
-            //    //BottomRightCorner = '╝',
-            //    //TopEdgeJoint = '╤',
-            //    //BottomEdgeJoint = '╧',
-        };
+        //var options = new TabulatorOptions
+        //{
+        //    //CellAlignment = new UniformHeaderUniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }, CellAlignment.CenterLeftBias),
+        //    //CellAlignment = new IndividualCellAlignmentProvider(individualAlignments),
+        //    //CellAlignment = new UniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.CenterRightBias, CellAlignment.Right }),
+        //    //CellAlignment = new UniformValueAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.CenterRightBias, CellAlignment.Right }, CellAlignment.CenterLeftBias),
+        //    //CellAlignment = new UniformHeaderUniformValueAlignmentProvider(CellAlignment.Left, CellAlignment.Right),
+        //    //CellAlignment = new UniformHeaderAlignmentProvider(valueAlignments, CellAlignment.CenterLeftBias),
+        //    CellAlignment = new UniformColumnAlignmentProvider(new CellAlignment[] { CellAlignment.Left, CellAlignment.Right }),
+        //    //    Styling = new UnicodeTableStyling(),
+        //    //    //ValueRowSeparator = '─',
+        //    //    //ValueLeftEdgeJoint = '╟',
+        //    //    //ValueMiddleJoint = '┼',
+        //    //    //ValueRightEdgeJoint = '╢',
+        //    //    //HeaderRowSeparator = '═',
+        //    //    //HeaderLeftEdgeJoint = '╠',
+        //    //    //HeaderMiddleJoint = '╪',
+        //    //    //HeaderRightEdgeJoint = '╣',
+        //    //    //LeftEdge = '║',
+        //    //    //RightEdge = '║',
+        //    //    //TopEdge = '═',
+        //    //    //BottomEdge = '═',
+        //    //    //ColumnSeparator = '│',
+        //    //    //TopLeftCorner = '╔',
+        //    //    //TopRightCorner = '╗',
+        //    //    //BottomLeftCorner = '╚',
+        //    //    //BottomRightCorner = '╝',
+        //    //    //TopEdgeJoint = '╤',
+        //    //    //BottomEdgeJoint = '╧',
+        //};
 
         var tabulator = new Tabulator();
         var table = tabulator.Tabulate(adapter);

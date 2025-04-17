@@ -1,23 +1,23 @@
 ﻿using System.Text;
 
-namespace TextTabulator.Adapters.Json
+namespace TextTabulator.Adapters
 {
     /// <summary>
-    /// Abstract base class of JSON property name transforms where the name has no separator.
+    /// Abstract base class of name transforms where the name has no separator.
     /// </summary>
-    public abstract class NoSeparatorJsonPropertyNameTransform : IJsonPropertyNameTransform
+    public abstract class NoSeparatorNameTransform : INameTransform
     {
         private readonly bool _capitalizeFirstLetterOfFirstWord;
         private readonly bool _capitalizeFirstLetterOfSubsequentWords;
         private readonly char? _separator;
 
         /// <summary>
-        /// Creates an object of type NoSeparatorJsonPropertyNameTransform.
+        /// Creates an object of type NoSeparatorNameTransform.
         /// </summary>
         /// <param name="capitalizeFirstLetterOfFirstWord">True to capitalize the first letter of the first word, false otherwise.</param>
         /// <param name="capitalizeFirstLetterOfSubsequentWords">True to capitalize the first letter of subsequent words, false otherwise.</param>
         /// <param name="separator">Specifies a character used as a separator. Pass in null to not use a separator.</param>
-        protected NoSeparatorJsonPropertyNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')
+        protected NoSeparatorNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')
         {
             _capitalizeFirstLetterOfFirstWord = capitalizeFirstLetterOfFirstWord;
             _capitalizeFirstLetterOfSubsequentWords = capitalizeFirstLetterOfSubsequentWords;
@@ -25,19 +25,19 @@ namespace TextTabulator.Adapters.Json
         }
 
         /// <summary>
-        /// Applies the transform to the property name.
+        /// Applies the transform to the name.
         /// </summary>
-        /// <param name="propertyName">Property name upon which to apply the tranform.</param>
+        /// <param name="name">Name upon which to apply the tranform.</param>
         /// <returns>The transformed name.</returns>
-        public string Apply(string propertyName)
+        public string Apply(string name)
         {
             var sb = new StringBuilder();
 
             var inNumber = false;
 
-            for (var i = 0; i < propertyName.Length; i++)
+            for (var i = 0; i < name.Length; i++)
             {
-                var c = propertyName[i];
+                var c = name[i];
 
                 if (i == 0)
                 {
