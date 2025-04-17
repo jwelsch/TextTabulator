@@ -12,6 +12,7 @@
     <ProjectReference Include="..\TextTabulator.Adapters.Json\TextTabulator.Adapters.Json.csproj" />
     <ProjectReference Include="..\TextTabulator.Adapters.Reflection\TextTabulator.Adapters.Reflection.csproj" />
     <ProjectReference Include="..\TextTabulator.Adapters.Xml\TextTabulator.Adapters.Xml.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
     <ProjectReference Include="..\TextTabulator\TextTabulator.csproj" />
   </ItemGroup>
 
