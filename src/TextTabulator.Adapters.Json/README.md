@@ -2,9 +2,17 @@
 
 This is an auxillary library for TextTabulator that uses the [System.Text.Json](https://github.com/dotnet/runtime/tree/main/src/libraries/System.Text.Json) library to parse JSON data. It can then provide the parsed JSON data to TextTabulator for consumption.
 
-## How to use
+## Installation
 
-Install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+
+Install the TextTabulator.Adapters.Json Nuget package in your project.
+
+```
+nuget install JWelsch.TextTabulator.Adapters.Json
+```
+
+## How to use
 
 You can call the code like this:
 

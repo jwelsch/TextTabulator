@@ -2,9 +2,17 @@
 
 This is an auxillary library for TextTabulator that provides a way to display the values of objects using `TextTabulator`.
 
-## How to use
+## Installation
 
-Install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+
+Install the TextTabulator.Adapters.Reflection Nuget package in your project.
+
+```
+nuget install JWelsch.TextTabulator.Adapters.Reflection
+```
+
+## How to use
 
 See this example code.
 

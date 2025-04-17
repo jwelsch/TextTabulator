@@ -2,9 +2,17 @@
 
 This is an auxillary library for TextTabulator that uses [System.Xml.XmlReader](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.Xml/src/System/Xml/Core/XmlReader.cs) to parse XML data. It can then provide the parsed XML data to TextTabulator for consumption.
 
-## How to use
+## Installation
 
-Install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+
+Install the TextTabulator.Adapters.Xml Nuget package in your project.
+
+```
+nuget install JWelsch.TextTabulator.Adapters.Xml
+```
+
+## How to use
 
 You can call the code like this:
 

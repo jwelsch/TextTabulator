@@ -2,6 +2,14 @@
 
 This is the core library of `TextTabulator`, and is what does the actual table formation.
 
+## Installation
+
+Install the TextTabulator Nuget package in your project.
+
+```
+nuget install JWelsch.TextTabulator
+```
+
 ## How to use
 
 There is one public method, `Tabulator.Tabulate`, and a few configuration options. The simplest way to use `TextTabulator` is to call the `Tabulator.Tabulate` method with the default options.

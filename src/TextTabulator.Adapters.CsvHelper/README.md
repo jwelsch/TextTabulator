@@ -2,9 +2,17 @@
 
 This is an auxillary library for TextTabulator that provides an integration with the popular [CsvHelper](https://github.com/JoshClose/CsvHelper) library that allows TextTabulator to consume CSV data.
 
-## How to use
+## Installation
 
-Install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
+
+Install the TextTabulator.Adapters.CsvHelper Nuget package in your project.
+
+```
+nuget install JWelsch.TextTabulator.Adapters.CsvHelper
+```
+
+## How to use
 
 You can call the code like this:
 
