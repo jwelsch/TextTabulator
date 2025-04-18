@@ -30,4 +30,8 @@ There are also separate libraries that adapt different types of data to be consu
 `TextTabulator.Adapters`
 - [CsvHelper adapter](/src/TextTabulator.Adapters.CsvHelper/README.md)
 - [JSON adapter](/src/TextTabulator.Adapters.Json/README.md)
+- [XML adapter](/src/TextTabulator.Adapters.Xml/README.md)
 - [Reflection adapter](/src/TextTabulator.Adapters.Reflection/README.md)
+
+---
+Copyright 2025 Justin Welsch
