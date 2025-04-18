@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using System.Text;
 using TextTabulator;
 using TextTabulator.Adapters;
 
@@ -436,7 +437,7 @@ namespace TextTabulatorTests
         }
 
         [Fact]
-        public void When_tabulate_called_with_tablevalue_delegates_for_multiple_headers_and_multiple_rows_then_table_returned()
+        public void When_tabulate_called_with_cellvalue_delegates_for_multiple_headers_and_multiple_rows_then_table_returned()
         {
             var headers = new CellValue[]
             {
@@ -472,7 +473,7 @@ namespace TextTabulatorTests
         }
 
         [Fact]
-        public void When_tabulate_called_with_tablevalue_delegates_for_multiple_rows_then_table_returned()
+        public void When_tabulate_called_with_cellvalue_delegates_for_multiple_rows_then_table_returned()
         {
             var values = new CellValue[][]
             {
@@ -1291,6 +1292,71 @@ namespace TextTabulatorTests
             var sut = new Tabulator();
 
             var table = sut.Tabulate(headers, values, new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table);
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_tablecallback_delegates_for_multiple_headers_and_multiple_rows_then_table_returned()
+        {
+            var headers = new CellValue[]
+            {
+                () => "Header1",
+                () => "Header2",
+                () => "Header3",
+            };
+
+            var values = new CellValue[][]
+            {
+                new CellValue [] { () => "value1A", () => "value1B", () => "value1C" },
+                new CellValue [] { () => "value2A", () => "value2B", () => "value2C" },
+                new CellValue [] { () => "value3A", () => "value3B", () => "value3C" },
+            };
+
+            var expected =
+@$"-------------------------
+|{headers[0]()}|{headers[1]()}|{headers[2]()}|
+|-------+-------+-------|
+|{values[0][0]()}|{values[0][1]()}|{values[0][2]()}|
+|-------+-------+-------|
+|{values[1][0]()}|{values[1][1]()}|{values[1][2]()}|
+|-------+-------+-------|
+|{values[2][0]()}|{values[2][1]()}|{values[2][2]()}|
+-------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = new StringBuilder();
+            
+            sut.Tabulate(headers, values, t => table.Append(t), new TabulatorOptions { NewLine = "\r\n" });
+
+            Assert.Equal(expected, table.ToString());
+        }
+
+        [Fact]
+        public void When_tabulate_called_with_tablecallback_delegates_for_multiple_rows_then_table_returned()
+        {
+            var values = new string[][]
+            {
+                new string [] { "value1A", "value1B", "value1C" },
+                new string [] { "value2A", "value2B", "value2C" },
+                new string [] { "value3A", "value3B", "value3C" }
+            };
+
+            var expected =
+@$"-------------------------
+|{values[0][0]}|{values[0][1]}|{values[0][2]}|
+|-------+-------+-------|
+|{values[1][0]}|{values[1][1]}|{values[1][2]}|
+|-------+-------+-------|
+|{values[2][0]}|{values[2][1]}|{values[2][2]}|
+-------------------------
+";
+
+            var sut = new Tabulator();
+
+            var table = sut.Tabulate(values, new TabulatorOptions { NewLine = "\r\n" });
 
             Assert.Equal(expected, table);
         }

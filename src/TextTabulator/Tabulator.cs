@@ -14,6 +14,103 @@ namespace TextTabulator
         private readonly ITableDataParser _tableDataParser = new TableDataParser();
 
         /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="adapter">Adapter object that the method can get data from.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(ITabulatorAdapter adapter, TableCallback callback, TabulatorOptions? options = null)
+        {
+            var headers = adapter.GetHeaderStrings() ?? Array.Empty<string>();
+            var values = adapter.GetValueStrings();
+
+            Tabulate(headers, values, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing CellValues delegates for each value in each row.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
+
+            Tabulate(Array.Empty<string>(), rowValueStrings, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing CellValues delegates for each header.</param>
+        /// <param name="rowValues">Enumeration containing CellValues delegates for each value in each row.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            var headerStrings = headers.Select(i => i.Invoke());
+            var rowValueStrings = rowValues.Select(i => i.Select(j => j.Invoke()));
+
+            Tabulate(headerStrings, rowValueStrings, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            var rowValueStrings = rowValues.Select(i => i.Select(j => j.ToString()));
+
+            Tabulate(Array.Empty<string>(), rowValueStrings, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing objects for each header. Each object's ToString() method will be called to generate the value displayed in the table.</param>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            var headerStrings = headers.Select(i => i.ToString());
+            var rowValueStrings = rowValues.Select(i => i.Select(j => j.ToString()));
+
+            Tabulate(headerStrings, rowValueStrings, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="rowValues">Enumeration containing strings for each value in each row.</param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            Tabulate(Array.Empty<string>(), rowValues, callback, options);
+        }
+
+        /// <summary>
+        /// Tabulates data and makes callbacks with elements of the table.
+        /// </summary>
+        /// <param name="headers">Enumeration containing strings for each header.</param>
+        /// <param name="rowValues"></param>
+        /// <param name="callback">Callback received when an element of the table is constructed.</param>
+        /// <param name="options">Options specifying how the table should be constructed.</param>
+        public void Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)
+        {
+            options ??= new TabulatorOptions();
+
+            var tableData = _tableDataParser.Parse(headers, rowValues);
+
+            TabulateData(tableData, callback, options);
+        }
+
+        /// <summary>
         /// Tabulates data and outputs a string representation of a table.
         /// </summary>
         /// <param name="adapter">Adapter object that the method can get data from.</param>
@@ -58,7 +155,7 @@ namespace TextTabulator
         /// <summary>
         /// Tabulates data and outputs a string representation of a table.
         /// </summary>
-        /// <param name="rowValues">Enumeration containing objects for each value in each row.</param>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.</param>
         /// <param name="options">Options specifying how the table should be constructed.</param>
         /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
@@ -71,8 +168,8 @@ namespace TextTabulator
         /// <summary>
         /// Tabulates data and outputs a string representation of a table.
         /// </summary>
-        /// <param name="headers">Enumeration containing objects for each header.</param>
-        /// <param name="rowValues">Enumeration containing objects for each value in each row.</param>
+        /// <param name="headers">Enumeration containing objects for each header. Each object's ToString() method will be called to generate the value displayed in the table.</param>
+        /// <param name="rowValues">Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.</param>
         /// <param name="options">Options specifying how the table should be constructed.</param>
         /// <returns>String representation of a table.</returns>
         public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
@@ -108,24 +205,26 @@ namespace TextTabulator
 
             var tableData = _tableDataParser.Parse(headers, rowValues);
 
-            return TabulateData(tableData, options);
+            var table = new StringBuilder();
+
+            TabulateData(tableData, t => table.Append(t), options);
+
+            return table.ToString();
         }
 
-        private string TabulateData(ITableData tableData, TabulatorOptions options)
+        private void TabulateData(ITableData tableData, TableCallback callback, TabulatorOptions options)
         {
             var hasHeaders = !(tableData.Headers == null || tableData.Headers.Cells == null || tableData.Headers.Cells.Count == 0);
             var hasRowValues = !(tableData.ValueRows == null || tableData.ValueRows.Count == 0);
 
             if (!hasHeaders && !hasRowValues)
             {
-                return string.Empty;
+                return;
             }
-
-            var table = new StringBuilder();
 
             // Start with the top edge of the table.
             var topEdge = BuildTopEdge(tableData, options);
-            table.Append(topEdge + options.NewLine);
+            callback.Invoke(topEdge + options.NewLine);
 
             var middleRowSeparator = BuildRowSeparator(tableData, options, false);
 
@@ -133,12 +232,12 @@ namespace TextTabulator
             {
                 // Add the header row.
                 var headerRow = BuildRowHeaders(tableData, options);
-                table.Append(headerRow + options.NewLine);
+                callback.Invoke(headerRow + options.NewLine);
 
                 if (hasRowValues)
                 {
                     var headerRowSeparator = BuildRowSeparator(tableData, options, true);
-                    table.Append(headerRowSeparator + options.NewLine);
+                    callback.Invoke(headerRowSeparator + options.NewLine);
                 }
             }
 
@@ -146,19 +245,19 @@ namespace TextTabulator
             {
                 // Add the row values.
                 var rowString = BuildRowValues(tableData.ValueRows[i], tableData.MaxColumnWidths, options);
-                table.Append(rowString + options.NewLine);
+                callback.Invoke(rowString + options.NewLine);
 
                 if (i < tableData.ValueRows.Count - 1)
                 {
                     // Add the row separator.
-                    table.Append(middleRowSeparator + options.NewLine);
+                    callback.Invoke(middleRowSeparator + options.NewLine);
                 }
             }
 
             var bottomEdge = BuildBottomEdge(tableData, options);
-            table.Append(bottomEdge + options.NewLine);
+            callback.Invoke(bottomEdge + options.NewLine);
 
-            return table.ToString();
+            return;
         }
 
         private string BuildTopEdge(ITableData tableData, TabulatorOptions options)
