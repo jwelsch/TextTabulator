@@ -31,7 +31,7 @@ var values = new string[][]
    new string[] { "value1C", "value2C", "value3C", },
 };
 
-var tabulator = new TextTabulator();
+var tabulator = new Tabulator();
 
 var table = tabulator.Tabulate(headers, values);
 
@@ -39,6 +39,7 @@ Console.WriteLine(table);
 ```
 
 The output of the above code would be:
+
 ```
 -------------------------
 |Header1|Header2|Header3|
@@ -51,55 +52,241 @@ The output of the above code would be:
 -------------------------
 ```
 
-## Overloads
+## Public API
 
-The `Tabulator.Tabulate` method is overloaded. It can be called with collections of `string` types, `object` types, or `CellValue` delegate types. All three additionally have overloads with or without headers.
+### `TextTabulator.Tabulator` class
 
-A final category of overload accepts an `ITabulatorAdapter` interface.
+The `TextTabulator.Tabulator` class has several overloaded `Tabulate` methods that generate the table.
 
-### String type overloads
+**Methods**
 
-```
-public string Tabulate(IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
-public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)
-```
+#### `public string Tabulate(IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)`
 
-For the `string` type overloads, the value of each string object will be used as each cell's content. Each `string` will be read once for each call to `Tabulator.Tabulate`.
+Tabulates data and outputs a string representation of a table.
 
-### Object type overloads
+Parameters
 
-```
-public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
-public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)
-```
+- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
 
-For the `object` type overloads, the type's `ToString` method will be called to generate the content of the cell. Each `object` will have its `ToString` method called once for each call to `Tabulator.Tabulate`.
+Return
 
-### CellValue delegate type overloads
+- `string`: String representation of a table.
 
-```
-public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null);
-public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)
-```
+#### `public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)`
 
-For the `CellValue` delegate type overloads, the delegate will be invoked to generate the content of the cell. It can be used to generate content dynamically. Each `CellValue` will be invoked only once per call to `Tabulator.Tabulate`.
+Tabulates data and outputs a string representation of a table.
 
-The delegate `CellValue` has the signature:
+Parameters
+
+- `IEnumerable<string> headers`: Enumeration containing strings for each header.
+- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)`
+
+Tabulates data and outputs a string representation of a table.
+
+Parameters
+
+- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)`
+
+Tabulates data and outputs a string representation of a table.
+
+Parameters
+
+- `IEnumerable<object> headers`: Enumeration containing objects for each header. Each object's ToString() method will be called to generate the value displayed in the table.
+- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)`
+
+Tabulates data and outputs a string representation of a table.
+
+Parameters
+
+- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)`
+
+Tabulates data and outputs a string representation of a table.
+
+Parameters
+
+- `IEnumerable<CellValue> headers`: Enumeration containing `CellValue` delegates for each header.
+- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public string Tabulate(ITabulatorAdapter adapter, TabulatorOptions? options = null)`
+
+Tabulates data and outputs a string representation of a table.
+
+Parameters
+
+- `ITabulatorAdapter adapter`: Adapter object that the method can get data from.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- `string`: String representation of a table.
+
+#### `public void Tabulate(IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<string> headers`: Enumeration containing strings for each header.
+- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<object> headers`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
+- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `IEnumerable<CellValue> headers`: Enumeration containing `CellValue` delegates for each header.
+- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+#### `public void Tabulate(ITabulatorAdapter adapter, TableCallback callback, TabulatorOptions? options = null)`
+
+Tabulates data and makes callbacks with elements of the table.
+
+Parameters
+
+- `ITabulatorAdapter adapter`: Adapter object that the method can get data from.
+- `TableCallback callback`: Callback received when an element of the table is constructed.
+- `TabulatorOptions? options`: Options specifying how the table should be constructed.
+
+Return
+
+- None
+
+### Delegates
+
+`TextTabulator` defines some delegates that can be passed to `Tabulator.Tabulate`.
+
+#### `CellValue`
+
+Used in some overloads of `TextTabulator.Tabulate` to dynamically generate table data. The delegate is called when the content of each cell is generated. Implementers should return the string representation of the value in the table.
+
+Signature:
 
 ```
 public delegate string CellValue();
 ```
 
+#### `TableCallback`
 
-### `ITabulatorAdapter` type overloads
+Used in some overloads of `TextTabulator.Tabulate` so that the caller can receive callbacks when elements of the table are generated. This can be used to put pieces of the table directly into other outputs more efficiently. The parameter `string text` will contain the most recently created element of the table.
 
+Signature:
 ```
-public string Tabulte(ITabulatorAdapter adapter, TabulatorOptions? options = null)
+public delegate void TableCallback(string text);
 ```
 
-This overload allows `Tabulator.Tabulate` to more easily integrate with other types of formats of data. Currently supported adapters include CSV and reflection over objects. More information can be found in each adapter's project:
+### Adapters
+
+`TextTabulator` exposes the interface `ITabulatorAdapter`, which can be implemented to allow the `Tabulator.Tabulate` method to consume different types of data. There are existing implementations available for popular data types. Alternatively, this interface can be used to provide a custom implementation.
+
+Existing implementations are distributed in separate Nuget packages. More information can be found in their respective projects.
+
 - [CsvHelper adapter](../TextTabulator.Adapters.CsvHelper/README.md)
 - [JSON adapter](../TextTabulator.Adapters.Json/README.md)
+- [XML adapter](../TextTabulator.Adapters.Xml/README.md)
 - [Reflection adapter](../TextTabulator.Adapters.Reflection/README.md)
 
 ## Tabulation Options
