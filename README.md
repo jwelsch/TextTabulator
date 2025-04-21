@@ -28,10 +28,11 @@ The core project can be found here: [TextTabulator](/src/TextTabulator/README.md
 There are also separate libraries that adapt different types of data to be consumed by the `TextTabulator` API. They can be found here:
 
 `TextTabulator.Adapters`
-- [CsvHelper adapter](/src/TextTabulator.Adapters.CsvHelper/README.md)
-- [JSON adapter](/src/TextTabulator.Adapters.Json/README.md)
-- [XML adapter](/src/TextTabulator.Adapters.Xml/README.md)
-- [Reflection adapter](/src/TextTabulator.Adapters.Reflection/README.md)
+- [CsvHelper adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
+- [JSON adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
+- [XML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
+- [YAML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
+- [Reflection adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
 
 ---
 Copyright 2025 Justin Welsch
