@@ -41,6 +41,7 @@ namespace TextTabulator.Adapters.Xml
         private readonly Func<Stream> _xmlStreamProvider;
         private readonly XmlTabulatorAdapterOptions _options;
         private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
+        private readonly IValueNormalizer _valueNormalizer = new ValueNormalizer();
 
         /// <summary>
         /// Creates an object of type XmlTabulatorAdapter.
@@ -225,7 +226,7 @@ namespace TextTabulator.Adapters.Xml
                 {
                     if (xmlReader.NodeType == XmlNodeType.Text && tableHeader != null && rowValues != null)
                     {
-                        rowValues[tableHeader.Index] = NormalizeValue(xmlReader.Value);
+                        rowValues[tableHeader.Index] = _valueNormalizer.Normalize(xmlReader.Value);
                         addedValue = true;
                     }
                     else if (xmlReader.NodeType == XmlNodeType.Element && tableHeader != null && rowValues != null)
@@ -237,20 +238,6 @@ namespace TextTabulator.Adapters.Xml
             }
 
             return values;
-        }
-
-        private static string NormalizeValue(string value)
-        {
-            if (value.Equals("true", StringComparison.OrdinalIgnoreCase))
-            {
-                return "True";
-            }
-            else if (value.Equals("false", StringComparison.OrdinalIgnoreCase))
-            {
-                return "False";
-            }
-
-            return value;
         }
     }
 }
