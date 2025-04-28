@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using TextTabulator.Adapters.YamlDotNet;
-using YamlDotNet.Serialization;
+using YamlDotNet.Core;
 
 namespace TextTabulator.Adapters.YamlDotNetTests
 {
@@ -148,9 +148,12 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_single_simple_object_then_headers_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithSingleSimpleObject));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithSingleSimpleObject);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
+
             var headers = sut.GetHeaderStrings();
 
             Assert.NotNull(headers);
@@ -166,9 +169,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_single_simple_object_then_values_returned()
         {
-            var deserializer = new Deserializer();
-
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithSingleSimpleObject);
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithSingleSimpleObject));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+            
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -190,9 +195,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_single_complex_object_then_headers_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithSingleComplexObject));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithSingleComplexObject);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             var headers = sut.GetHeaderStrings();
 
@@ -212,9 +219,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_single_complex_object_then_values_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithSingleComplexObject));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithSingleComplexObject);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -239,9 +248,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_multiple_simple_objects_then_headers_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithMultipleSimpleObjects));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithMultipleSimpleObjects);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             var headers = sut.GetHeaderStrings();
 
@@ -258,9 +269,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_multiple_simple_objects_then_values_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithMultipleSimpleObjects));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithMultipleSimpleObjects);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -302,9 +315,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_multiple_complex_objects_then_values_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithMultipleComplexObjects));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithMultipleComplexObjects);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -355,9 +370,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_objects_with_an_extra_property_then_throw()
         {
-            var deserializer = new Deserializer();
-
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithObjectsWithAnExtraProperty);
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithObjectsWithAnExtraProperty));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+            
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
 
@@ -369,9 +386,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_objects_missing_a_property_then_values_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithObjectsMissingAProperty));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithObjectsMissingAProperty);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -401,9 +420,11 @@ namespace TextTabulator.Adapters.YamlDotNetTests
         [Fact]
         public void When_yaml_is_objects_with_out_of_order_properties_then_values_returned()
         {
-            var deserializer = new Deserializer();
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithObjectsWithOutOfOrderProperties));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
 
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, YamlWithObjectsWithOutOfOrderProperties);
+            var sut = new YamlDotNetTabulatorAdapter(parser);
 
             _ = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -428,47 +449,6 @@ namespace TextTabulator.Adapters.YamlDotNetTests
                         j => Assert.Equal("66", j)
                     );
                 });
-        }
-
-        [Fact]
-        public void When_yaml_is_from_stringprovider_then_headers_returned()
-        {
-            StringProvider provider = () => YamlWithSingleSimpleObject;
-
-            var deserializer = new Deserializer();
-
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, provider);
-
-            var headers = sut.GetHeaderStrings();
-
-            Assert.NotNull(headers);
-            Assert.Collection(headers,
-                i => Assert.Equal("name", i),
-                i => Assert.Equal("weight", i),
-                i => Assert.Equal("diet", i),
-                i => Assert.Equal("extinction", i),
-                i => Assert.Equal("test", i)
-            );
-        }
-
-        [Fact]
-        public void When_yaml_is_from_textreader_then_headers_returned()
-        {
-            using var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(YamlWithSingleSimpleObject));
-            using var reader = new StreamReader(stream);
-            var deserializer = new Deserializer();
-            var sut = new YamlDotNetTabulatorAdapter(deserializer, reader);
-
-            var headers = sut.GetHeaderStrings();
-
-            Assert.NotNull(headers);
-            Assert.Collection(headers,
-                i => Assert.Equal("name", i),
-                i => Assert.Equal("weight", i),
-                i => Assert.Equal("diet", i),
-                i => Assert.Equal("extinction", i),
-                i => Assert.Equal("test", i)
-            );
         }
     }
 }

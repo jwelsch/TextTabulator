@@ -19,6 +19,10 @@ namespace TextTabulator.Adapters
             {
                 return "False";
             }
+            else if (value.Equals("null", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
 
             return value;
         }

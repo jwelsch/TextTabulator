@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using YamlDotNet.Serialization;
+using YamlDotNet.Core;
+using YamlDotNet.Core.Events;
 
 namespace TextTabulator.Adapters.YamlDotNet
 {
     /// <summary>
     /// Public interface for IYamlDotNetTabulatorAdapter.
     /// </summary>
-    public interface IYamlDotNetTabulatorAdapter : ITabulatorAdapter, IDisposable
+    public interface IYamlDotNetTabulatorAdapter : ITabulatorAdapter
     {
     }
 
@@ -28,157 +28,253 @@ namespace TextTabulator.Adapters.YamlDotNet
     /// </summary>
     public class YamlDotNetTabulatorAdapter : IYamlDotNetTabulatorAdapter
     {
-        private readonly Deserializer _yamlDotNetDeserializer;
-        private readonly TextReader _data;
-        private readonly bool _shouldDispose;
+        private enum NodeStatus
+        {
+            None,
+            Start,
+            End
+        }
+
+        private enum KeyValueStatus
+        {
+            None,
+            Key,
+            Value
+        }
+
+        private readonly Parser _parser;
         private readonly YamlDotNetTabulatorAdapterOptions _options;
         private readonly Dictionary<string, TableHeader> _headers = new();
+        private readonly List<string> _firstRow = new();
         private readonly IValueNormalizer _valueNormalizer = new ValueNormalizer();
+        private readonly int _targetDepth = 4; // Target depth for the key/value pairs that will be included in the table.
 
-        private IList<object>? _deserialized;
-        private bool _disposed;
+        private NodeStatus _streamStatus = NodeStatus.None;
+        private NodeStatus _documentStatus = NodeStatus.None;
+        private NodeStatus _sequenceStatus = NodeStatus.None;
+        private NodeStatus _mappingStatus = NodeStatus.None;
+        private int _row = 0;
+        private int _column = 0;
+        private int _currentDepth = 0;
 
-        public YamlDotNetTabulatorAdapter(Deserializer yamlDotNetDeserializer, StringProvider dataProvider, YamlDotNetTabulatorAdapterOptions? options = null)
-            : this(yamlDotNetDeserializer, new StringReader(dataProvider.Invoke()), options)
+        public YamlDotNetTabulatorAdapter(Parser parser, YamlDotNetTabulatorAdapterOptions? options = null)
         {
-            _shouldDispose = true;
-        }
-
-        public YamlDotNetTabulatorAdapter(Deserializer yamlDotNetDeserializer, TextReader dataProvider, YamlDotNetTabulatorAdapterOptions? options = null)
-        {
-            _yamlDotNetDeserializer = yamlDotNetDeserializer;
-            _data = dataProvider;
+            _parser = parser;
             _options = options ?? new YamlDotNetTabulatorAdapterOptions();
-        }
-
-        public YamlDotNetTabulatorAdapter(Deserializer yamlDotNetDeserializer, string inputData, YamlDotNetTabulatorAdapterOptions? options = null)
-            : this(yamlDotNetDeserializer, () => inputData, options)
-        {
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    // Dispose managed here.
-
-                    if (_shouldDispose)
-                    {
-                        _data.Dispose();
-                    }
-                }
-
-                // Dispose unmanaged here.
-
-                _disposed = true;
-            }
         }
 
         public IEnumerable<string>? GetHeaderStrings()
         {
             _headers.Clear();
-            _deserialized?.Clear();
+            _firstRow.Clear();
+            _row = 0;
+            _column = 0;
+            _currentDepth = 0;
 
-            var headers = new List<string>();
+            ParseLoop(
+                null,
+                m => false,
+                k => _headers.Add(k, new TableHeader(_options.NodeNameTransform.Apply(k), _column)),
+                v => _firstRow.Add(v)
+            );
 
-            _deserialized = (IList<object>?)_yamlDotNetDeserializer.Deserialize(_data);
-
-            if (_deserialized == null)
-            {
-                return null;
-            }
-
-            if (_deserialized.Count < 1)
-            {
-                return Array.Empty<string>();
-            }
-
-            var items = (IDictionary<object, object>?)_deserialized[0];
-
-            if (items == null)
-            {
-                return Array.Empty<string>();
-            }
-
-            var column = 0;
-
-            foreach (var item in items)
-            {
-                _headers.Add(item.Key?.ToString() ?? string.Empty, new TableHeader(_options.NodeNameTransform.Apply(item.Value?.ToString() ?? string.Empty), column++));
-            }
-
-            return items?.Select(i => i.Key.ToString() ?? string.Empty);
+            return _headers.Select(i => i.Value.TransformedName).ToArray();
         }
 
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
-            if (_deserialized == null || _deserialized.Count < 1)
-            {
-                return Array.Empty<IEnumerable<string>>();
-            }
+            var rowValues = new List<string[]>(new string[][] { _firstRow.ToArray() });
+            string[]? values = null;
+            var index = 0;
 
-            var rowValues = new List<string[]>();
-
-            for (var i = 0; i < _deserialized.Count; i++)
-            {
-                var row = (IDictionary<object, object>?)_deserialized[i] ?? throw new InvalidOperationException($"Deserialized row with index '{i}' was null.");
-
-                if (row.Count > _headers.Count)
+            ParseLoop(
+                e =>
                 {
-                    throw new InvalidOperationException($"The number of values '{row.Count}' in row with index '{i}' is greater than the number of headers '{_headers.Count}'.");
-                }
-
-                var col = 0;
-                var values = new string[_headers.Count];
-                Array.Fill(values, "");
-
-                foreach (var value in row)
+                    values = new string[_headers.Count];
+                    Array.Fill(values, string.Empty);
+                },
+                e =>
                 {
-                    var header = value.Key.ToString() ?? throw new InvalidOperationException($"Deserialized row value with row index '{i}' and column index '{col}' was null.");
-
-                    if (!_headers.TryGetValue(header, out var tableHeader))
+                    if (values == null)
                     {
-                        throw new InvalidOperationException($"Unknown header '{header}' encountered while parsing values.");
+                        throw new InvalidOperationException($"Values array was null while trying to store values - row: '{_row}'.");
                     }
 
-                    var type = value.Value?.GetType();
+                    rowValues.Add(values);
 
-                    if ((type?.IsClass ?? false) && type != typeof(string))
+                    return true;
+                },
+                k =>
+                {
+                    if (!_headers.TryGetValue(k, out var tableHeader))
                     {
-                        if (type == typeof(List<object>))
+                        throw new InvalidOperationException($"Unknown header '{k}' encountered while parsing values - row: '{_row}', column: '{_column}'.");
+                    }
+
+                    index = tableHeader.Index;
+                },
+                v =>
+                {
+                    if (values == null)
+                    {
+                        throw new InvalidOperationException($"Values array was null while trying to store value - row: '{_row}', column: '{_column}'.");
+                    }
+
+                    values[index] = v;
+                }
+            );
+
+            return rowValues;
+        }
+
+        private void ParseLoop(Action<MappingStart>? mappingStartAction, Func<MappingEnd, bool>? mappingEndAction, Action<string>? keyAction, Action<string>? valueAction)
+        {
+            var keyValueStatus = KeyValueStatus.None;
+
+            while (_parser.MoveNext())
+            {
+                var parsingEvent = _parser.Current;
+
+                //System.Diagnostics.Trace.WriteLine($"Parsing event: {parsingEvent?.ToString()}");
+
+                if (parsingEvent == null)
+                {
+                    continue;
+                }
+
+                _currentDepth += parsingEvent.NestingIncrease;
+
+                if (parsingEvent is StreamStart Start)
+                {
+                    _streamStatus = NodeStatus.Start;
+                }
+                else if (parsingEvent is DocumentStart documentStart)
+                {
+                    if (_streamStatus != NodeStatus.Start)
+                    {
+                        throw new InvalidOperationException($"Invalid stream status - expected '{NodeStatus.Start}', but found '{_streamStatus}'.");
+                    }
+
+                    _documentStatus = NodeStatus.Start;
+                }
+                else if (parsingEvent is SequenceStart sequenceStart)
+                {
+                    if (_currentDepth == _targetDepth - 1)
+                    {
+                        if (_documentStatus != NodeStatus.Start)
                         {
-                            values[tableHeader.Index] = "<YAML Array>";
+                            throw new InvalidOperationException($"Invalid document status - expected '{NodeStatus.Start}', but found '{_documentStatus}'.");
                         }
-                        else if (type == typeof(Dictionary<object, object>))
+
+                        _sequenceStatus = NodeStatus.Start;
+                    }
+                    else if (_currentDepth == _targetDepth + 1)
+                    {
+                        keyValueStatus = KeyValueStatus.Value;
+                        valueAction?.Invoke("<YAML Array>");
+                        _column++;
+                    }
+                }
+                else if (parsingEvent is MappingStart mappingStart)
+                {
+                    if (_currentDepth == _targetDepth)
+                    {
+                        if (_sequenceStatus != NodeStatus.Start)
                         {
-                            values[tableHeader.Index] = "<YAML Object>";
+                            throw new InvalidOperationException($"Invalid sequence status - expected '{NodeStatus.Start}', but found '{_sequenceStatus}' at row '{_row}'.");
                         }
-                        else
+
+                        _mappingStatus = NodeStatus.Start;
+
+                        mappingStartAction?.Invoke(mappingStart);
+                    }
+                    else if (_currentDepth == _targetDepth + 1)
+                    {
+                        keyValueStatus = KeyValueStatus.Value;
+                        valueAction?.Invoke("<YAML Object>");
+                        _column++;
+                    }
+                }
+                else if (parsingEvent is StreamEnd streamEnd)
+                {
+                    if (_streamStatus != NodeStatus.Start)
+                    {
+                        throw new InvalidOperationException($"Invalid stream status - expected '{NodeStatus.Start}', but found '{_streamStatus}'.");
+                    }
+
+                    _streamStatus = NodeStatus.End;
+                }
+                else if (parsingEvent is DocumentEnd documentEnd)
+                {
+                    if (_documentStatus != NodeStatus.Start)
+                    {
+                        throw new InvalidOperationException($"Invalid document status - expected '{NodeStatus.Start}', but found '{_documentStatus}'.");
+                    }
+
+                    _documentStatus = NodeStatus.End;
+                }
+                else if (parsingEvent is SequenceEnd sequenceEnd)
+                {
+                    if (_currentDepth == _targetDepth - 1)
+                    {
+                        if (_sequenceStatus != NodeStatus.Start)
                         {
-                            values[tableHeader.Index] = $"<Unknown data type '{type}'>";
+                            throw new InvalidOperationException($"Invalid sequence status - expected '{NodeStatus.Start}', but found '{_sequenceStatus}'.");
                         }
+
+                        _sequenceStatus = NodeStatus.End;
+                    }
+                }
+                else if (parsingEvent is MappingEnd mappingEnd)
+                {
+                    if (_currentDepth == _targetDepth - 1)
+                    {
+                        if (_mappingStatus != NodeStatus.Start)
+                        {
+                            throw new InvalidOperationException($"Invalid mapping status - expected '{NodeStatus.Start}', but found '{_mappingStatus}' at row '{_row}'.");
+                        }
+
+                        _mappingStatus = NodeStatus.End;
+                        var loop = mappingEndAction?.Invoke(mappingEnd) ?? true;
+
+                        _row++;
+
+                        if (!loop)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else if (parsingEvent is Scalar scalar
+                    && _currentDepth == _targetDepth)
+                {
+                    if (_mappingStatus != NodeStatus.Start)
+                    {
+                        throw new InvalidOperationException($"Invalid mapping status - expected '{NodeStatus.Start}', but found '{_mappingStatus}' at row '{_row}' and col '{_column}'.");
+                    }
+
+                    if (keyValueStatus == KeyValueStatus.None || keyValueStatus == KeyValueStatus.Value)
+                    {
+                        keyValueStatus = KeyValueStatus.Key;
+
+                        keyAction?.Invoke(scalar.Value);
+                    }
+                    else if (keyValueStatus == KeyValueStatus.Key)
+                    {
+                        keyValueStatus = KeyValueStatus.Value;
+
+                        valueAction?.Invoke(_valueNormalizer.Normalize(scalar.Value));
+
+                        _column++;
                     }
                     else
                     {
-                        values[tableHeader.Index] = _valueNormalizer.Normalize($"{value.Value}");
+                        throw new InvalidOperationException($"Unknown {nameof(KeyValueStatus)} value '{keyValueStatus}'.");
                     }
-
-                    col++;
                 }
 
-                rowValues.Add(values);
+                // Ignore unknown event types.
             }
-
-            return rowValues;
         }
     }
 }
