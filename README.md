@@ -23,7 +23,7 @@ Example table:
 ╚═════════════════╧═════════════╧═════════╧══════════╝
 ```
 
-The core project can be found here: [TextTabulator](/src/TextTabulator/README.md)
+The core project can be found here: [TextTabulator](https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator)
 
 There are also separate libraries that adapt different types of data to be consumed by the `TextTabulator` API. They can be found here:
 
