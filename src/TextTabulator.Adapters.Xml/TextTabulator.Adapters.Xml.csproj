@@ -18,15 +18,12 @@
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeProjectReferenceDlls</TargetsForTfmSpecificBuildOutput>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeReferenceAssemblies</TargetsForTfmSpecificContentInPackage>
-    <NoWarn>$(NoWarn);NU5131</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE">
@@ -38,15 +35,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-  <Target Name="IncludeProjectReferenceDlls" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-    <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'all'))" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubDirectory)" />
-    </ItemGroup>
-  </Target>
-  <!-- Add a ref folder to the package which only exposes the library so that the referenced class library doesn't get exposed. -->
-  <Target Name="IncludeReferenceAssemblies">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(TargetPath)" PackagePath="ref/$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
 </Project>
