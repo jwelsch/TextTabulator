@@ -196,6 +196,16 @@ namespace TextTabulator.Adapters.JsonTests
 ]
 """;
 
+        private readonly static string JsonWithObjectNotInAList =
+"""
+{
+    "name": "Tyrannosaurus Rex",
+    "weight": 6.7,
+    "diet": "Carnivore",
+    "extinction": 66
+}
+""";
+
         #endregion
 
         [Fact]
@@ -491,6 +501,34 @@ namespace TextTabulator.Adapters.JsonTests
                 i => Assert.Equal("weight", i),
                 i => Assert.Equal("diet", i),
                 i => Assert.Equal("extinction", i)
+            );
+        }
+
+        [Fact]
+        public void When_json_is_object_not_in_list_then_invalidoperationexception_thrown()
+        {
+            using var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithObjectNotInAList));
+            var sut = new JsonTabulatorAdapter(stream);
+
+            Assert.Throws<InvalidOperationException>(() => sut.GetHeaderStrings());
+        }
+
+        [Fact]
+        public void When_name_transform_used_then_transformed_headers_returned()
+        {
+            var transform = new CamelNameTransform();
+            var options = new JsonTabulatorAdapterOptions(transform);
+
+            var sut = new JsonTabulatorAdapter(JsonWithSingleSimpleObject, options);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("Name", i),
+                i => Assert.Equal("Weight", i),
+                i => Assert.Equal("Diet", i),
+                i => Assert.Equal("Extinction", i)
             );
         }
     }
