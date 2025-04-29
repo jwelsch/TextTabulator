@@ -284,10 +284,11 @@ public delegate void TableCallback(string text);
 
 Existing implementations are distributed in separate Nuget packages. More information can be found in their respective projects.
 
-- [CsvHelper adapter](../TextTabulator.Adapters.CsvHelper/README.md)
-- [JSON adapter](../TextTabulator.Adapters.Json/README.md)
-- [XML adapter](../TextTabulator.Adapters.Xml/README.md)
-- [Reflection adapter](../TextTabulator.Adapters.Reflection/README.md)
+- [CsvHelper adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
+- [JSON adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
+- [XML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
+- [YAML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
+- [Reflection adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
 
 ## Tabulation Options
 

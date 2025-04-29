@@ -461,7 +461,7 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_json_is_from_streamprovider_then_headers_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
+            using var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
             Func<Stream> provider = () => stream;
 
             var sut = new JsonTabulatorAdapter(provider);
@@ -480,7 +480,7 @@ namespace TextTabulator.Adapters.JsonTests
         [Fact]
         public void When_json_is_from_stream_then_headers_returned()
         {
-            var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
+            using var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithSingleSimpleObject));
             var sut = new JsonTabulatorAdapter(stream);
 
             var headers = sut.GetHeaderStrings();

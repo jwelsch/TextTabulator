@@ -1,78 +1,49 @@
-# TextTabulator.Adapters.Xml
+# TextTabulator.Adapters.YamlDotNet
 
-This is an auxillary library for TextTabulator that uses [System.Xml.XmlReader](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.Xml/src/System/Xml/Core/XmlReader.cs) to parse XML data. It can then provide the parsed XML data to TextTabulator for consumption.
+This is an auxillary library for TextTabulator that provides an integration with the popular [YamlDotNet](https://github.com/aaubry/YamlDotNet) library that allows TextTabulator to consume YAML data.
 
 ## Installation
 
 First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
 
-Install the TextTabulator.Adapters.Xml Nuget package in your project.
+Install the TextTabulator.Adapters.YamlDotNet Nuget package in your project.
 
 ```
-nuget install JWelsch.TextTabulator.Adapters.Xml
+nuget install JWelsch.TextTabulator.Adapters.YamlDotNet
 ```
 
-## How to use
+## How to Use
 
 You can call the code like this:
 
 ```
 using TextTabulator;
-using TextTabulator.Adapters.Xml;
+using TextTabulator.Adapters.YamlDotNet;
 
-var xmlData =
+var yamlData =
 """
-<?xml version="1.0" encoding="UTF-8"?>
-<dinosaurs>
-    <dinosaur>
-        <name>Tyrannosaurus Rex</name>
-        <weight>6.7</weight>
-        <diet>Carnivore</diet>
-        <extinction>66</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Triceratops</name>
-        <weight>8</weight>
-        <diet>Herbivore</diet>
-        <extinction>66</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Apatosaurus</name>
-        <weight>33</weight>
-        <diet>Herbivore</diet>
-        <extinction>147</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Archaeopteryx</name>
-        <weight>0.001</weight>
-        <diet>Omnivore</diet>
-        <extinction>147</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Anklyosaurus</name>
-        <weight>4.8</weight>
-        <diet>Herbivore</diet>
-        <extinction>66</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Stegosaurus</name>
-        <weight>3.8</weight>
-        <diet>Herbivore</diet>
-        <extinction>147</extinction>
-    </dinosaur>
-    <dinosaur>
-        <name>Hadrosaurus</name>
-        <weight>3</weight>
-        <diet>Herbivore</diet>
-        <extinction>66</extinction>
-    </dinosaur>
-</dinosaurs>
+- name: Tyrannosaurus Rex
+  weight: 6.7
+  diet: Carnivore
+  extinction: 66
+- name: Triceratops
+  weight: 8
+  diet: Herbivore
+  extinction: 66
+- name: Archaeopteryx
+  weight: 0.001
+  diet: Omnivore
+  extinction: 147
 """;
 
-var xmlAdapter = new XmlTabulatorAdapter(xmlData, true);
+using var stream = new MemoryStream(Encoding.UTF8.GetBytes(yamlData));
+using var reader = new StreamReader(stream);
+var parser = new Parser(reader);
+
+var yamlAdapter = new YamlDotNetTabulatorAdapter(parser);
 
 var tabulator = new Tabulator();
-var table = tabulator.Tabulate(xmlAdapter);
+var table = tabulator.Tabulate(yamlAdapter);
 
 Console.WriteLine(table);
 ```
@@ -80,7 +51,7 @@ Console.WriteLine(table);
 This will produce the output:
 ```
 -----------------------------------------------
-|name             |weight|diet     |extinction|
+|Name             |Weight|Diet     |Extinction|
 |-----------------+------+---------+----------|
 |Tyrannosaurus Rex|6.7   |Carnivore|66        |
 |-----------------+------+---------+----------|
@@ -98,34 +69,24 @@ This will produce the output:
 -----------------------------------------------
 ```
 
-## XML Format
+## YAML Format
 
-The `XmlTabulatorAdapter` can only parse XML data in a specific format. The XML data must be a node that is a list of homogenous XML nodes only. If the XML document root is not a node that is a list an exception will be thrown. If the XML nodes are not homogenous an exception will be thrown.
+The `YamlTabulatorAdapter` can only parse YAML data in a specific format. The YAML data must be a single sequence of homogeneous YAML mappings only.
 
 The data should be in the following format:
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>
-<list>
-    <object>
-        <value1>value1A</value1>
-        <value2>value2A</value2>
-    </object>
-    <object>
-        <value1>value1B</value1>
-        <value2>value2B</value2>
-    </object>
-    <object>
-        <value1>value1C</value1>
-        <value2>value2C</value2>
-    </object>
-    ...
-</list>
+- field1: value1A
+  field2: value2A
+- field1: value1B
+  field2: value2B
+- field1: value1C
+  field2: value2C
 ```
 
 ## Header Names
 
-When constructing the table, the names of the XML nodes are used as the header names. The names can be transformed by passing a transform as the `nameTransform` parameter in the `XmlTabulatorAdapterOptions` constructor.
+When constructing the table, the names of the YAML nodes are used as the header names. The names can be transformed by passing a transform as the `nameTransform` parameter in the `YamlTabulatorAdapterOptions` constructor.
 
 There are various transforms available to alter the property names:
 
@@ -137,33 +98,22 @@ There are various transforms available to alter the property names:
 - `CamelNameTransform`: Transform that, when given camel case names, can capitalize the first letter of words and insert separators.
 - `PascalNameTransform`: Transform that, when given Pascal case names, can capitalize the first letter of words and insert separators.
 
+
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.Xml.XmlTabulatorAdapter` class. `XmlTabulatorAdapter` derives from the `IXmlTabulatorAdapter` to allow easy mocking for testing.
+The API consits of the `TextTabulator.Adapters.YamlDotNet.YamlDotNetTabulatorAdapter` class. `YamlDotNetTabulatorAdapter` derives from the `IYamlDotNetTabulatorAdapter` to allow easy mocking for testing.
 
-### `TextTabulator.Adapters.Xml.XmlTabulatorAdapter`
+### `TextTabulator.Adapters.YamlDotNet.YamlDotNetTabulatorAdapter`
 
-The adapter class that accepts XML data and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
+The adapter class that accepts a `YamlDotNet` object and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
 
 **Constructors**
 
-> `public XmlTabulatorAdapter..ctor(Func<Stream> xmlStreamProvider, XmlTabulatorAdapterOptions options = default)`
+> `public YamlDotNetTabulatorAdapter(YamlDotNet.Core.Parser parser, YamlDotNetTabulatorAdapterOptions? options = null)`
 
 Parameters
-- `Func<Stream> xmlStreamProvider`: A method that returns a Stream containing UTF-8 encoded XML data.
-- `XmlTabulatorAdapterOptions options`: Options for the adapter.
-
-> `public XmlTabulatorAdapter..ctor(Stream xmlStream, XmlReaderOptions options = default)`
-
-Parameters
-- `Stream xmlStream`: A Stream containing UTF-8 encoded XML data.
-- `XmlReaderOptions options`: Options for the adapter.
-
-> `public XmlTabulatorAdapter..ctor(string xml, XmlReaderOptions options = default)`
-
-Parameters
-- `string xml`: A string containing raw XML data.
-- `XmlReaderOptions options`: Options for the adapter.
+- `YamlDotNet.Core.Parser parser`: A YamlDotNet.Core.Parser object with the YAML data to process.
+- `YamlTabulatorAdapterOptions options`: Options for the adapter.
 
 **Methods**
 
@@ -188,27 +138,22 @@ Parameters
 Return
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
 
-### `TextTabulator.Adapters.Xml.XmlTabulatorAdapterOptions`
+### `TextTabulator.Adapters.Yaml.YamlTabulatorAdapterOptions`
 
-Options to allow configuration of the XmlTabulatorAdapter class.
+Options to allow configuration of the YamlTabulatorAdapter class.
 
 **Constructors**
 
-> `public XmlTabulatorAdapterOptions(INameTransform? nameTransform = null, XmlReaderOptions xmlReaderOptions = default)`
+> `public YamlTabulatorAdapterOptions(INameTransform? nameTransform = null)`
 
 Parameters
-- `INameTransform? nameTransform`: Transform to apply to names. Passing null will cause the names to not be altered.
-- `XmlReaderOptions xmlReaderOptions`: Options that define customized behavior of the Utf8XmlReader that differs from the XML RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8XmlReader follows the XML RFC strictly; comments within the XML are invalid, and the maximum depth is 64.
+- `INameTransform? nodeNameTransform`: Transform to apply to YAML node names. Passing null will cause the YAML node names to not be altered.
 
 **Properties**
 
 > `INameTransform nameTransform { get; }`
 
 Gets the transform to apply to names.
-
-> `XmlReaderOptions XmlReaderOptions { get; }`
-
-Gets options that define customized behavior of the Utf8XmlReader that differs from the XML RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8XmlReader follows the XML RFC strictly; comments within the XML are invalid, and the maximum depth is 64.
 
 ### `INameTransform`
 
