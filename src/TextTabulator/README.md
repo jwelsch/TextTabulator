@@ -282,13 +282,26 @@ public delegate void TableCallback(string text);
 
 `TextTabulator` exposes the interface `ITabulatorAdapter`, which can be implemented to allow the `Tabulator.Tabulate` method to consume different types of data. There are existing implementations available for popular data types. Alternatively, this interface can be used to provide a custom implementation.
 
-Existing implementations are distributed in separate Nuget packages. More information can be found in their respective projects.
+The `ITabulatorAdapter` inteface can be found in a separate package:
+- [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters)
+- [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters)
 
-- [CsvHelper adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
-- [JSON adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
-- [XML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
-- [YAML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
-- [Reflection adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
+Existing implementations of `ITabulatorAdapter` for various common data formats are distributed in separate Nuget packages. More information can be found in their respective projects.
+- CsvHelper adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.CsvHelper)
+- JSON adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Json)
+- XML adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Xml)
+- YamlDotNet adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
+- Reflection adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
 
 ## Tabulation Options
 

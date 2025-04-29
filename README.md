@@ -28,11 +28,21 @@ The core project can be found here: [TextTabulator](https://github.com/jwelsch/T
 There are also separate libraries that adapt different types of data to be consumed by the `TextTabulator` API. They can be found here:
 
 `TextTabulator.Adapters`
-- [CsvHelper adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
-- [JSON adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
-- [XML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
-- [YAML adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
-- [Reflection adapter](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
+- CsvHelper adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.CsvHelper)
+- JSON adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Json)
+- XML adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Xml)
+- YamlDotNet adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
+- Reflection adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
 
 ---
 Copyright 2025 Justin Welsch
