@@ -117,10 +117,17 @@ namespace TextTabulator.Adapters.Xml
                         transformedHeaders.Add(transformed);
                         _headers.Add(rawHeader, new TableHeader(transformed, transformedHeaders.Count - 1));
                     }
-                    else if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Depth == depth - 1 && xmlReader.Name == name)
+                    else if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Name == name)
                     {
-                        // Once the end of the containing list node has been read, do not read any more nodes.
-                        break;
+                        if (xmlReader.Depth == depth - 1)
+                        {
+                            // Once the end of the containing list node has been read, do not read any more nodes.
+                            break;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"Unexpected end of element found.");
+                        }
                     }
                 }
             }

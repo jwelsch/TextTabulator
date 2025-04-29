@@ -230,6 +230,17 @@ namespace TextTabulator.Adapters.XmlTests
 </dinosaurs>
 """;
 
+        private readonly static string XmlWithObjectNotInAList =
+"""
+<?xml version="1.0" encoding="UTF-8"?>
+<dinosaur>
+    <name>Tyrannosaurus Rex</name>
+    <weight>6.7</weight>
+    <diet>Carnivore</diet>
+    <extinction>66</extinction>
+</dinosaur>
+""";
+
         #endregion
 
         [Fact]
@@ -620,6 +631,33 @@ namespace TextTabulator.Adapters.XmlTests
                     j => Assert.Equal("66", j)
                 );
             });
+        }
+
+        [Fact]
+        public void When_xml_is_object_not_in_a_list_then_invalidoperationexception_thrown()
+        {
+            var sut = new XmlTabulatorAdapter(XmlWithObjectNotInAList);
+
+            Assert.Throws<InvalidOperationException>(() => sut.GetHeaderStrings());
+        }
+
+        [Fact]
+        public void When_name_transform_used_then_transformed_headers_returned()
+        {
+            var transform = new CamelNameTransform();
+            var options = new XmlTabulatorAdapterOptions(transform);
+
+            var sut = new XmlTabulatorAdapter(XmlWithSingleSimpleObject, options);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("Name", i),
+                i => Assert.Equal("Weight", i),
+                i => Assert.Equal("Diet", i),
+                i => Assert.Equal("Extinction", i)
+            );
         }
     }
 }
