@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
     <PackageId>Jwelsch.$(AssemblyName)</PackageId>
     <Title>$(AssemblyName)</Title>
-    <Version>1.4.2</Version>
+    <Version>1.5.0</Version>
     <Authors>Jwelsch</Authors>
     <Company>Justin Welsch</Company>
     <Description>A .NET Standard 2.1 library that adapts XML data read by System.Xml.XmlReader to a format that can be consumed by TextTabulator.</Description>
@@ -14,19 +14,16 @@
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>table;tabulate;text;xml</PackageTags>
-    <AssemblyVersion>1.4.2.0</AssemblyVersion>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeProjectReferenceDlls</TargetsForTfmSpecificBuildOutput>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);IncludeReferenceAssemblies</TargetsForTfmSpecificContentInPackage>
-    <NoWarn>$(NoWarn);NU5131</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE">
@@ -38,15 +35,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-  <Target Name="IncludeProjectReferenceDlls" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-    <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'all'))" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubDirectory)" />
-    </ItemGroup>
-  </Target>
-  <!-- Add a ref folder to the package which only exposes the library so that the referenced class library doesn't get exposed. -->
-  <Target Name="IncludeReferenceAssemblies">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(TargetPath)" PackagePath="ref/$(TargetFramework)" />
-    </ItemGroup>
-  </Target>
 </Project>
