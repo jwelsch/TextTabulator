@@ -33,7 +33,7 @@ Hadrosaurus,3,Herbivore,66 mya
 
 using var textReader = new StringReader(filePath);
 using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
-var csvAdapter = new CsvHelperTabulatorAdapter(csvReader, true);
+var csvAdapter = new CsvHelperTabulatorAdapter(csvReader);
 
 var tabulator = new Tabulator();
 var table = tabulator.Tabulate(csvAdapter);
@@ -72,11 +72,11 @@ The adapter class that accepts a `CsvHelper` object and presents the data that i
 
 **Constructors**
 
-> `public CsvHelperTabulatorAdapter..ctor(CsvReader csvReader, bool hasHeaderRow)`
+> `public CsvHelperTabulatorAdapter..ctor(CsvReader csvReader, CsvHelperTabulatorAdapterOptions? options = null)`
 
 Parameters
 - `CsvReader csvReader`: The `CsvReader` object that will read the desired data.
-- `bool hasHeaderRow`: True if the CSV data to read has a header row, false if not.
+- `CsvHelperTabulatorAdapterOptions? options`: Options for the adapter.
 
 **Methods**
 
@@ -101,6 +101,190 @@ Parameters
 Return
 
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+### `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapterOptions`
+
+Options to allow configuration of the CsvHelperTabulatorAdapter class.
+
+**Constructors**
+
+> `public CsvHelperTabulatorAdapterOptions(INameTransform? nameTransform = null, bool hasHeaderRow = true)`
+
+Parameters
+- `INameTransform? nameTransform`: Transform to apply to names. Passing null will cause the names to not be altered.
+- `bool hasHeaderRow`: True if the CSV data contains a header row, false if not. Defaults to true.
+
+**Properties**
+
+> `INameTransform HeaderNameTransform { get; }`
+
+ Gets the transform to apply to CSV header names.
+
+> `bool HasHeaderRow { get; }`
+
+Gets whether or not the CSV data contains a header row. Defaults to true.
+
+### `INameTransform`
+
+Interface for defining a transform for a name.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `KebabNameTransform`
+
+A name transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
+
+**Constructors**
+
+`public KebabNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? dashReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? dashReplacement`: Specifies a character used to replace a dash. Pass in null to not replace a dash.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `SnakeNameTransform`
+
+A name transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
+
+**Constructors**
+
+`public SnakeNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? underscoreReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? underscoreReplacement`: Specifies a character used to replace an underscore. Pass in null to not replace an underscore.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `CamelNameTransform`
+
+A name transform that, when given camel case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PascalNameTransform`
+
+A name transform that, when given Pascal case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `MapNameTransform`
+
+A name transform that maps a name in JSON to a new name.
+
+**Constructors**
+
+`public MapNameTransform(IDictionary<string, string> map)`
+
+Parameters
+- `IDictionary<string, string> map`: The mapping of the existing names to the new names.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PassThruNameTransform`
+
+A name transform that does not alter the name.
+
+**Constructors**
+
+`public PassThruNameTransform()`
+
+Parameters
+- None
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
 
 ---
 Copyright 2025 Justin Welsch
