@@ -11,17 +11,17 @@ namespace TextTabulator.Adapters.CsvHelperTests
         {
             var rows = 0;
             var columns = 5;
-            var hasHeaderRow = true;
-            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, hasHeaderRow);
+            var options = new CsvHelperTabulatorAdapterOptions(null, true);
+            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, options.HasHeaderRow);
             using var textReader = new StringReader(csvData.Csv);
             using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 
-            var sut = new CsvHelperTabulatorAdapter(csvReader, hasHeaderRow);
+            var sut = new CsvHelperTabulatorAdapter(csvReader, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
 
-            Assert.False(values.Any());
+            Assert.Empty(values);
             Assert.NotNull(headers);
             Assert.Equal(columns, headers.Count());
 
@@ -37,12 +37,12 @@ namespace TextTabulator.Adapters.CsvHelperTests
         {
             var rows = 1;
             var columns = 5;
-            var hasHeaderRow = false;
-            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, hasHeaderRow);
+            var options = new CsvHelperTabulatorAdapterOptions(null, false);
+            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, options.HasHeaderRow);
             using var textReader = new StringReader(csvData.Csv);
             using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 
-            var sut = new CsvHelperTabulatorAdapter(csvReader, hasHeaderRow);
+            var sut = new CsvHelperTabulatorAdapter(csvReader, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -50,7 +50,7 @@ namespace TextTabulator.Adapters.CsvHelperTests
             Assert.Null(headers);
             Assert.Equal(rows, values.Count());
 
-            var ri = hasHeaderRow ? 1 : 0;
+            var ri = options.HasHeaderRow ? 1 : 0;
             foreach (var r in values)
             {
                 Assert.Equal(columns, r.Count());
@@ -70,12 +70,12 @@ namespace TextTabulator.Adapters.CsvHelperTests
         {
             var rows = 5;
             var columns = 5;
-            var hasHeaderRow = false;
-            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, hasHeaderRow);
+            var options = new CsvHelperTabulatorAdapterOptions(null, false);
+            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, options.HasHeaderRow);
             using var textReader = new StringReader(csvData.Csv);
             using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 
-            var sut = new CsvHelperTabulatorAdapter(csvReader, hasHeaderRow);
+            var sut = new CsvHelperTabulatorAdapter(csvReader, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -83,7 +83,7 @@ namespace TextTabulator.Adapters.CsvHelperTests
             Assert.Null(headers);
             Assert.Equal(rows, values.Count());
 
-            var ri = hasHeaderRow ? 1 : 0;
+            var ri = options.HasHeaderRow ? 1 : 0;
             foreach (var r in values)
             {
                 Assert.Equal(columns, r.Count());
@@ -103,12 +103,12 @@ namespace TextTabulator.Adapters.CsvHelperTests
         {
             var rows = 1;
             var columns = 5;
-            var hasHeaderRow = true;
-            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, hasHeaderRow);
+            var options = new CsvHelperTabulatorAdapterOptions(null, true);
+            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, options.HasHeaderRow);
             using var textReader = new StringReader(csvData.Csv);
             using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 
-            var sut = new CsvHelperTabulatorAdapter(csvReader, hasHeaderRow);
+            var sut = new CsvHelperTabulatorAdapter(csvReader);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -122,7 +122,7 @@ namespace TextTabulator.Adapters.CsvHelperTests
                 Assert.Equal(csvData.Data[0][i++], h);
             }
 
-            var ri = hasHeaderRow ? 1 : 0;
+            var ri = options.HasHeaderRow ? 1 : 0;
             foreach (var r in values)
             {
                 Assert.Equal(columns, r.Count());
@@ -142,12 +142,12 @@ namespace TextTabulator.Adapters.CsvHelperTests
         {
             var rows = 5;
             var columns = 5;
-            var hasHeaderRow = true;
-            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, hasHeaderRow);
+            var options = new CsvHelperTabulatorAdapterOptions(null, true);
+            var csvData = CsvDataGenerator.GenerateCsv(columns, rows, options.HasHeaderRow);
             using var textReader = new StringReader(csvData.Csv);
             using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 
-            var sut = new CsvHelperTabulatorAdapter(csvReader, hasHeaderRow);
+            var sut = new CsvHelperTabulatorAdapter(csvReader);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -161,7 +161,7 @@ namespace TextTabulator.Adapters.CsvHelperTests
                 Assert.Equal(csvData.Data[0][i++], h);
             }
 
-            var ri = hasHeaderRow ? 1 : 0;
+            var ri = options.HasHeaderRow ? 1 : 0;
             foreach (var r in values)
             {
                 Assert.Equal(columns, r.Count());
@@ -174,6 +174,55 @@ namespace TextTabulator.Adapters.CsvHelperTests
 
                 ri++;
             }
+        }
+
+        [Fact]
+        public void When_name_transform_used_and_headers_exist_then_transformed_headers_returned()
+        {
+            var transform = new CamelNameTransform();
+            var options = new CsvHelperTabulatorAdapterOptions(transform, true);
+
+            var csvData =
+"""
+name,weight,diet,extinction
+Tyrannosaurus Rex,6.7,Carnivore,66
+""";
+
+            using var textReader = new StringReader(csvData);
+            using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
+
+            var sut = new CsvHelperTabulatorAdapter(csvReader, options);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("Name", i),
+                i => Assert.Equal("Weight", i),
+                i => Assert.Equal("Diet", i),
+                i => Assert.Equal("Extinction", i)
+            );
+        }
+
+        [Fact]
+        public void When_name_transform_used_and_headers_do_not_exist_then_no_headers_returned()
+        {
+            var transform = new CamelNameTransform();
+            var options = new CsvHelperTabulatorAdapterOptions(transform, false);
+
+            var csvData =
+"""
+Tyrannosaurus Rex,6.7,Carnivore,66
+""";
+
+            using var textReader = new StringReader(csvData);
+            using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
+
+            var sut = new CsvHelperTabulatorAdapter(csvReader, options);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.Null(headers);
         }
     }
 }

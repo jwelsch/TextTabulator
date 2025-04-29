@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TextTabulator.Adapters.CsvHelper
 {
@@ -18,17 +19,17 @@ namespace TextTabulator.Adapters.CsvHelper
     public class CsvHelperTabulatorAdapter : ICsvHelperTabulatorAdapter
     {
         private readonly CsvReader _csvReader;
-        private readonly bool _hasHeaderRow;
+        private readonly CsvHelperTabulatorAdapterOptions _options;
 
         /// <summary>
         /// CsvHelperTabulatorAdapter constructor.
         /// </summary>
         /// <param name="csvReader">CsvReader object that will provide the parsed CSV data.</param>
-        /// <param name="hasHeaderRow">True if the CSV data contains a header row, false if not.</param>
-        public CsvHelperTabulatorAdapter(CsvReader csvReader, bool hasHeaderRow)
+        /// <param name="options">Options for the adapter.</param>
+        public CsvHelperTabulatorAdapter(CsvReader csvReader, CsvHelperTabulatorAdapterOptions? options = null)
         {
             _csvReader = csvReader;
-            _hasHeaderRow = hasHeaderRow;
+            _options = options ?? new CsvHelperTabulatorAdapterOptions();
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace TextTabulator.Adapters.CsvHelper
         /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
-            if (!_hasHeaderRow)
+            if (!_options.HasHeaderRow)
             {
                 return null;
             }
@@ -49,7 +50,7 @@ namespace TextTabulator.Adapters.CsvHelper
                 throw new Exception($"No header row found.");
             }
 
-            return _csvReader.HeaderRecord;
+            return _csvReader.HeaderRecord.Select(i => _options.HeaderNameTransform.Apply(i)).ToArray();
         }
 
         /// <summary>
