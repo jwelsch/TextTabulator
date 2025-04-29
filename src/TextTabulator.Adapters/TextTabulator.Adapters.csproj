@@ -2,7 +2,34 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <PackageId>Jwelsch.$(AssemblyName)</PackageId>
+    <Title>$(AssemblyName)</Title>
+    <Authors>Jwelsch</Authors>
+    <Company>Justin Welsch</Company>
+    <Description>A .NET Standard 2.1 library that contains types used to transform data so it can be consumed by TextTabulator.</Description>
+    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <PackageProjectUrl>https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>table;tabulate;text</PackageTags>
     <AssemblyVersion>1.4.2.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>1.4.2</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
