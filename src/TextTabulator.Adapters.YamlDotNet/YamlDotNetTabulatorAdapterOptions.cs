@@ -14,9 +14,9 @@
         /// Creates an object of type JsonTabulatorAdapterOptions.
         /// </summary>
         /// <param name="nodeNameTransform">Transform to apply to YAML node names. Passing null will cause the YAML node names to not be altered.</param>
-        public YamlDotNetTabulatorAdapterOptions(INameTransform? propertyNameTransform = null)
+        public YamlDotNetTabulatorAdapterOptions(INameTransform? nodeNameTransform = null)
         {
-            NodeNameTransform = propertyNameTransform ?? new PassThruNameTransform();
+            NodeNameTransform = nodeNameTransform ?? new PassThruNameTransform();
         }
     }
 }

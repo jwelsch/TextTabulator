@@ -57,12 +57,21 @@ namespace TextTabulator.Adapters.YamlDotNet
         private int _column = 0;
         private int _currentDepth = 0;
 
+        /// <summary>
+        /// Creates an object of type YamlDotNetTabulatorAdapter.
+        /// </summary>
+        /// <param name="parser">A YamlDotNet.Core.Parser object with the YAML data to process.</param>
+        /// <param name="options">Options for the adapter.</param>
         public YamlDotNetTabulatorAdapter(Parser parser, YamlDotNetTabulatorAdapterOptions? options = null)
         {
             _parser = parser;
             _options = options ?? new YamlDotNetTabulatorAdapterOptions();
         }
 
+        /// <summary>
+        /// Called to return the header strings, if any, of the data. If the data does not contain headers, then null should be returned.
+        /// </summary>
+        /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
             _headers.Clear();
@@ -81,6 +90,11 @@ namespace TextTabulator.Adapters.YamlDotNet
             return _headers.Select(i => i.Value.TransformedName).ToArray();
         }
 
+        /// <summary>
+        /// Called to return the row values. The outer enumeration is the rows, while the inner enumeration contains the values in each row.
+        /// Can be an empty enumeration if the data contains no rows.
+        /// </summary>
+        /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
             var rowValues = new List<string[]>(new string[][] { _firstRow.ToArray() });

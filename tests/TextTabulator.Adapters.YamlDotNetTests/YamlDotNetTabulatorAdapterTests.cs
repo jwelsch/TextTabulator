@@ -481,5 +481,29 @@ teeth:
 
             Assert.Throws<InvalidOperationException>(() => sut.GetHeaderStrings());
         }
+
+        [Fact]
+        public void When_name_transform_used_then_transformed_headers_returned()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithSingleSimpleObject));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+
+            var transform = new CamelNameTransform();
+            var options = new YamlDotNetTabulatorAdapterOptions(transform);
+
+            var sut = new YamlDotNetTabulatorAdapter(parser, options);
+
+            var headers = sut.GetHeaderStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("Name", i),
+                i => Assert.Equal("Weight", i),
+                i => Assert.Equal("Diet", i),
+                i => Assert.Equal("Extinction", i),
+                i => Assert.Equal("Test", i)
+            );
+        }
     }
 }
