@@ -130,7 +130,7 @@ When constructing the table, the names of the XML nodes are used as the header n
 There are various transforms available to alter the property names:
 
 - `PassThruNameTransform`: Transform that does not alter the name. This is the default.
-- `MapXmlTransform`: Transform that maps a name to a new name.
+- `MapNameTransform`: Transform that maps a name to a new name.
 - `KebabNameTransform`: Transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
 - `SnakeNameTransform`: Transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
 - `DotNameTransform`: Transform that, when given names separated by dots ('.'), can capitalize the first letter of words and replace dots.
