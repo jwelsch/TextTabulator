@@ -143,6 +143,25 @@ namespace TextTabulator.Adapters.YamlDotNetTests
   weight: 8
 """;
 
+        private readonly static string YamlWithObjectsNotInASequence =
+"""
+name: Tyrannosaurus Rex
+weight: 6.7
+diet: Carnivore
+extinction: 66
+formations:
+  - Hell Creek
+  - Lance
+  - North Horn
+  - Javelina
+bipedal: true
+teeth:
+  shape: conical
+  length: 30
+  serrated: true
+  count: 60
+""";
+
         #endregion
 
         [Fact]
@@ -449,6 +468,18 @@ namespace TextTabulator.Adapters.YamlDotNetTests
                         j => Assert.Equal("66", j)
                     );
                 });
+        }
+
+        [Fact]
+        public void When_yaml_is_object_not_in_a_sequence_then_invalidoperationexception_thrown()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithObjectsNotInASequence));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+
+            var sut = new YamlDotNetTabulatorAdapter(parser);
+
+            Assert.Throws<InvalidOperationException>(() => sut.GetHeaderStrings());
         }
     }
 }
