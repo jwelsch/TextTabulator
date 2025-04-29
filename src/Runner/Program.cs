@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Runner;
+using System.Text;
 using TextTabulator;
 using TextTabulator.Adapters;
 using TextTabulator.Adapters.Json;
@@ -36,16 +37,16 @@ internal class Program
         //    new string[] { "XXXValue1C", "Value2C", "Value3C" },
         //};
 
-        //        var csvData =
-        //        @"Name,Weight (tons),Diet,Extinction
-        //Tyrannosaurus Rex,6.7,Carnivore,66 mya
-        //Triceratops,8,Herbivore,66 mya
-        //Apatosaurus,33,Herbivore,147 mya
-        //Archaeopteryx,0.001,Omnivore,147 mya
-        //Anklyosaurus,4.8,Herbivore,66 mya
-        //Stegosaurus,3.8,Herbivore,147 mya
-        //Hadrosaurus,3,Herbivore,66 mya
-        //";
+        var csvData =
+@"Name,Weight (tons),Diet,Extinction
+Tyrannosaurus Rex,6.7,Carnivore,66 mya
+Triceratops,8,Herbivore,66 mya
+Apatosaurus,33,Herbivore,147 mya
+Archaeopteryx,0.001,Omnivore,147 mya
+Anklyosaurus,4.8,Herbivore,66 mya
+Stegosaurus,3.8,Herbivore,147 mya
+Hadrosaurus,3,Herbivore,66 mya
+";
 
         //        using var textReader = new StringReader(csvData);
         //        using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
@@ -62,15 +63,19 @@ internal class Program
         //    new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66),
         //};
 
-        using var stream = new FileStream(@"D:\Justin\Projects\Data\books.xml", FileMode.Open, FileAccess.Read);
+        //using var stream = new FileStream(@"D:\Justin\Projects\Data\books.xml", FileMode.Open, FileAccess.Read);
 
-        var options = new XmlTabulatorAdapterOptions(new SnakeNameTransform(), new System.Xml.XmlReaderSettings
-        {
-            ConformanceLevel = System.Xml.ConformanceLevel.Fragment,
-        });
+        //var options = new XmlTabulatorAdapterOptions(new SnakeNameTransform(), new System.Xml.XmlReaderSettings
+        //{
+        //    ConformanceLevel = System.Xml.ConformanceLevel.Fragment,
+        //});
 
-        var adapter = new XmlTabulatorAdapter(stream, options);
+        //var adapter = new XmlTabulatorAdapter(stream, options);
         //var adapter = new JsonTabulatorAdapter(stream);
+
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(csvData));
+        using var reader = new StreamReader(stream);
+        var adapter = new EZCsvAdapter(reader, true);
 
         //var individualAlignments = new CellAlignment[][]
         //{
