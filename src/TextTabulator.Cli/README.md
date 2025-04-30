@@ -30,7 +30,7 @@ The core project can be found here: [TextTabulator](https://github.com/jwelsch/T
 # Command Line Arguments
 
 ```
-texttabulator-cli.exe -in-path "C:\Temp\data.csv" -out-path "C:\Temp\table.txt"
+texttabulator-cli.exe --in-path "C:\Temp\data.csv" --out-path "C:\Temp\table.txt"
 ```
 
 ---
