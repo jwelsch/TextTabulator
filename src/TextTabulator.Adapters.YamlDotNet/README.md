@@ -36,9 +36,8 @@ var yamlData =
   extinction: 147
 """;
 
-using var stream = new MemoryStream(Encoding.UTF8.GetBytes(yamlData));
-using var reader = new StreamReader(stream);
-var parser = new Parser(reader);
+using var textReader = new StringReader(csvData);
+var parser = new Parser(textReader);
 
 var yamlAdapter = new YamlDotNetTabulatorAdapter(parser);
 

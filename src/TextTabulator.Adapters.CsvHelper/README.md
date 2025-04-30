@@ -31,7 +31,7 @@ Stegosaurus,3.8,Herbivore,147 mya
 Hadrosaurus,3,Herbivore,66 mya
 ";
 
-using var textReader = new StringReader(filePath);
+using var textReader = new StringReader(csvData);
 using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 var csvAdapter = new CsvHelperTabulatorAdapter(csvReader);
 
