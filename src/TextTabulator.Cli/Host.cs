@@ -90,9 +90,14 @@ namespace TextTabulator.Cli
                     _consoleWrap.WriteLine($"Writing table to file: {commandLineOptions.OutputPath}");
                 }
 
+                var options = new TabulatorOptions
+                {
+                    Styling = commandLineOptions.Styling == TableStyling.Ascii ? new AsciiTableStyling() : new UnicodeTableStyling()
+                };
+
                 var tabulator = new Tabulator();
 
-                tabulator.Tabulate(adapter, callback);
+                tabulator.Tabulate(adapter, callback, options);
             }
             finally
             {

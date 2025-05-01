@@ -16,7 +16,8 @@
 
             string? inputPath = null;
             string? outputPath = null;
-            var dataType = DataType.Unknown;
+            DataType? dataType = null;
+            var tableStyling = TableStyling.Ascii;
 
             for (var i = 0; i < args.Length; i++)
             {
@@ -47,8 +48,21 @@
 
                     if (!TryMatchDataType(args[i + 1], out dataType))
                     {
-                        var types = Enum.GetNames<DataType>();
-                        throw new ArgumentException($"Unknown data type value '{args[i + 1]}'. Must be one of: {string.Join(',', types)}.", nameof(args));
+                        throw new ArgumentException($"Unknown data type value '{args[i + 1]}'. Must be one of: {string.Join(',', Enum.GetNames<DataType>())}.", nameof(args));
+                    }
+
+                    i++;
+                }
+                else if (args[i].Equals("--styling", StringComparison.OrdinalIgnoreCase) || args[i].Equals("-s", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        throw new ArgumentException($"No value for styling was found.", nameof(args));
+                    }
+
+                    if (!Enum.TryParse(args[i + 1], true, out tableStyling))
+                    {
+                        throw new ArgumentException($"Unknown styling value '{args[i + 1]}'. Must be one of: {string.Join(',', Enum.GetNames<TableStyling>())}.", nameof(args));
                     }
 
                     i++;
@@ -64,22 +78,22 @@
                 throw new ArgumentException($"Required argument \"--input-path\" not found.", nameof(args));
             }
 
-            if (dataType == DataType.Unknown)
+            if (dataType == null)
             {
                 var extension = Path.GetExtension(inputPath);
 
-                if (!TryMatchDataType(extension, out dataType))
+                if (!TryMatchDataType(extension, out dataType) || dataType == null)
                 {
                     throw new ArgumentException($"Data type could not be determined. Specify a file with a known extension or use the \"--data-type\" argument.", nameof(args));
                 }
             }
 
-            return new CommandLineOptions(dataType, inputPath, outputPath);
+            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling);
         }
 
-        private static bool TryMatchDataType(string input, out DataType dataType)
+        private static bool TryMatchDataType(string input, out DataType? dataType)
         {
-            dataType = DataType.Unknown;
+            dataType = null;
 
             if (string.IsNullOrEmpty(input))
             {
@@ -94,7 +108,14 @@
                 return true;
             }
 
-            return Enum.TryParse(format, true, out dataType);
+            if (!Enum.TryParse<DataType>(format, true, out var dt))
+            {
+                return false;
+            }
+
+            dataType = dt;
+
+            return true;
         }
     }
 }

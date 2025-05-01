@@ -2,10 +2,15 @@
 {
     public enum DataType
     {
-        Unknown,
         Csv,
         Json,
         Xml,
         Yaml
+    }
+
+    public enum TableStyling
+    {
+        Ascii,
+        Unicode
     }
 }
