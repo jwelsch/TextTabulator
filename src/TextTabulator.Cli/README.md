@@ -49,7 +49,7 @@ The following values are valid:
 - `YAML`: YAML data
 - `YML`: YAML data
 
-Example:
+Usage example:
 ```
 texttabulator-cli.exe --input-path C:\Some\Path\data.txt --data-type CSV
 ```
@@ -72,7 +72,7 @@ If `--data-type` is not specified, the type of data will be inferred from the fi
 - `.yaml`: YAML data
 - `.yml`: YAML data
 
-Example:
+Usage example:
 ```
 texttabulator-cli.exe --input-path C:\Some\Path\data.csv
 ```
@@ -87,9 +87,55 @@ This argument is optional. Short notation: `-o`.
 
 This specifies what file path to write the table to. The file path should be the next argument on the command line. The table will be encoded as UTF-8 characters. If this argument is not included, the table will be written to the console.
 
-Example:
+Usage example:
 ```
 texttabulator-cli.exe --input-path "C:\Some\Path\data.csv" --output-path "C:\Some\Path\table.txt"
+```
+
+### -s
+
+Short version of `--styling`.
+
+### --styling
+
+This argument is optional. Short notation: `-s`.
+
+This specifies which characters set to use to create the table. The value should be the next argument on the command line. If this argument is not included, the table will be created using ASCII characters.
+
+Valid values are:
+
+- `ASCII`: Uses characters within the traditional range of ASCII values, which are 0-255.
+- `Unicode`: Uses characters outside the traditional range of ASCII values. Sometimes called "Box Drawing" characters, they are in the range U+2500 to U+250C.
+
+Usage example:
+```
+texttabulator-cli.exe --input-path "C:\Some\Path\data.csv" --styling Unicode
+```
+
+ASCII example table:
+```
+-------------------------
+|Header1|Header2|Header3|
+|-------+-------+-------|
+|value1A|value2A|value3A|
+|-------+-------+-------|
+|value1B|value2B|value3B|
+|-------+-------+-------|
+|value1C|value2C|value3C|
+-------------------------
+```
+
+Unicode example table:
+```
+╔═══════╤═══════╤═══════╗
+║Header1│Header2│Header3║
+╠═══════╪═══════╪═══════╣
+║value1A│value2A│value3A║
+╟───────┼───────┼───────╢
+║value1B│value2B│value3B║
+╟───────┼───────┼───────╢
+║value1C│value2C│value3C║
+╚═══════╧═══════╧═══════╝
 ```
 
 ---
