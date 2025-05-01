@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TextTabulator.Cli;
+using TextTabulator.Cli.Wraps;
 
 #region Dependency Injection
 
@@ -30,18 +31,35 @@ internal class Program
 {
     private static int Main(string[] args)
     {
-        var sp = RegisterAppServices();
+        try
+        {
+            var sp = RegisterAppServices();
 
-        // Not great to pass in the DI container, but meh.
-        var host = new TextTabulator.Cli.Host(sp);
+            var host = new Host(
+                sp.GetRequiredService<IConsoleWrap>(),
+                sp.GetRequiredService<IFileWrap>(),
+                sp.GetRequiredService<IStreamWriterWrapFactory>(),
+                sp.GetRequiredService<ICommandLineParser>()
+            );
 
-        return host.Run(args);
+            return host.Run(args);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+
+        return -1;
     }
 
     private static IServiceProvider RegisterAppServices()
     {
         var services = new ServiceCollection();
 
+        services.AddTransient<IFileWrap, FileWrap>();
+        services.AddTransient<IStreamWriterWrapFactory, StreamWriterWrapFactory>();
+        services.AddTransient<IFileStreamWrapFactory, FileStreamWrapFactory>();
+        services.AddTransient<IConsoleWrap, ConsoleWrap>();
         services.AddTransient<ICommandLineParser, CommandLineParser>();
 
         return services.BuildServiceProvider();

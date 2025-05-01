@@ -1,6 +1,6 @@
 ﻿namespace TextTabulator.Cli
 {
-    internal interface ICommandLineOptions
+    public interface ICommandLineOptions
     {
         DataType AdapterType { get; }
 
@@ -9,7 +9,7 @@
         string? OutputPath { get; }
     }
 
-    internal class CommandLineOptions : ICommandLineOptions
+    public class CommandLineOptions : ICommandLineOptions
     {
         public DataType AdapterType { get; }
 

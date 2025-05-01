@@ -1,6 +1,6 @@
 ﻿namespace TextTabulator.Cli
 {
-    internal enum DataType
+    public enum DataType
     {
         Unknown,
         Csv,

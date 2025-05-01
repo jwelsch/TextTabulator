@@ -1,11 +1,11 @@
 ﻿namespace TextTabulator.Cli
 {
-    internal interface ICommandLineParser
+    public interface ICommandLineParser
     {
         ICommandLineOptions Parse(string[] args);
     }
 
-    internal class CommandLineParser : ICommandLineParser
+    public class CommandLineParser : ICommandLineParser
     {
         public ICommandLineOptions Parse(string[] args)
         {
