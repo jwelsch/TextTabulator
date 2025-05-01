@@ -22,12 +22,12 @@ public enum Diet
 {
    Carnivore,
    Herbivore,
-   Omnivore,
+   Omnivore
 }
 
 public class Dinosaur
 {
-   public string Name { get; set; } = string.Empty;
+   public string Name { get; set; };
 
    public double Weight { get; set; }
 
@@ -110,7 +110,7 @@ Parameters
 > `public ReflectionTabulatorAdapter..ctor(T item, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)`
 
 Parameters
-- `T items`: A single item to display in a table.
+- `T item`: A single item to display in a table.
 - `TypeMembers typeMembers`: The kind of type members to include in the table.
 - `AccessModifiers accessModifiers`: Specifies the allowed access modifier(s) of the type members to include in the table.
 
@@ -143,18 +143,15 @@ Return
 Enumeration that specifies the type members to include in the table.
 
 Values
-- Properties = 0x01: Include property members.
-- Fields = 0x10: Include all field members, except backing fields.
-- PropertiesAndFields = Properties | Fields: Include both property members and field members (except backing fields).
+- `Properties`: Include property members.
+- `Fields`: Include all field members, except backing fields.
+- `PropertiesAndFields` = `Properties` | `Fields`: Include both property members and field members (except backing fields).
 
 ### `TextTabulator.Adapters.Reflection.AccessModifiers`
 
 Enumeration that specifies the allowed access modifier(s) of the type members to include in the table.
 
 Values
-- Public = 0x01: Members with the public access modifier.
-- NonPublic = 0x10: Members with a non-public access modifier.
-- PublicAndNonPublic = Public | NonPublic: Members with both public and non-public access modifiers.
-
----
-Copyright 2025 Justin Welsch
+- `Public`: Members with the public access modifier.
+- `NonPublic`: Members with a non-public access modifier.
+- `PublicAndNonPublic`= `Public` | `NonPublic`: Members with both public and non-public access modifiers.

@@ -285,6 +285,3 @@ Parameters
 
 Return
 - `string`: The transformed name.
-
----
-Copyright 2025 Justin Welsch

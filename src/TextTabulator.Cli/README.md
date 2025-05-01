@@ -1,6 +1,6 @@
 # TextTabulator.Cli
 
-TextTabulator.Cli is a .NET application that allows command line access to `TextTabulator` functionality. `TextTabulator` is a .NET Standard 2.1 library that will format data into a `string` that, when printed, will be in the form of a table. TextTabulator is designed to be simple and lightweight. Just call the `Tabulator.Tabulate` method with a collection of strings and it will do the rest.
+TextTabulator.Cli is a .NET application that allows command line access to `TextTabulator` functionality. `TextTabulator` is a .NET Standard 2.1 library that will format data into a `string` that, when printed, will be in the form of a table.
 
 Example table:
 ```
@@ -43,11 +43,67 @@ This specifies the format of the data in the file specified by `--input-path`. T
 
 The following values are valid:
 
-- `CSV`: Comma separated values data
-- `JSON`: JSON data
-- `XML`: XML data
-- `YAML`: YAML data
-- `YML`: YAML data
+- `CSV`
+- `JSON`
+- `XML`
+- `YAML`
+- `YML`
+
+Only certain forms of the data formats are supported.
+
+**CSV**
+
+No restrictions.
+
+**JSON**
+
+```
+[
+  {
+    "field1": value1A,
+    "field2": "value2A"
+  },
+  {
+    "field1": value1B,
+    "field2": "value2B"
+  },
+  {
+    "field1": value1C,
+    "field2": "value2C"
+  }
+]
+```
+
+**XML**
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+    <object>
+        <value1>value1A</value1>
+        <value2>value2A</value2>
+    </object>
+    <object>
+        <value1>value1B</value1>
+        <value2>value2B</value2>
+    </object>
+    <object>
+        <value1>value1C</value1>
+        <value2>value2C</value2>
+    </object>
+</list>
+```
+
+**YAML**
+
+```
+- field1: value1A
+  field2: value2A
+- field1: value1B
+  field2: value2B
+- field1: value1C
+  field2: value2C
+```
 
 Usage example:
 ```
@@ -137,6 +193,3 @@ Unicode example table:
 ║value1C│value2C│value3C║
 ╚═══════╧═══════╧═══════╝
 ```
-
----
-Copyright 2025 Justin Welsch
