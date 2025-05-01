@@ -15,6 +15,19 @@ namespace TextTabulator.CliTests
         }
 
         [Fact]
+        public void When_args_has_unknown_argument_then_throw_argumentexception()
+        {
+            var args = new string[]
+            {
+                "--this-is-an-unknown-argument"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
         public void When_args_has_input_path_with_no_value_then_throw_argumentexception()
         {
             var args = new string[]
@@ -70,6 +83,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Csv, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -88,6 +102,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -106,6 +121,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Xml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -124,6 +140,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Yaml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -142,6 +159,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Yaml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -160,6 +178,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -179,6 +198,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Csv, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -198,6 +218,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -217,6 +238,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Xml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -236,6 +258,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Yaml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -255,6 +278,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Yaml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -274,6 +298,22 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Yaml, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+        }
+
+        [Fact]
+        public void When_args_has_input_path_with_value_with_csv_extension_and_data_type_is_unknown_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--data-type", "TXT"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
         }
 
         [Fact]
@@ -309,6 +349,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Csv, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Equal(outputPath, result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -347,6 +388,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Equal(outputPath, result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -368,6 +410,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Equal(outputPath, result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
         }
 
         [Fact]
@@ -387,7 +430,92 @@ namespace TextTabulator.CliTests
         }
 
         [Fact]
-        public void When_args_has_output_path_with_value_and_data_type_with_value_input_path_with_value_and_then_return_commandlineoptions()
+        public void When_args_has_input_path_with_value_and_styling_with_no_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--styling"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_styling_with_no_value_and_input_path_with_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--styling",
+                "--input-path", inputPath
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_input_path_with_value_and_styling_with_unknown_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--styling", "this-is-an-unknown-style"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_input_path_with_value_and_styling_with_unicode_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--styling", TableStyling.Unicode.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Unicode, result.Styling);
+        }
+
+        [Fact]
+        public void When_args_has_input_path_with_value_and_styling_with_ascii_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--styling", TableStyling.Ascii.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+        }
+
+        [Fact]
+        public void When_args_has_output_path_with_value_and_data_type_with_value_and_styling_with_value_and_input_path_with_value_then_return_commandlineoptions()
         {
             var inputPath = @"C:\Some\Path\data.json";
             var outputPath = @"C:\Some\Path\table.txt";
@@ -395,6 +523,7 @@ namespace TextTabulator.CliTests
             {
                 "--output-path", outputPath,
                 "--data-type", DataType.Json.ToString(),
+                "--styling", TableStyling.Unicode.ToString(),
                 "--input-path", inputPath,
             };
 
@@ -405,10 +534,11 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Equal(outputPath, result.OutputPath);
+            Assert.Equal(TableStyling.Unicode, result.Styling);
         }
 
         [Fact]
-        public void When_args_has_i_value_and_o_with_value_and_d_with_value_then_return_commandlineoptions()
+        public void When_args_has_i_value_and_o_with_value_and_d_with_value_and_s_with_value_then_return_commandlineoptions()
         {
             var inputPath = @"C:\Some\Path\data.json";
             var outputPath = @"C:\Some\Path\table.txt";
@@ -416,7 +546,8 @@ namespace TextTabulator.CliTests
             {
                 "-i", inputPath,
                 "-o", outputPath,
-                "-d", DataType.Json.ToString()
+                "-d", DataType.Json.ToString(),
+                "-s", TableStyling.Unicode.ToString(),
             };
 
             var sut = new CommandLineParser();
@@ -426,6 +557,7 @@ namespace TextTabulator.CliTests
             Assert.Equal(DataType.Json, result.AdapterType);
             Assert.Equal(inputPath, result.InputPath);
             Assert.Equal(outputPath, result.OutputPath);
+            Assert.Equal(TableStyling.Unicode, result.Styling);
         }
     }
 }
