@@ -58,7 +58,6 @@ internal class Program
 
         services.AddTransient<IFileWrap, FileWrap>();
         services.AddTransient<IStreamWriterWrapFactory, StreamWriterWrapFactory>();
-        services.AddTransient<IFileStreamWrapFactory, FileStreamWrapFactory>();
         services.AddTransient<IConsoleWrap, ConsoleWrap>();
         services.AddTransient<ICommandLineParser, CommandLineParser>();
 
