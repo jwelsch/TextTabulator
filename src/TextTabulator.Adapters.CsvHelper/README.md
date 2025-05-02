@@ -17,6 +17,8 @@ nuget install JWelsch.TextTabulator.Adapters.CsvHelper
 You can call the code like this:
 
 ```
+using CsvHelper;
+using System.IO;
 using TextTabulator;
 using TextTabulator.Adapters.CsvHelper;
 
