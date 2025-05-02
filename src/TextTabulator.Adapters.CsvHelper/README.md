@@ -110,10 +110,10 @@ Options to allow configuration of the CsvHelperTabulatorAdapter class.
 
 **Constructors**
 
-> `public CsvHelperTabulatorAdapterOptions(INameTransform? nameTransform = null, bool hasHeaderRow = true)`
+> `public CsvHelperTabulatorAdapterOptions(INameTransform? headerNameTransform = null, bool hasHeaderRow = true)`
 
 Parameters
-- `INameTransform? nameTransform`: Transform to apply to names. Passing null will cause the names to not be altered.
+- `INameTransform? headerNameTransform`: Transform to apply to CSV header names. Passing null will cause the CSV header names to not be altered.
 - `bool hasHeaderRow`: True if the CSV data contains a header row, false if not. Defaults to true.
 
 **Properties**
