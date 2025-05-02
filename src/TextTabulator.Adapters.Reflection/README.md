@@ -92,27 +92,25 @@ This will produce the output:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.ReflectionTabulatorAdapter<T>` class. `ReflectionTabulatorAdapter<T>` derives from the `IReflectionTabulatorAdapter<T>` to allow easy mocking for testing.
+The API consists of the `TextTabulator.Adapters.ReflectionTabulatorAdapter<T>` class. `ReflectionTabulatorAdapter<T>` derives from the `IReflectionTabulatorAdapter<T>` to allow easy mocking for testing.
 
 ### `TextTabulator.Adapters.Reflection.ReflectionTabulatorAdapter<T>`
 
-The adapter class that accepts an enumeration of objects and presents them in a format that `TextTabulator.Tabulate` can consume.
+Class that implements the `ITabulatorAdapter` interface in order to adapt types to be consumed by the `Tabulator.Tabulate` method.
 
 **Constructors**
 
-> `public ReflectionTabulatorAdapter..ctor(IEnumerable<T> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)`
+> `public ReflectionTabulatorAdapter..ctor(IEnumerable<T> items, ReflectionTabulatorAdapterOptions? options = null)`
 
 Parameters
 - `IEnumerable<T> items`: The collection of items to display as a table.
-- `TypeMembers typeMembers`: The kind of type members to include in the table.
-- `AccessModifiers accessModifiers`: Specifies the allowed access modifier(s) of the type members to include in the table.
+- `ReflectionTabulatorAdapterOptions? options`: Options for the adapter.
 
-> `public ReflectionTabulatorAdapter..ctor(T item, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)`
+> `public ReflectionTabulatorAdapter..ctor(T item, ReflectionTabulatorAdapterOptions? options = null)`
 
 Parameters
 - `T item`: A single item to display in a table.
-- `TypeMembers typeMembers`: The kind of type members to include in the table.
-- `AccessModifiers accessModifiers`: Specifies the allowed access modifier(s) of the type members to include in the table.
+- `ReflectionTabulatorAdapterOptions? options`: Options for the adapter.
 
 **Methods**
 
@@ -137,6 +135,195 @@ Parameters
 Return
 
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+### `TextTabulator.Adapters.Reflection.ReflectionTabulatorAdapterOptions`
+
+Options to allow configuration of the ReflectionTabulatorAdapter class.
+
+**Constructors**
+
+> `public ReflectionTabulatorAdapterOptions(INameTransform? memberNameTransform = null, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)`
+
+Parameters
+- `INameTransform? memberNameTransform`: Transform to apply to type member names. Passing null will cause the member names to not be altered.
+- `TypeMembers typeMembers`: Specifies which type members to include in the output.
+- `AccessModifiers accessModifiers`: Specifies the desired access modifier(s) of the type members to include in the output.
+
+**Properties**
+
+> `INameTransform MemeberNameTransform { get; }`
+
+Gets the transform to apply to type member names.
+
+> `TypeMembers TypeMembers { get; }`
+
+Gets which type members to include in the output.
+
+> `AccessModifiers AccessModifiers { get; }`
+
+Gets the desired access modifier(s) of the type members to include in the output.
+
+### `INameTransform`
+
+Interface for defining a transform for a name.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `KebabNameTransform`
+
+A name transform that, when given kebab case names, can capitalize the first letter of words and replace dashes.
+
+**Constructors**
+
+`public KebabNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? dashReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? dashReplacement`: Specifies a character used to replace a dash. Pass in null to not replace a dash.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `SnakeNameTransform`
+
+A name transform that, when given snake case names, can capitalize the first letter of words and replace underscores.
+
+**Constructors**
+
+`public SnakeNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? underscoreReplacement = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? underscoreReplacement`: Specifies a character used to replace an underscore. Pass in null to not replace an underscore.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `CamelNameTransform`
+
+A name transform that, when given camel case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PascalNameTransform`
+
+A name transform that, when given Pascal case names, can capitalize the first letter of words and insert separators.
+
+**Constructors**
+
+`public CamelNameTransform(bool capitalizeFirstLetterOfFirstWord = true, bool capitalizeFirstLetterOfSubsequentWords = true, char? separator = ' ')`
+
+Parameters
+- `bool capitalizeFirstLetterOfFirstWord`: True to capitalize the first letter of the first word, false otherwise.
+- `bool capitalizeFirstLetterOfSubsequentWords`: True to capitalize the first letter of subsequent words, false otherwise.
+- `char? separator`: Specifies a character used as a separator. Pass in null to not use a separator.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `MapNameTransform`
+
+A name transform that maps a name in JSON to a new name.
+
+**Constructors**
+
+`public MapNameTransform(IDictionary<string, string> map)`
+
+Parameters
+- `IDictionary<string, string> map`: The mapping of the existing names to the new names.
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
+
+### `PassThruNameTransform`
+
+A name transform that does not alter the name.
+
+**Constructors**
+
+`public PassThruNameTransform()`
+
+Parameters
+- None
+
+**Methods**
+
+> `string Apply(string name)`
+
+Applies the transform to the name.
+
+Parameters
+- `string name`: Name upon which to apply the tranform.
+
+Return
+- `string`: The transformed name.
 
 ### `TextTabulator.Adapters.Reflection.TypeMembers`
 

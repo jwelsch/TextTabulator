@@ -111,7 +111,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass2>(items, TypeMembers.Properties, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass2>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -128,7 +130,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass1>(items, TypeMembers.Properties, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass1>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -147,7 +151,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new( "Hello World", 789, new string[] { "noo", "buzz" }),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass3>(items, TypeMembers.Fields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass3>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -195,7 +201,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass5>(items, TypeMembers.Fields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass5>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -212,7 +220,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass1>(items, TypeMembers.Fields, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass1>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -246,7 +256,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, TypeMembers.PropertiesAndFields);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -307,7 +319,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, TypeMembers.PropertiesAndFields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -360,7 +374,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 }
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -406,7 +422,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 }
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestClass7>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass7>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -539,7 +557,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct2>(items, TypeMembers.Properties, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct2>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -556,7 +576,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct1>(items, TypeMembers.Properties, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct1>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -575,7 +597,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new( "Hello World", 789, new string[] { "noo", "buzz" }),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct3>(items, TypeMembers.Fields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct3>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -623,7 +647,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct5>(items, TypeMembers.Fields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct5>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -640,7 +666,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 new(),
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct1>(items, TypeMembers.Fields, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Fields, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct1>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -674,7 +702,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct6>(items, TypeMembers.PropertiesAndFields);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct6>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -735,7 +765,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct6>(items, TypeMembers.PropertiesAndFields, AccessModifiers.NonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields, AccessModifiers.NonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct6>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -787,7 +819,9 @@ namespace TextTabulator.Adapters.ReflectionTests
                 }
             };
 
-            var sut = new ReflectionTabulatorAdapter<TestStruct7>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct7>(items, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -834,6 +868,78 @@ namespace TextTabulator.Adapters.ReflectionTests
                 i => Assert.Equal(nameof(TestClass2.StringProperty), i),
                 i => Assert.Equal(nameof(TestClass2.IntProperty), i),
                 i => Assert.Equal(nameof(TestClass2.EnumerableProperty), i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(item.StringProperty, j),
+                    j => Assert.Equal(item.IntProperty.ToString(), j),
+                    j => Assert.Equal(item.EnumerableProperty.ToString(), j),
+                }),
+            });
+        }
+
+        [Fact]
+        public void When_called_with_single_struct_item_then_data_is_returned()
+        {
+            var item = new TestStruct2
+            {
+                StringProperty = "Hello",
+                IntProperty = 123,
+                EnumerableProperty = new string[] { "foo", "bar" },
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct2>(item);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestStruct2.StringProperty), i),
+                i => Assert.Equal(nameof(TestStruct2.IntProperty), i),
+                i => Assert.Equal(nameof(TestStruct2.EnumerableProperty), i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(item.StringProperty, j),
+                    j => Assert.Equal(item.IntProperty.ToString(), j),
+                    j => Assert.Equal(item.EnumerableProperty.ToString(), j),
+                }),
+            });
+        }
+
+        [Fact]
+        public void When_called_with_name_transform_then_data_is_returned()
+        {
+            var item = new TestClass2
+            {
+                StringProperty = "Hello",
+                IntProperty = 123,
+                EnumerableProperty = new string[] { "foo", "bar" },
+            };
+
+            var transform = new SnakeNameTransform();
+
+            var options = new ReflectionTabulatorAdapterOptions(transform);
+
+            var sut = new ReflectionTabulatorAdapter<TestClass2>(item, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(transform.Apply(nameof(TestClass2.StringProperty)), i),
+                i => Assert.Equal(transform.Apply(nameof(TestClass2.IntProperty)), i),
+                i => Assert.Equal(transform.Apply(nameof(TestClass2.EnumerableProperty)), i),
             });
 
             Assert.Collection(values, new Action<IEnumerable<string>>[]

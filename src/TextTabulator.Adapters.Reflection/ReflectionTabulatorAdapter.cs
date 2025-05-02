@@ -57,7 +57,7 @@ namespace TextTabulator.Adapters.Reflection
     }
 
     /// <summary>
-    /// Class that implements the ITabulatorAdapter interface in order to adapt an enumeration of types to be consumed by Tabulator.Tabulate.
+    /// Class that implements the ITabulatorAdapter interface in order to adapt types to be consumed by the Tabulator.Tabulate method.
     /// The type 'T' will be reflected and the names of its properties and/or fields will be adapted to headers. The values contained
     /// in each object in the enumeration will be adapted to the row values.
     /// </summary>
@@ -65,8 +65,7 @@ namespace TextTabulator.Adapters.Reflection
     public class ReflectionTabulatorAdapter<T> : IReflectionTabulatorAdapter
     {
         private readonly IEnumerable<T> _items;
-        private readonly TypeMembers _typeMembers;
-        private readonly AccessModifiers _accessModifiers;
+        private readonly ReflectionTabulatorAdapterOptions _options;
 
         private PropertyInfo[]? _propertyInfos;
         private FieldInfo[]? _fieldInfos;
@@ -75,23 +74,20 @@ namespace TextTabulator.Adapters.Reflection
         /// ReflectionTabulatorAdapter constructor that takes an enumerable.
         /// </summary>
         /// <param name="items">Enumerable of items to adapt.</param>
-        /// <param name="typeMembers">Specifies which type members to include in the output.</param>
-        /// <param name="accessModifiers">Specifies the type members with the specified access modifiers to include in the output.</param>
-        public ReflectionTabulatorAdapter(IEnumerable<T> items, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
+        /// <param name="options">Options for the adapter.</param>
+        public ReflectionTabulatorAdapter(IEnumerable<T> items, ReflectionTabulatorAdapterOptions? options = null)
         {
             _items = items;
-            _typeMembers = typeMembers;
-            _accessModifiers = accessModifiers;
+            _options = options ?? new ReflectionTabulatorAdapterOptions();
         }
 
         /// <summary>
         /// ReflectionTabulatorAdapter constructor that takes an enumerable.
         /// </summary>
         /// <param name="item">Item to adapt.</param>
-        /// <param name="typeMembers">Specifies which type members to include in the output.</param>
-        /// <param name="accessModifiers">Specifies the type members with the specified access modifiers to include in the output.</param>
-        public ReflectionTabulatorAdapter(T item, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)
-            : this(new T[] { item }, typeMembers, accessModifiers)
+        /// <param name="options">Options for the adapter.</param>
+        public ReflectionTabulatorAdapter(T item, ReflectionTabulatorAdapterOptions? options = null)
+            : this(new T[] { item }, options)
         {
         }
 
@@ -99,16 +95,16 @@ namespace TextTabulator.Adapters.Reflection
         {
             Type? type = null;
             var bindingFlags = BindingFlags.Instance
-                | ((_accessModifiers & AccessModifiers.Public) == 0 ? 0 : BindingFlags.Public)
-                | ((_accessModifiers & AccessModifiers.NonPublic) == 0 ? 0 : BindingFlags.NonPublic);
+                | ((_options.AccessModifiers & AccessModifiers.Public) == 0 ? 0 : BindingFlags.Public)
+                | ((_options.AccessModifiers & AccessModifiers.NonPublic) == 0 ? 0 : BindingFlags.NonPublic);
 
-            if ((_typeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
+            if ((_options.TypeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
             {
                 type ??= typeof(T);
                 _propertyInfos = type.GetProperties(bindingFlags).Where(i => !i.GetCustomAttributes<TabulatorIgnoreAttribute>().Any()).ToArray();
             }
 
-            if ((_typeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
+            if ((_options.TypeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
             {
                 type ??= typeof(T);
                 // Ignore backing fields.
