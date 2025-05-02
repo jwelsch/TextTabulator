@@ -343,7 +343,90 @@ namespace TextTabulator.Adapters.ReflectionTests
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], stringFieldName), j),
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], intFieldName)?.ToString(), j),
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], enumerableFieldName)?.ToString(), j),
-                }),
+                })
+            });
+        }
+
+        [Fact]
+        public void When_called_with_publicandnonpublic_access_and_with_class_with_public_properties_and_private_fields_then_return_data()
+        {
+            var items = new TestClass6[]
+            {
+                new("Hello", 123, new string[] { "foo", "bar" })
+                {
+                    StringProperty = "World",
+                    IntProperty = 456,
+                    EnumerableProperty = new string[] { "oof", "rab" },
+                }
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TestClass6>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            var stringFieldName = "_stringField";
+            var intFieldName = "_intField";
+            var enumerableFieldName = "_enumerableField";
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestClass6.StringProperty), i),
+                i => Assert.Equal(nameof(TestClass6.IntProperty), i),
+                i => Assert.Equal(nameof(TestClass6.EnumerableProperty), i),
+                i => Assert.Equal(stringFieldName, i),
+                i => Assert.Equal(intFieldName, i),
+                i => Assert.Equal(enumerableFieldName, i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(items[0].StringProperty, j),
+                    j => Assert.Equal(items[0].IntProperty.ToString(), j),
+                    j => Assert.Equal(items[0].EnumerableProperty.ToString(), j),
+                    j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[0], stringFieldName), j),
+                    j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[0], intFieldName)?.ToString(), j),
+                    j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[0], enumerableFieldName)?.ToString(), j),
+                })
+            });
+        }
+
+        [Fact]
+        public void When_called_with_tabulatorignoreattribute_on_members_and_with_class_then_data_returned()
+        {
+            var items = new TestClass7[]
+            {
+                new("Hello", 123)
+                {
+                    StringProperty = "World",
+                    IntProperty = 456
+                }
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TestClass7>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            var intFieldName = "_intField";
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestClass7.StringProperty), i),
+                i => Assert.Equal(intFieldName, i)
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(items[0].StringProperty, j),
+                    j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[0], intFieldName)?.ToString(), j)
+                })
             });
         }
 
@@ -689,6 +772,42 @@ namespace TextTabulator.Adapters.ReflectionTests
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], intFieldName)?.ToString(), j),
                     j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[2], enumerableFieldName)?.ToString(), j),
                 }),
+            });
+        }
+
+        [Fact]
+        public void When_called_with_tabulatorignoreattribute_on_members_and_with_struct_then_data_returned()
+        {
+            var items = new TestStruct7[]
+            {
+                new("Hello", 123)
+                {
+                    StringProperty = "World",
+                    IntProperty = 456
+                }
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TestStruct7>(items, TypeMembers.PropertiesAndFields, AccessModifiers.PublicAndNonPublic);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            var intFieldName = "_intField";
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestStruct7.StringProperty), i),
+                i => Assert.Equal(intFieldName, i)
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(items[0].StringProperty, j),
+                    j => Assert.Equal(PrivateMemberGetter.GetFieldValue(items[0], intFieldName)?.ToString(), j)
+                })
             });
         }
 

@@ -1,4 +1,6 @@
-﻿namespace TextTabulator.Adapters.ReflectionTests
+﻿using TextTabulator.Adapters.Reflection;
+
+namespace TextTabulator.Adapters.ReflectionTests
 {
     internal class TestClass1
     {
@@ -66,6 +68,26 @@
             _stringField = stringField;
             _intField = intField;
             _enumerableField = enumerableField;
+        }
+    }
+
+    internal class TestClass7
+    {
+#pragma warning disable IDE0052 // Remove unread private members
+        [TabulatorIgnore]
+        private readonly string _stringField;
+        private readonly int _intField;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        public string StringProperty { get; set; } = string.Empty;
+
+        [TabulatorIgnore]
+        public int IntProperty { get; set; }
+
+        public TestClass7(string stringField, int intField)
+        {
+            _stringField = stringField;
+            _intField = intField;
         }
     }
 
@@ -147,6 +169,26 @@
             _stringField = stringField;
             _intField = intField;
             _enumerableField = enumerableField;
+        }
+    }
+
+    internal struct TestStruct7
+    {
+#pragma warning disable IDE0052 // Remove unread private members
+        [TabulatorIgnore]
+        private readonly string _stringField;
+        private readonly int _intField;
+#pragma warning restore IDE0052 // Remove unread private members
+
+        public string StringProperty { get; set; } = string.Empty;
+
+        [TabulatorIgnore]
+        public int IntProperty { get; set; }
+
+        public TestStruct7(string stringField, int intField)
+        {
+            _stringField = stringField;
+            _intField = intField;
         }
     }
 }
