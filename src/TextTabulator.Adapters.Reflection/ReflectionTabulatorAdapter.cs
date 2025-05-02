@@ -105,14 +105,14 @@ namespace TextTabulator.Adapters.Reflection
             if ((_typeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
             {
                 type ??= typeof(T);
-                _propertyInfos = type.GetProperties(bindingFlags);
+                _propertyInfos = type.GetProperties(bindingFlags).Where(i => !i.GetCustomAttributes<TabulatorIgnoreAttribute>().Any()).ToArray();
             }
 
             if ((_typeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
             {
                 type ??= typeof(T);
                 // Ignore backing fields.
-                _fieldInfos = type.GetFields(bindingFlags).Where(i => !i.Name.StartsWith("<") || !i.Name.Contains(">k__BackingField")).ToArray();
+                _fieldInfos = type.GetFields(bindingFlags).Where(i => (!i.Name.StartsWith("<") || !i.Name.Contains(">k__BackingField")) && !i.GetCustomAttributes<TabulatorIgnoreAttribute>().Any()).ToArray();
             }
         }
 
@@ -179,9 +179,9 @@ namespace TextTabulator.Adapters.Reflection
 
                 if (_fieldInfos != null)
                 {
-                    for (var i = propertyCount; i < fieldCount; i++)
+                    for (var i = propertyCount; i < fieldCount + propertyCount; i++)
                     {
-                        row[i] = _fieldInfos[i].GetValue(item).ToString();
+                        row[i] = _fieldInfos[i - propertyCount].GetValue(item).ToString();
                     }
                 }
 
