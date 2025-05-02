@@ -194,17 +194,17 @@ Options to allow configuration of the XmlTabulatorAdapter class.
 
 **Constructors**
 
-> `public XmlTabulatorAdapterOptions(INameTransform? nameTransform = null, XmlReaderOptions xmlReaderOptions = default)`
+> `public XmlTabulatorAdapterOptions(INameTransform? nodeNameTransform = null, XmlReaderOptions xmlReaderOptions = default)`
 
 Parameters
-- `INameTransform? nameTransform`: Transform to apply to names. Passing null will cause the names to not be altered.
+- `INameTransform? nodeNameTransform`: Transform to apply to XML node names. Passing null will cause the XML node names to not be altered.
 - `XmlReaderOptions xmlReaderOptions`: Options that define customized behavior of the Utf8XmlReader that differs from the XML RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8XmlReader follows the XML RFC strictly; comments within the XML are invalid, and the maximum depth is 64.
 
 **Properties**
 
-> `INameTransform nameTransform { get; }`
+> `INameTransform NodeNameTransform { get; }`
 
-Gets the transform to apply to names.
+Gets the transform to apply to XML node names.
 
 > `XmlReaderOptions XmlReaderOptions { get; }`
 

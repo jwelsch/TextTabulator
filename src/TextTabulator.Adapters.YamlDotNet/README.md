@@ -161,7 +161,7 @@ Options to allow configuration of the YamlTabulatorAdapter class.
 
 **Constructors**
 
-> `public YamlTabulatorAdapterOptions(INameTransform? nameTransform = null)`
+> `public YamlTabulatorAdapterOptions(INameTransform? nodeNameTransform = null)`
 
 Parameters
 - `INameTransform? nodeNameTransform`: Transform to apply to YAML node names. Passing null will cause the YAML node names to not be altered.
@@ -170,7 +170,7 @@ Parameters
 
 > `INameTransform nameTransform { get; }`
 
-Gets the transform to apply to names.
+Gets the transform to apply to YAML node names.
 
 ### `INameTransform`
 

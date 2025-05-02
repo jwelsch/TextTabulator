@@ -190,10 +190,10 @@ Options to allow configuration of the JsonTabulatorAdapter class.
 
 **Constructors**
 
-> `public JsonTabulatorAdapterOptions(INameTransform? nameTransform = null, JsonReaderOptions jsonReaderOptions = default)`
+> `public JsonTabulatorAdapterOptions(INameTransform? propertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)`
 
 Parameters
-- `INameTransform? nameTransform`: Transform to apply to names. Passing null will cause the names to not be altered.
+- `INameTransform? propertyNameTransform`: Transform to apply to JSON property names. Passing null will cause the JSON property names to not be altered.
 - `JsonReaderOptions jsonReaderOptions`: Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.
 
 **Properties**
