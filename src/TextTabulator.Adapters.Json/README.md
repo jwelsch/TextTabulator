@@ -135,7 +135,7 @@ There are various transforms available to alter the names:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.Json.JsonTabulatorAdapter` class. `JsonTabulatorAdapter` derives from the `IJsonTabulatorAdapter` to allow easy mocking for testing.
+The API consists of the `TextTabulator.Adapters.Json.JsonTabulatorAdapter` class. `JsonTabulatorAdapter` derives from the `IJsonTabulatorAdapter` to allow easy mocking for testing.
 
 ### `TextTabulator.Adapters.Json.JsonTabulatorAdapter`
 

@@ -66,7 +66,7 @@ This will produce the output:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
+The API consists of the `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter` class. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
 
 ### `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter`
 

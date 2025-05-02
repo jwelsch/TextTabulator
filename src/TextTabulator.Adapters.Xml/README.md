@@ -139,7 +139,7 @@ There are various transforms available to alter the property names:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.Xml.XmlTabulatorAdapter` class. `XmlTabulatorAdapter` derives from the `IXmlTabulatorAdapter` to allow easy mocking for testing.
+The API consists of the `TextTabulator.Adapters.Xml.XmlTabulatorAdapter` class. `XmlTabulatorAdapter` derives from the `IXmlTabulatorAdapter` to allow easy mocking for testing.
 
 ### `TextTabulator.Adapters.Xml.XmlTabulatorAdapter`
 
