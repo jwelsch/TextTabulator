@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>texttabulator-cli</AssemblyName>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TextTabulator.Adapters.CsvHelper\TextTabulator.Adapters.CsvHelper.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters.Json\TextTabulator.Adapters.Json.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters.Xml\TextTabulator.Adapters.Xml.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters.YamlDotNet\TextTabulator.Adapters.YamlDotNet.csproj" />
+    <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
+    <ProjectReference Include="..\TextTabulator\TextTabulator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -17,6 +17,8 @@ nuget install JWelsch.TextTabulator.Adapters.CsvHelper
 You can call the code like this:
 
 ```
+using CsvHelper;
+using System.IO;
 using TextTabulator;
 using TextTabulator.Adapters.CsvHelper;
 
@@ -31,7 +33,7 @@ Stegosaurus,3.8,Herbivore,147 mya
 Hadrosaurus,3,Herbivore,66 mya
 ";
 
-using var textReader = new StringReader(filePath);
+using var textReader = new StringReader(csvData);
 using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
 var csvAdapter = new CsvHelperTabulatorAdapter(csvReader);
 
@@ -285,6 +287,3 @@ Parameters
 
 Return
 - `string`: The transformed name.
-
----
-Copyright 2025 Justin Welsch

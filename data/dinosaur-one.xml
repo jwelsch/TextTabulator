@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dinosaurs>
+    <dinosaur>
+        <name>Tyrannosaurus Rex</name>
+        <weight>6.7</weight>
+        <diet>Carnivore</diet>
+        <extinction>66</extinction>
+        <test />
+    </dinosaur>
+</dinosaurs>

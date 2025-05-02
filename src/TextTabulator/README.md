@@ -499,7 +499,7 @@ An example table looks like:
 -------------------------
 ```
 
-`UnicodeTableStyling` uses character values that are outside of the traditional ASCII range. There are Unicode characters that are specifically designed to create tables, which is what the properties in `UnicodeTableStyling` default to.
+`UnicodeTableStyling` uses character values that are outside of the traditional ASCII range. There are Unicode characters that are specifically designed to create tables. Sometimes called "Box Drawing" characters, they are in the range U+2500 to U+250C. These are what the properties in `UnicodeTableStyling` default to.
 
 You can set this styling with the following code:
 
@@ -542,6 +542,3 @@ var options = new TabulatorOptions
 
 var table = tabulator.Tabulate(headers, values, options);
 ```
-
----
-Copyright 2025 Justin Welsch

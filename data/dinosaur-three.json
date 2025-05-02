@@ -1,0 +1,67 @@
+[
+    {
+        "name": "Tyrannosaurus Rex",
+        "weight": 6.7,
+        "diet": "Carnivore",
+        "extinction": 66,
+        "formations":
+        [
+            "Hell Creek",
+            "Lance",
+            "North Horn",
+            "Javelina"
+        ],
+        "bipedal": true,
+        "teeth":
+        {
+            "shape": "conical",
+            "length": 30,
+            "serrated": true,
+            "count": 60
+        },
+        "test": null
+    },
+    {
+        "name": "Triceratops",
+        "weight": 8,
+        "diet": "Herbivore",
+        "extinction": 66,
+        "formations":
+        [
+            "Evanston",
+            "Scollard",
+            "Laramie",
+            "Lance",
+            "Denver",
+            "Hell Creek"
+        ],
+        "bipedal": false,
+        "teeth":
+        {
+            "shape": "battery",
+            "length": 4.5,
+            "serrated": false,
+            "count": 800
+        },
+        "test": null
+    },
+    {
+        "name": "Archaeopteryx",
+        "weight": 0.001,
+        "diet": "Omnivore",
+        "extinction": 147,
+        "formations":
+        [
+            "Solnhofen Limestone"
+        ],
+        "bipedal": true,
+        "teeth":
+        {
+            "shape": "conical",
+            "length": 0.1,
+            "serrated": false,
+            "count": 8
+        },
+        "test": null
+    }
+]

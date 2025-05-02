@@ -1,0 +1,48 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "profiles": {
+    "csv-to-console": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\""
+    },
+    "json-to-console": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.json\""
+    },
+    "xml-to-console": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\books-large-dataset.xml\""
+    },
+    "yaml-to-console": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.yaml\""
+    },
+    "csv-to-file": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\" --output-path \"..\\..\\..\\..\\..\\data\\table.txt\""
+    },
+    "json-to-file": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.json\" --output-path \"..\\..\\..\\..\\..\\data\\table.txt\""
+    },
+    "xml-to-file": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\books-large-dataset.xml\" --output-path \"..\\..\\..\\..\\..\\data\\table.txt\""
+    },
+    "yaml-to-file": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.yaml\" --output-path \"..\\..\\..\\..\\..\\data\\table.txt\""
+    },
+    "csv-unicode-styling": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\" --styling Unicode"
+    }
+  }
+}

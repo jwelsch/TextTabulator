@@ -17,8 +17,10 @@ nuget install JWelsch.TextTabulator.Adapters.YamlDotNet
 You can call the code like this:
 
 ```
+using System.IO;
 using TextTabulator;
 using TextTabulator.Adapters.YamlDotNet;
+using YamlDotNet.Core;
 
 var yamlData =
 """
@@ -30,15 +32,30 @@ var yamlData =
   weight: 8
   diet: Herbivore
   extinction: 66
+- name: Apatosaurus
+  weight: 33
+  diet: Herbivore
+  extinction: 147
 - name: Archaeopteryx
   weight: 0.001
   diet: Omnivore
   extinction: 147
+- name: Anklyosaurus
+  weight: 4.8
+  diet: Herbivore
+  extinction: 66
+- name: Stegosaurus
+  weight: 3.8
+  diet: Herbivore
+  extinction: 147
+- name: Hadrosaurus
+  weight: 3
+  diet: Herbivore
+  extinction: 66
 """;
 
-using var stream = new MemoryStream(Encoding.UTF8.GetBytes(yamlData));
-using var reader = new StreamReader(stream);
-var parser = new Parser(reader);
+using var textReader = new StringReader(csvData);
+var parser = new Parser(textReader);
 
 var yamlAdapter = new YamlDotNetTabulatorAdapter(parser);
 
@@ -51,7 +68,7 @@ Console.WriteLine(table);
 This will produce the output:
 ```
 -----------------------------------------------
-|Name             |Weight|Diet     |Extinction|
+|name             |weight|diet     |extinction|
 |-----------------+------+---------+----------|
 |Tyrannosaurus Rex|6.7   |Carnivore|66        |
 |-----------------+------+---------+----------|
@@ -341,6 +358,3 @@ Parameters
 
 Return
 - `string`: The transformed name.
-
----
-Copyright 2025 Justin Welsch

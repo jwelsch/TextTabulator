@@ -1,0 +1,35 @@
+- name: Tyrannosaurus Rex
+  weight: 6.7
+  diet: Carnivore
+  extinction: 66
+  test: 
+- name: Triceratops
+  weight: 8
+  diet: Herbivore
+  extinction: 66
+  test: null
+- name: Apatosaurus
+  weight: 33
+  diet: Herbivore
+  extinction: 147
+  test: null
+- name: Archaeopteryx
+  weight: 0.001
+  diet: Omnivore
+  extinction: 147
+  test: null
+- name: Anklyosaurus
+  weight: 4.8
+  diet: Herbivore
+  extinction: 66
+  test: null
+- name: Stegosaurus
+  weight: 3.8
+  diet: Herbivore
+  extinction: 147
+  test: null
+- name: Hadrosaurus
+  weight: 3
+  diet: Herbivore
+  extinction: 66
+  test: null

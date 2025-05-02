@@ -92,6 +92,7 @@ public class EZCsvAdapter : ITabulatorAdapter
 Here is an example of usage of the `EZCsvAdapter` class:
 
 ```
+using System.IO;
 using System.Text;
 using TextTabulator;
 
@@ -340,6 +341,3 @@ Parameters
 
 Return
 - `string`: The transformed name.
-
----
-Copyright 2025 Justin Welsch
