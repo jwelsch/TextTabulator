@@ -1,5 +1,4 @@
-﻿using Autofac.Core;
-using NSubstitute;
+﻿using NSubstitute;
 using TextTabulator.Cli;
 using TextTabulator.Cli.Wraps;
 using TextTabulator.Testing;
@@ -38,7 +37,7 @@ namespace TextTabulator.CliTests
         {
             var args = new string[]
             {
-                "--input-path", @"..\..\..\..\..\data\dinosaurs.csv"
+                "--input-path", "../../../../../data/dinosaurs.csv"
             };
 
             var autoSub = new AutoSubstitute();
@@ -66,8 +65,8 @@ namespace TextTabulator.CliTests
         {
             var args = new string[]
             {
-                "--input-path", @"..\..\..\..\..\data\dinosaurs.csv",
-                "--output-path", @"..\..\..\..\..\data\table.txt"
+                "--input-path", "../../../../../data/dinosaurs.csv",
+                "--output-path", "../../../../../data/table.txt"
             };
 
             var autoSub = new AutoSubstitute();
