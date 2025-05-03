@@ -10,7 +10,10 @@ namespace TextTabulator.CliTests
         [Fact]
         public void When_input_path_is_not_file_on_system_then_write_error_to_console()
         {
-            var args = new string[0];
+            var args = new string[]
+            {
+                "--input-path", "../../../../../data/file-does-not-exist.csv"
+            };
 
             var autoSub = new AutoSubstitute();
 
