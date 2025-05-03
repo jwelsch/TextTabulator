@@ -1,14 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>texttabulator-cli</AssemblyName>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <PackageId>Jwelsch.$(AssemblyName)</PackageId>
+    <Company>Justin Welsch</Company>
+    <Authors>Jwelsch</Authors>
+    <Description>TextTabulator.Cli is a .NET application that allows command line access to TextTabulator functionality.</Description>
+    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <PackageProjectUrl>https://github.com/jwelsch/TextTabulator</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
+    <PackageTags>table;tabulate;text;cli</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>1.6.0</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TextTabulator.Adapters.CsvHelper\TextTabulator.Adapters.CsvHelper.csproj" />
     <ProjectReference Include="..\TextTabulator.Adapters.Json\TextTabulator.Adapters.Json.csproj" />
@@ -17,18 +30,19 @@
     <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
     <ProjectReference Include="..\TextTabulator\TextTabulator.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
-
 </Project>

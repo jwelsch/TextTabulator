@@ -7,7 +7,7 @@
     <PackageId>Jwelsch.$(AssemblyName)</PackageId>
     <Company>Justin Welsch</Company>
     <Authors>Jwelsch</Authors>
-    <Description>TextTabulator is a .NET Standard 2.1 library that will format data into a string that, when printed, will be in the form of a table. </Description>
+    <Description>TextTabulator is a .NET Standard 2.1 library that will format data into a string that, when printed, will be in the form of a table.</Description>
     <Copyright>Copyright 2025 Justin Welsch</Copyright>
     <PackageProjectUrl>https://github.com/jwelsch/TextTabulator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
@@ -15,7 +15,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
