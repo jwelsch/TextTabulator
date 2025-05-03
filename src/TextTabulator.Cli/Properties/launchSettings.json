@@ -8,6 +8,9 @@
     "**/platforms"
   ],
   "profiles": {
+    "no-arguments": {
+      "commandName": "Project"
+    },
     "csv-to-console": {
       "commandName": "Project",
       "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\""

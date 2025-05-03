@@ -27,6 +27,12 @@ namespace TextTabulator.Cli
 
         public int Run(string[] args)
         {
+            if (args.Length == 0)
+            {
+                _consoleWrap.WriteLine(HelpMessage());
+                return 0;
+            }
+
             var commandLineOptions = _commandLineParser.Parse(args);
 
             if (!_fileWrap.Exists(commandLineOptions.InputPath))
@@ -113,6 +119,47 @@ namespace TextTabulator.Cli
             }
 
             return 0;
+        }
+
+        private static string HelpMessage()
+        {
+            var asm = System.Reflection.Assembly.GetExecutingAssembly() ?? throw new Exception($"Could not get assembly.");
+            var asmName = asm.GetName();
+            var fileName = Path.GetFileNameWithoutExtension(asm.Location);
+
+            return
+$"""
+{fileName}
+version: {asmName.Version}
+
+Project:
+  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator
+
+Licensed under the MIT License:
+  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator/LICENSE
+
+More information can be found in the README:
+  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator/README.md
+
+Command Line Arguments
+----------------------
+
+--data-type, -d
+
+This argument is optional. This specifies the format of the data in the file specified by `--input-path`. The type of data should be the next argument on the command line. If this argument is not specified, the data format will be inferred from the file extension of `--input-path`. If this is specified, it will take precedence over the file extension.
+
+--input-path, -i
+
+This argument is required. This specifies the file that will be read from, and whose contents will be put into a table. The file path should be the next argument on the command line.
+
+--output-path, -o
+
+This argument is optional. This specifies what file path to write the table to. The file path should be the next argument on the command line. The table will be encoded as UTF-8 characters. If this argument is not included, the table will be written to the console.
+
+--styling, -s
+
+This argument is optional. This specifies which characters set to use to create the table. The value should be the next argument on the command line. If this argument is not included, the table will be created using ASCII characters.
+""";
         }
     }
 }
