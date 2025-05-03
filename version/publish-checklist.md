@@ -74,11 +74,7 @@ Example:
 git push origin v1.4.3
 ```
 
-## 7. Check the build
-
-Once the tag is pushed, the Github action [Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml) will be executed automatically. Make sure it completes successfully.
-
-## 8. Create a release
+## 7. Create a release
 
 On Github, create a release on this page: https://github.com/jwelsch/TextTabulator/releases
 
@@ -88,6 +84,6 @@ On Github, create a release on this page: https://github.com/jwelsch/TextTabulat
 - Make sure "Set as latest release" is checked.
 - Finally, click the "Publish release" button.
 
-## 9. Check the publish
+## 8. Check the publish
 
 Once the release is created, the Github action [Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml) will be automatically run. Make sure it completes successfully.
