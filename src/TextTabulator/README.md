@@ -542,3 +542,39 @@ var options = new TabulatorOptions
 
 var table = tabulator.Tabulate(headers, values, options);
 ```
+
+### Include Non-Printable Characters
+
+Setting false will cause any non-printable characters to not be included in the table. Setting true will cause any non-printable characters to be left in the table. This has no effect on tab ('\t'), carriage return ('\r'), or new line ('\n') characters. By default, this value is set to false.
+
+Setting this to false can alleviate issues with non-printable characters causing the table to be misaligned.
+
+Example:
+
+```
+var tabulator = new TextTabulator();
+var options = new TabulatorOptions
+{
+   IncludeNonPrintableCharacters = true,
+};
+
+var table = tabulator.Tabulate(headers, values, options);
+```
+
+### Tab Length
+
+Sets the number of spaces to substitute for each tab character in the table. If this is set to 0, tab characters will be used in the table. If this is set to a positive number, tab characters will be replaced with the specified number of spaces. If this is set to a negative number, tab characters will be removed. The default value for this property is 0.
+
+Setting this to -1 or a positive number can alleviate issues with tab characters causing the table to be misaligned.
+
+Example:
+
+```
+var tabulator = new TextTabulator();
+var options = new TabulatorOptions
+{
+   TabLength = 4,
+};
+
+var table = tabulator.Tabulate(headers, values, options);
+```
