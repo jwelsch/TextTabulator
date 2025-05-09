@@ -100,6 +100,7 @@ namespace TextTabulator.Cli
                 {
                     Styling = commandLineOptions.Styling == TableStyling.Ascii ? new AsciiTableStyling() : new UnicodeTableStyling(),
                     IncludeNonPrintableCharacters = commandLineOptions.IncludeNonPrintableCharacters,
+                    TabLength = commandLineOptions.TabLength,
                 };
 
                 var tabulator = new Tabulator();
@@ -160,6 +161,10 @@ This argument is optional. This specifies what file path to write the table to. 
 --styling, -s
 
 This argument is optional. This specifies which characters set to use to create the table. The value should be the next argument on the command line. If this argument is not included, the table will be created using ASCII characters.
+
+--tab-length, -t
+
+This argument is optional. This specifies the number of spaces to substitute for each tab character in the table. The value should be the next argument on the command line. If this argument is not included, tabs will be inserted as is in the table.
 """;
         }
     }

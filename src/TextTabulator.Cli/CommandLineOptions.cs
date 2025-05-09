@@ -11,6 +11,8 @@
         TableStyling Styling { get; }
 
         bool IncludeNonPrintableCharacters { get; }
+
+        int TabLength { get; }
     }
 
     public class CommandLineOptions : ICommandLineOptions
@@ -24,13 +26,16 @@
 
         public bool IncludeNonPrintableCharacters { get; }
 
-        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii, bool includeNonPrintableCharacters = false)
+        public int TabLength { get; }
+
+        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii, bool includeNonPrintableCharacters = false, int tabLength = 0)
         {
             AdapterType = adapterType;
             InputPath = inputPath;
             OutputPath = outputPath;
             Styling = styling;
             IncludeNonPrintableCharacters = includeNonPrintableCharacters;
+            TabLength = tabLength;
         }
     }
 }

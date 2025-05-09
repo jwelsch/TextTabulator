@@ -559,5 +559,138 @@ namespace TextTabulator.CliTests
             Assert.Equal(outputPath, result.OutputPath);
             Assert.Equal(TableStyling.Unicode, result.Styling);
         }
+
+        [Fact]
+        public void When_args_has_tab_length_with_positive_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var tabLength = 4;
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--tab-length", tabLength.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(tabLength, result.TabLength);
+        }
+
+        [Fact]
+        public void When_args_has_tab_length_with_zero_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var tabLength = 0;
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--tab-length", tabLength.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(tabLength, result.TabLength);
+        }
+
+        [Fact]
+        public void When_args_has_tab_length_with_negative_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var tabLength = -3;
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--tab-length", tabLength.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(tabLength, result.TabLength);
+        }
+
+        [Fact]
+        public void When_args_has_tab_length_with_no_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--tab-length"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_tab_length_with_invalid_value_then_throw_formatexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--tab-length", "invalid"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<FormatException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_short_t_option_with_positive_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var tabLength = 8;
+            var args = new string[]
+            {
+                "-i", inputPath,
+                "-t", tabLength.ToString()
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(tabLength, result.TabLength);
+        }
+
+        [Fact]
+        public void When_args_has_short_t_option_with_no_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "-i", inputPath,
+                "-t"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
     }
 }

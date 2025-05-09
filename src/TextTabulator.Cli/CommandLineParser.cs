@@ -18,6 +18,7 @@
             string? outputPath = null;
             DataType? dataType = null;
             var tableStyling = TableStyling.Ascii;
+            var tabLength = 0;
 
             for (var i = 0; i < args.Length; i++)
             {
@@ -67,6 +68,15 @@
 
                     i++;
                 }
+                else if (args[i].Equals("--tab-length", StringComparison.OrdinalIgnoreCase) || args[i].Equals("-t", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        throw new ArgumentException($"No value for tab length was found.", nameof(args));
+                    }
+
+                    tabLength = int.Parse(args[++i], System.Globalization.CultureInfo.InvariantCulture);
+                }
                 else
                 {
                     throw new ArgumentException($"Unknown command line argument '{args[i]}' found.", nameof(args));
@@ -88,7 +98,7 @@
                 }
             }
 
-            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling, true);
+            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling, true, tabLength);
         }
 
         private static bool TryMatchDataType(string input, out DataType? dataType)
