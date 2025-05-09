@@ -378,5 +378,100 @@ namespace TextTabulatorTests
             Assert.Equal(text.Length, result.Width);
             Assert.Equal(1, result.Height);
         }
+
+        [Fact]
+        public void When_text_contains_tabs_and_tablength_is_zero_then_tabs_are_not_replaced()
+        {
+            var text = "Column1\tColumn2\tColumn3";
+
+            var sut = new CellDataParser(new TabulatorOptions { TabLength = 0 });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, text); // Tabs remain as-is
+            Assert.Equal(text.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
+
+        [Fact]
+        public void When_text_contains_tabs_and_tablength_is_positive_then_tabs_are_replaced_with_spaces()
+        {
+            var tabLength = 4;
+            var text = "Column1\tColumn2\tColumn3";
+            var expectedText = "Column1    Column2    Column3"; // Tabs replaced with 4 spaces
+
+            var sut = new CellDataParser(new TabulatorOptions { TabLength = tabLength });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, expectedText);
+            Assert.Equal(expectedText.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
+
+        [Fact]
+        public void When_text_contains_tabs_and_tablength_is_positive_with_multiple_lines_then_tabs_are_replaced()
+        {
+            var tabLength = 2;
+            var text = "Col1\tCol2\nCol3\tCol4";
+            var expectedLines = new[] { "Col1  Col2", "Col3  Col4" }; // Tabs replaced with 2 spaces
+
+            var sut = new CellDataParser(new TabulatorOptions { TabLength = tabLength });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Collection(result.Lines,
+                line => Assert.Equal(expectedLines[0], line),
+                line => Assert.Equal(expectedLines[1], line)
+            );
+            Assert.Equal(expectedLines[0].Length, result.Width); // Width of the longest line
+            Assert.Equal(expectedLines.Length, result.Height);
+        }
+
+        [Fact]
+        public void When_text_contains_only_tabs_then_tabs_are_replaced_with_spaces()
+        {
+            var tabLength = 3;
+            var text = "\t\t\t";
+            var expectedText = new string(' ', tabLength * 3); // Each tab replaced with 3 spaces
+
+            var sut = new CellDataParser(new TabulatorOptions { TabLength = tabLength });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, expectedText);
+            Assert.Equal(expectedText.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
+
+        [Fact]
+        public void When_text_contains_tabs_and_tablength_is_negative_then_tabs_are_not_replaced()
+        {
+            var text = "Column1\tColumn2\tColumn3";
+            var expected = text.Replace("\t", string.Empty);
+
+            var sut = new CellDataParser(new TabulatorOptions { TabLength = -4 });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, expected); // Tabs remain as-is
+            Assert.Equal(expected.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
     }
 }

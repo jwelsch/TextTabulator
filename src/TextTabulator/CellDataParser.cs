@@ -73,6 +73,18 @@ namespace TextTabulator
                     lines.Add(sb.ToString());
                     sb.Clear();
                 }
+                else if (c == '\t')
+                {
+                    // If _options.TabLength is negative, the tab character is not added to the line.
+                    if (_options.TabLength == 0)
+                    {
+                        sb.Append(c);
+                    }
+                    else if (_options.TabLength > 0)
+                    {
+                        sb.Append(' ', _options.TabLength);
+                    }
+                }
                 else
                 {
                     if (carriageReturn)
