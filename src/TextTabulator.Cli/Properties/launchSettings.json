@@ -47,9 +47,9 @@
       "commandName": "Project",
       "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\" --styling Unicode"
     },
-    "test": {
+    "tabs": {
       "commandName": "Project",
-      "commandLineArgs": "--input-path \"D:\\Justin\\Projects\\Data\\dinosaur-one-with-nonprintable.csv\" --styling Unicode"
+      "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs-with-tabs.csv\" --styling Unicode --tab-length 3"
     }
   }
 }
