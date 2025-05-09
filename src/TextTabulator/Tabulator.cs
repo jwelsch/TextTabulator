@@ -11,7 +11,7 @@ namespace TextTabulator
     /// </summary>
     public class Tabulator
     {
-        private readonly ITableDataParser _tableDataParser = new TableDataParser();
+        //private readonly ITableDataParser _tableDataParser = new TableDataParser();
 
         /// <summary>
         /// Tabulates data and makes callbacks with elements of the table.
@@ -105,7 +105,9 @@ namespace TextTabulator
         {
             options ??= new TabulatorOptions();
 
-            var tableData = _tableDataParser.Parse(headers, rowValues);
+            var tableDataParser = new TableDataParser(options);
+
+            var tableData = tableDataParser.Parse(headers, rowValues);
 
             TabulateData(tableData, callback, options);
         }
@@ -203,7 +205,9 @@ namespace TextTabulator
         {
             options ??= new TabulatorOptions();
 
-            var tableData = _tableDataParser.Parse(headers, rowValues);
+            var tableDataParser = new TableDataParser(options);
+
+            var tableData = tableDataParser.Parse(headers, rowValues);
 
             var table = new StringBuilder();
 

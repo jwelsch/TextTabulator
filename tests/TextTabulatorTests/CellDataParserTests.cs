@@ -1,4 +1,5 @@
-﻿using TextTabulator;
+﻿using System.Text;
+using TextTabulator;
 using TextTabulator.Testing;
 
 namespace TextTabulatorTests
@@ -10,7 +11,7 @@ namespace TextTabulatorTests
         {
             string? text = null;
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -26,7 +27,7 @@ namespace TextTabulatorTests
         {
             var text = string.Empty;
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -43,7 +44,7 @@ namespace TextTabulatorTests
         {
             var text = DataGenerator.GetString();
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -62,7 +63,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\n{specimins[1]}\n{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -91,7 +92,7 @@ namespace TextTabulatorTests
             };
             var text = $"{specimins[0]}\n{specimins[1]}\n{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -120,7 +121,7 @@ namespace TextTabulatorTests
             };
             var text = $"{specimins[0]}\n{specimins[1]}\n{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -149,7 +150,7 @@ namespace TextTabulatorTests
             };
             var text = $"{specimins[0]}\n{specimins[1]}\n{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -172,7 +173,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\r{specimins[1]}\r{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -195,7 +196,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\r\n{specimins[1]}\r\n{specimins[2]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -218,7 +219,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\r\n{specimins[1]}\n{specimins[2]}\r{specimins[3]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -242,7 +243,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\r{specimins[1]}\r\n{specimins[2]}\n{specimins[3]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -266,7 +267,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\n{specimins[1]}\r{specimins[2]}\r\n{specimins[3]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -290,7 +291,7 @@ namespace TextTabulatorTests
             var specimins = DataGenerator.GetStrings(count);
             var text = $"{specimins[0]}\r\n{specimins[1]}\r{specimins[2]}\n{specimins[3]}";
 
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, 0, text);
 
@@ -310,7 +311,7 @@ namespace TextTabulatorTests
         [Fact]
         public void When_column_is_less_than_zero_then_throw_argumentoutofrangeexception()
         {
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             Assert.Throws<ArgumentOutOfRangeException>(() => sut.Parse(-1, 0, DataGenerator.GetString()));
         }
@@ -318,9 +319,64 @@ namespace TextTabulatorTests
         [Fact]
         public void When_row_is_less_than_zero_then_throw_argumentoutofrangeexception()
         {
-            var sut = new CellDataParser();
+            var sut = new CellDataParser(new TabulatorOptions());
 
             Assert.Throws<ArgumentOutOfRangeException>(() => sut.Parse(0, -1, DataGenerator.GetString()));
+        }
+
+        [Fact]
+        public void When_text_has_all_printable_characters_and_includenonprintablecharacters_is_true_then_celldata_is_returned()
+        {
+            var text = DataGenerator.GetString();
+
+            var sut = new CellDataParser(new TabulatorOptions { IncludeNonPrintableCharacters = true });
+
+            var result = sut.Parse(0, 0, text);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, text);
+            Assert.Equal(text.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
+
+        [Fact]
+        public void When_text_has_nonprintable_characters_and_includenonprintablecharacters_is_true_then_celldata_is_returned()
+        {
+            var text = DataGenerator.GetString();
+            var nonPrintableChars = " " ; // U+2001 (Em Quad)
+            var textWithNonPrintableChars = nonPrintableChars + text;
+
+            var sut = new CellDataParser(new TabulatorOptions { IncludeNonPrintableCharacters = true });
+
+            var result = sut.Parse(0, 0, textWithNonPrintableChars);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, textWithNonPrintableChars);
+            Assert.Equal(textWithNonPrintableChars.Length, result.Width);
+            Assert.Equal(1, result.Height);
+        }
+
+        [Fact]
+        public void When_text_has_nonprintable_characters_and_includenonprintablecharacters_is_false_then_celldata_is_returned()
+        {
+            var text = DataGenerator.GetString();
+            var nonPrintableChars = " "; // U+2001 (Em Quad)
+            var textWithNonPrintableChars = nonPrintableChars + text;
+
+            var sut = new CellDataParser(new TabulatorOptions { IncludeNonPrintableCharacters = false });
+
+            var result = sut.Parse(0, 0, textWithNonPrintableChars);
+
+            Assert.Equal(0, result.Column);
+            Assert.Equal(0, result.Row);
+            Assert.NotNull(result.Lines);
+            Assert.Single(result.Lines, text);
+            Assert.Equal(text.Length, result.Width);
+            Assert.Equal(1, result.Height);
         }
     }
 }

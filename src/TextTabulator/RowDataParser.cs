@@ -9,7 +9,12 @@ namespace TextTabulator
 
     public class RowDataParser : IRowDataParser
     {
-        private readonly ICellDataParser _cellDataParser = new CellDataParser();
+        private readonly ITabulatorOptions _options;
+
+        public RowDataParser(ITabulatorOptions options)
+        {
+            _options = options;
+        }
 
         public IRowData Parse(int row, IEnumerable<string>? cells, ref List<int> maxWidths)
         {
@@ -18,13 +23,14 @@ namespace TextTabulator
                 return new RowData(row, null, 0);
             }
 
+            var cellDataParser = new CellDataParser(_options);
             var cellDataList = new List<ICellData>();
             var columnIndex = 0;
             var maxHeight = 1;
 
             foreach (var cell in cells)
             {
-                var cellData = _cellDataParser.Parse(columnIndex, row, cell);
+                var cellData = cellDataParser.Parse(columnIndex, row, cell);
                 cellDataList.Add(cellData);
 
                 if (cellData.Height > maxHeight)

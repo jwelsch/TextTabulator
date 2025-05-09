@@ -10,10 +10,16 @@ namespace TextTabulator
 
     public class TableDataParser : ITableDataParser
     {
-        private readonly IRowDataParser _rowDataParser = new RowDataParser();
+        private readonly ITabulatorOptions _options;
+
+        public TableDataParser(ITabulatorOptions options)
+        {
+            _options = options;
+        }
 
         public ITableData Parse(IEnumerable<string>? headers, IEnumerable<IEnumerable<string>>? rows)
         {
+            var rowDataParser = new RowDataParser(_options);
             IRowData? tableHeaders = null;
             List<IRowData>? tableRows = null;
             var rowIndex = 0;
@@ -22,7 +28,7 @@ namespace TextTabulator
 
             if (headers != null)
             {
-                tableHeaders = _rowDataParser.Parse(rowIndex, headers, ref maxWidths);
+                tableHeaders = rowDataParser.Parse(rowIndex, headers, ref maxWidths);
 
                 if (tableHeaders.Cells == null)
                 {
@@ -42,7 +48,7 @@ namespace TextTabulator
 
                 foreach (var row in rows)
                 {
-                    var tableRow = _rowDataParser.Parse(rowIndex, row, ref maxWidths);
+                    var tableRow = rowDataParser.Parse(rowIndex, row, ref maxWidths);
 
                     if (tableRow.Cells == null)
                     {

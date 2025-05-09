@@ -88,7 +88,7 @@
                 }
             }
 
-            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling);
+            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling, true);
         }
 
         private static bool TryMatchDataType(string input, out DataType? dataType)

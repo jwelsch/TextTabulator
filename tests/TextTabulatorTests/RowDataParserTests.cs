@@ -11,7 +11,7 @@ namespace TextTabulatorTests
             var maxWidths = new List<int>();
             IEnumerable<string>? cells = null;
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -27,7 +27,7 @@ namespace TextTabulatorTests
             var lineCount = 1;
             var cells = Array.Empty<string>();
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -47,7 +47,7 @@ namespace TextTabulatorTests
             var row = 3;
             var cells = DataGenerator.GetStrings(length, count);
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(row, cells, ref maxWidths);
 
@@ -67,7 +67,7 @@ namespace TextTabulatorTests
             var lineCount = 1;
             var cells = DataGenerator.GetStrings(length, count);
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -95,7 +95,7 @@ namespace TextTabulatorTests
                 $"{lines[0]}\n{lines[1]}\n{lines[2]}"
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -121,7 +121,7 @@ namespace TextTabulatorTests
                 $"{lines[(2 * lineCount) + 0]}\n{lines[(2 * lineCount) + 1]}\n{lines[(2 * lineCount) + 2]}"
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -150,7 +150,7 @@ namespace TextTabulatorTests
                 $"{lines[5]}\n{lines[6]}"
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -179,7 +179,7 @@ namespace TextTabulatorTests
                 $"{lines[5]}\n{lines[6]}"
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -208,7 +208,7 @@ namespace TextTabulatorTests
                 $"{lines[4]}\n{lines[5]}\n{lines[6]}"
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -240,7 +240,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetString(length2)
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -272,7 +272,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetString(length2)
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 
@@ -304,7 +304,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetString(length2)
             };
 
-            var sut = new RowDataParser();
+            var sut = new RowDataParser(new TabulatorOptions());
 
             var result = sut.Parse(0, cells, ref maxWidths);
 

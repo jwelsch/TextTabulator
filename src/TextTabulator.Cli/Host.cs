@@ -98,7 +98,8 @@ namespace TextTabulator.Cli
 
                 var options = new TabulatorOptions
                 {
-                    Styling = commandLineOptions.Styling == TableStyling.Ascii ? new AsciiTableStyling() : new UnicodeTableStyling()
+                    Styling = commandLineOptions.Styling == TableStyling.Ascii ? new AsciiTableStyling() : new UnicodeTableStyling(),
+                    IncludeNonPrintableCharacters = commandLineOptions.IncludeNonPrintableCharacters,
                 };
 
                 var tabulator = new Tabulator();

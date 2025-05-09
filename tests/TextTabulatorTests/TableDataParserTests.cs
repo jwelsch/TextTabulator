@@ -11,7 +11,7 @@ namespace TextTabulatorTests
             IEnumerable<string>? headers = null;
             IEnumerable<IEnumerable<string>>? rows = null;
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -25,7 +25,7 @@ namespace TextTabulatorTests
             var headers = Array.Empty<string>();
             var rows = Array.Empty<string[]>();
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -42,7 +42,7 @@ namespace TextTabulatorTests
             IEnumerable<string>? headers = null;
             var rows = Array.Empty<string[]>();
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -57,7 +57,7 @@ namespace TextTabulatorTests
             var headers = Array.Empty<string>();
             IEnumerable<IEnumerable<string>>? rows = null;
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -73,7 +73,7 @@ namespace TextTabulatorTests
             var headers = DataGenerator.GetStrings(1);
             var rows = Array.Empty<string[]>();
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -92,7 +92,7 @@ namespace TextTabulatorTests
             var headers = DataGenerator.GetStrings(cellLengths);
             var rows = Array.Empty<string[]>();
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -113,7 +113,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -138,7 +138,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -161,7 +161,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             Assert.Throws<InvalidOperationException>(() => sut.Parse(headers, rows));
         }
@@ -177,7 +177,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             Assert.Throws<InvalidOperationException>(() => sut.Parse(headers, rows));
         }
@@ -193,7 +193,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -217,7 +217,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(cellLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -242,7 +242,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(valueLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -266,7 +266,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(valueLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -292,7 +292,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(valueLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 
@@ -319,7 +319,7 @@ namespace TextTabulatorTests
                 DataGenerator.GetStrings(valueLengths)
             };
 
-            var sut = new TableDataParser();
+            var sut = new TableDataParser(new TabulatorOptions());
 
             var result = sut.Parse(headers, rows);
 

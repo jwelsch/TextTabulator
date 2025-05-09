@@ -9,6 +9,8 @@
         string? OutputPath { get; }
 
         TableStyling Styling { get; }
+
+        bool IncludeNonPrintableCharacters { get; }
     }
 
     public class CommandLineOptions : ICommandLineOptions
@@ -20,12 +22,15 @@
         public string? OutputPath { get; }
         public TableStyling Styling { get; }
 
-        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii)
+        public bool IncludeNonPrintableCharacters { get; }
+
+        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii, bool includeNonPrintableCharacters = false)
         {
             AdapterType = adapterType;
             InputPath = inputPath;
             OutputPath = outputPath;
             Styling = styling;
+            IncludeNonPrintableCharacters = includeNonPrintableCharacters;
         }
     }
 }

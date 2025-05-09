@@ -21,6 +21,12 @@ namespace TextTabulator
         /// Gets or sets the characters to use for new lines in the table.
         /// </summary>
         string NewLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to include non-printable characters in the generated table. Setting false will cause any
+        /// non-printable characters to be removed. Setting true will cause any non-printable characters to be left in the table.
+        /// </summary>
+        bool IncludeNonPrintableCharacters { get; set; }
     }
 
     /// <summary>
@@ -42,5 +48,11 @@ namespace TextTabulator
         /// Gets or sets the characters to use for new lines in the table.
         /// </summary>
         public string NewLine { get; set; } = Environment.NewLine;
+
+        /// <summary>
+        /// Gets or sets whether to include non-printable characters in the generated table. Setting false will cause any
+        /// non-printable characters to be removed. Setting true will cause any non-printable characters to be left in the table.
+        /// </summary>
+        public bool IncludeNonPrintableCharacters { get; set; }
     }
 }

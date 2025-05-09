@@ -11,6 +11,13 @@ namespace TextTabulator
 
     public class CellDataParser : ICellDataParser
     {
+        private readonly ITabulatorOptions _options;
+
+        public CellDataParser(ITabulatorOptions options)
+        {
+            _options = options;
+        }
+
         public ICellData Parse(int column, int row, string? text)
         {
             if (column < 0)
@@ -28,6 +35,7 @@ namespace TextTabulator
                 return new CellData(column, row, null, 0, 0);
             }
 
+            PrintableCharacterMatcher? printableCharacterMatcher = _options.IncludeNonPrintableCharacters ? null : new PrintableCharacterMatcher();
             var lines = new List<string>();
             var carriageReturn = false;
             var maxWidth = 0;
@@ -38,7 +46,13 @@ namespace TextTabulator
             {
                 var c = text[i];
 
-                if (c == '\r')
+                // If including non-printable characters, treat them as normal characters.
+                // If not including non-printable characters, do not add them to the StringBuilder.
+                if (printableCharacterMatcher != null && !printableCharacterMatcher.IsMatch(c))
+                {
+                    continue;
+                }
+                else if (c == '\r')
                 {
                     carriageReturn = true;
                 }

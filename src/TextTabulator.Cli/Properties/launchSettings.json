@@ -46,6 +46,10 @@
     "csv-unicode-styling": {
       "commandName": "Project",
       "commandLineArgs": "--input-path \"..\\..\\..\\..\\..\\data\\dinosaurs.csv\" --styling Unicode"
+    },
+    "test": {
+      "commandName": "Project",
+      "commandLineArgs": "--input-path \"D:\\Justin\\Projects\\Data\\dinosaur-one-with-nonprintable.csv\" --styling Unicode"
     }
   }
 }
