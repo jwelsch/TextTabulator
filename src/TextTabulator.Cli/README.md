@@ -193,3 +193,14 @@ Unicode example table:
 ║value1C│value2C│value3C║
 ╚═══════╧═══════╧═══════╝
 ```
+
+### --tab-length
+
+This argument is optional. Short notation: `-t`.
+
+This specifies the number of spaces to substitute for each tab character in the table. If this is set to 0, tab characters will be used in the table. If this is set to a positive number, tab characters will be replaced with the specified number of spaces. If this is set to a negative number, tab characters will be removed. If this is not included, tabs will be used in the table as if this was set to 0.
+
+Usage example:
+```
+texttabulator-cli.exe --input-path "C:\Some\Path\data.csv" --tab-length 4
+```
