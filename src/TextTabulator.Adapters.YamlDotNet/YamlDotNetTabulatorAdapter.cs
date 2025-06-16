@@ -44,8 +44,8 @@ namespace TextTabulator.Adapters.YamlDotNet
 
         private readonly Parser _parser;
         private readonly YamlDotNetTabulatorAdapterOptions _options;
-        private readonly Dictionary<string, TableHeader> _headers = new();
-        private readonly List<string> _firstRow = new();
+        private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
+        private readonly List<string> _firstRow = new List<string>();
         private readonly IValueNormalizer _valueNormalizer = new ValueNormalizer();
         private readonly int _targetDepth = 4; // Target depth for the key/value pairs that will be included in the table.
 
