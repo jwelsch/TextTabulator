@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.Json.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Json)
+
 # TextTabulator.Adapters.Json
 
 This is an auxillary library for TextTabulator that uses the [System.Text.Json](https://github.com/dotnet/runtime/tree/main/src/libraries/System.Text.Json) library to parse JSON data. It can then provide the parsed JSON data to TextTabulator for consumption.

@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.YamlDotNet.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
+
 # TextTabulator.Adapters.YamlDotNet
 
 This is an auxillary library for TextTabulator that provides an integration with the popular [YamlDotNet](https://github.com/aaubry/YamlDotNet) library that allows TextTabulator to consume YAML data.

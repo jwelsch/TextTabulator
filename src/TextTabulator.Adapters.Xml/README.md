@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.Xml.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Xml)
+
 # TextTabulator.Adapters.Xml
 
 This is an auxillary library for TextTabulator that uses [System.Xml.XmlReader](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.Xml/src/System/Xml/Core/XmlReader.cs) to parse XML data. It can then provide the parsed XML data to TextTabulator for consumption.

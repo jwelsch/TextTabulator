@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.CsvHelper.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.CsvHelper)
+
 # TextTabulator.Adapters.CsvHelper
 
 This is an auxillary library for TextTabulator that provides an integration with the popular [CsvHelper](https://github.com/JoshClose/CsvHelper) library that allows TextTabulator to consume CSV data.

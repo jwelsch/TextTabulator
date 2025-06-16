@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.Reflection.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
+
 # TextTabulator.Adapters.Reflection
 
 This is an auxillary library for TextTabulator that provides a way to display the values of objects using `TextTabulator`.

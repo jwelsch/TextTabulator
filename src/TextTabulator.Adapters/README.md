@@ -1,3 +1,7 @@
+[![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
+[![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters)
+
 # TextTabulator.Adapters
 
 This is an auxillary library for TextTabulator that provides a way to expose data sources to `TextTabulator.Tabulate` method. This assembly should only need to be directly referenced by your project if you are implementing the `TextTabulator.Adapters.ITabulatorAdapter` yourself.
