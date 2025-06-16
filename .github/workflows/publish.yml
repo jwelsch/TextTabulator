@@ -1,9 +1,9 @@
 name: Publish
 
-on:
- release:
-   types: [created]
-# on: workflow_dispatch
+# on:
+#  release:
+#    types: [created]
+on: workflow_dispatch
 
 jobs:
   deploy:
@@ -18,15 +18,17 @@ jobs:
           dotnet-version: '9.0.x' # SDK Version to use.
       - name: Build and pack the project
         run: dotnet build --configuration Release
-      - name: Publish TextTabulator package to nuget.org
-        run: dotnet nuget push src/TextTabulator/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
-      - name: Publish TextTabulator.Adapters package to nuget.org
-        run: dotnet nuget push src/TextTabulator.Adapters/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
-      - name: Publish TextTabulator.Adapters.CsvHelper package to nuget.org
-        run: dotnet nuget push src/TextTabulator.Adapters.CsvHelper/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
-      - name: Publish TextTabulator.Adapters.Reflection package to nuget.org
-        run: dotnet nuget push src/TextTabulator.Adapters.Reflection/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
-      - name: Publish TextTabulator.Adapters.Json package to nuget.org
-        run: dotnet nuget push src/TextTabulator.Adapters.Json/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
-      - name: Publish TextTabulator.Adapters.Xml package to nuget.org
-        run: dotnet nuget push src/TextTabulator.Adapters.Xml/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator.Adapters package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator.Adapters/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator.Adapters.CsvHelper package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator.Adapters.CsvHelper/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator.Adapters.Reflection package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator.Adapters.Reflection/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator.Adapters.Json package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator.Adapters.Json/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      # - name: Publish TextTabulator.Adapters.Xml package to nuget.org
+      #   run: dotnet nuget push src/TextTabulator.Adapters.Xml/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      - name: Publish TextTabulator.Adapters.YamlDotNet package to nuget.org
+        run: dotnet nuget push src/TextTabulator.Adapters.YamlDotNet/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
