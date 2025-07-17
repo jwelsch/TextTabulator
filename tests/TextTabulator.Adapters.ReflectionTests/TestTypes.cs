@@ -91,6 +91,11 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
+    internal class TestClass8
+    {
+        public DateTime DateTimeProperty { get; set; } = DateTime.Now;
+    }
+
     internal struct TestStruct1
     {
     }

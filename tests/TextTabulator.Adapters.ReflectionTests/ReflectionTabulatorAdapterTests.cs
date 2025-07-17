@@ -845,8 +845,6 @@ namespace TextTabulator.Adapters.ReflectionTests
             });
         }
 
-        ///////////////////////////////////////////////////////////////////////
-
         [Fact]
         public void When_called_with_single_class_item_then_data_is_returned()
         {
@@ -949,6 +947,39 @@ namespace TextTabulator.Adapters.ReflectionTests
                     j => Assert.Equal(item.StringProperty, j),
                     j => Assert.Equal(item.IntProperty.ToString(), j),
                     j => Assert.Equal(item.EnumerableProperty.ToString(), j),
+                }),
+            });
+        }
+
+        [Fact]
+        public void When_called_with_type_formatter_then_data_is_returned()
+        {
+            var item = new TestClass8
+            {
+                DateTimeProperty = new DateTime(2023, 10, 1, 12, 0, 0),
+            };
+
+            var formatters = new Dictionary<Type, Func<object, string>>
+            {
+                { typeof(DateTime), v => ((DateTime)v).ToString("u") }
+            };
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.PublicAndNonPublic, new TypeFormatter(formatters));
+
+            var sut = new ReflectionTabulatorAdapter<TestClass8>(item, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TestClass8.DateTimeProperty), i),
+            });
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("2023-10-01 12:00:00Z", j)
                 }),
             });
         }
