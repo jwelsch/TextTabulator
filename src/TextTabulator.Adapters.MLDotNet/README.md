@@ -161,18 +161,18 @@ Options to allow configuration of the `DataViewTabulatorAdapter` class.
 > `public DataViewTabulatorAdapterOptions(INameTransform? columnNameTransform = null, ITypeFormatter? typeFormatter = null)`
 
 Parameters
-- `INameTransform? columnNameTransform`: Transform to apply to `IDataView` column names. Passing null will cause the `IDataView` column names to not be altered.
-- `ITypeFormatter? typeFormatter`: Formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
+- `INameTransform? columnNameTransform`: Transform to apply to column names. Passing null will cause the column names to not be altered.
+- `ITypeFormatter? typeFormatter`: Formatter to apply to cell values. Passing null will cause the cell values to use default formatting.
 
 **Properties**
 
 > `INameTransform HeaderNameTransform { get; }`
 
- Gets the transform to apply to `IDataView` column names.
+ Gets the transform to apply to column names.
 
 > `ITypeFormatter TypeFormatter { get; }`
 
-Gets the formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
+Gets the formatter to apply to cell values. Passing null will cause the cell values to use default formatting.
 
 ### `INameTransform`
 
