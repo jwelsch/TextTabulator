@@ -251,7 +251,7 @@ Tabulates data and makes callbacks with elements of the table.
 
 Parameters
 
-- `ITabulatorAdapter adapter`: Adapter object that the method can get data from.
+- `ITabulatorAdapter adapter`: Adapter object that the method can get data from. See [TextTabulator.Adapters](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters).
 - `TableCallback callback`: Callback received when an element of the table is constructed.
 - `TabulatorOptions? options`: Options specifying how the table should be constructed.
 
@@ -303,6 +303,9 @@ Existing implementations of `ITabulatorAdapter` for various common data formats 
 - YamlDotNet adapter
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
+- ML.NET
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.MLDotNet)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.MLDotNet)
 - Reflection adapter
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)

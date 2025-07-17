@@ -19,6 +19,9 @@ Common data formats already have implementions for `TextTabulator.Adapters.ITabu
 - YAML (using YamlDotNet)
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
+- ML.NET
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.MLDotNet)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.MLDotNet)
 - Reflection
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
@@ -147,19 +150,9 @@ This will produce the output:
 
 ## Public API
 
-The API consits of the `TextTabulator.Adapters.ITabulatorAdapter` interface. `CsvHelperTabulatorAdapter` derives from the `ICsvHelperTabulatorAdapter` to allow easy mocking for testing.
+### `TextTabulator.Adapters.ITabulatorAdapter`
 
-### `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapter`
-
-The adapter class that accepts a `CsvHelper` object and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
-
-**Constructors**
-
-> `public CsvHelperTabulatorAdapter..ctor(CsvReader csvReader, CsvHelperTabulatorAdapterOptions? options = null)`
-
-Parameters
-- `CsvReader csvReader`: The `CsvReader` object that will read the desired data.
-- `CsvHelperTabulatorAdapterOptions? options`: Options for the adapter.
+Interface for adapting different kinds of data to the format that the method `Tabulator.Tabulate` accepts.
 
 **Methods**
 
