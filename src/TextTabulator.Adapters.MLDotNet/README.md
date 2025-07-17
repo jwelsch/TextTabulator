@@ -1,130 +1,73 @@
 [![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
 [![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
-[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.MLDotNet.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.MLDotNet)
 
-# TextTabulator.Adapters
+# TextTabulator.Adapters.CsvHelper
 
-This is an auxillary library for TextTabulator that provides a way to expose data sources to `TextTabulator.Tabulate` method. This assembly should only need to be directly referenced by your project if you are implementing the `TextTabulator.Adapters.ITabulatorAdapter` yourself.
-
-Common data formats already have implementions for `TextTabulator.Adapters.ITabulatorAdapter`:
-- CSV (using CsvHelper)
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.CsvHelper)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.CsvHelper)
-- JSON
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Json)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Json)
-- XML
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Xml)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Xml)
-- YAML (using YamlDotNet)
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.YamlDotNet)
-- ML.NET
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.MLDotNet)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.MLDotNet)
-- Reflection
-    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
-    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
+This is an auxillary library for TextTabulator that provides an integration with [IDataView](https://learn.microsoft.com/en-us/dotnet/api/microsoft.ml.idataview) used in [ML.NET](https://dotnet.microsoft.com/en-us/apps/ai/ml-dotnet).
 
 ## Installation
 
 First, install the [TextTabulator main package](https://github.com/jwelsch/TextTabulator) and then this one.
 
-Install the TextTabulator.Adapters Nuget package in your project.
+Install the TextTabulator.Adapters.MLDotNet Nuget package in your project.
 
 ```
-nuget install JWelsch.TextTabulator.Adapters
+nuget install JWelsch.TextTabulator.Adapters.MLDotNet
 ```
 
-## How to Use
+## How to use
 
-The main reason to use this assembly directly in your code is to provide an implementation for the `ITabulatorAdapter` interface.  See the "Public API" section for more details.
-
-Here is an example naive implementation that takes CSV data and adapts it for consumption by the `Tabulator.Tabulate` method:
+Provided `Dinosaur` is defined as:
 
 ```
-using System.Collections.Generic;
-using System.IO;
-using TextTabulator.Adapters;
-
-public class EZCsvAdapter : ITabulatorAdapter
+public class Dinosaur
 {
-    private readonly TextReader _reader;
-    private readonly bool _hasHeaderRow;
+    public string Name { get; }
 
-    public EZCsvAdapter(TextReader reader, bool hasHeaderRow)
+    public double Weight { get; }
+
+    public string Diet { get; }
+
+    public int ExtinctionMya { get; }
+
+    public Dinosaur(string name, double weight, string diet, int extinctionMya)
     {
-        _reader = reader;
-        _hasHeaderRow = hasHeaderRow;
-    }
-
-    public IEnumerable<string>? GetHeaderStrings()
-    {
-        if (!_hasHeaderRow)
-        {
-            return null;
-        }
-
-        var line = _reader.ReadLine();
-
-        if (line == null)
-        {
-            return null;
-        }
-
-        return line.Split(',');
-    }
-
-    public IEnumerable<IEnumerable<string>> GetValueStrings()
-    {
-        var rows = new List<string[]>();
-
-        while (true)
-        {
-            var line = _reader.ReadLine();
-
-            if (line == null || line.Length == 0)
-            {
-                break;
-            }
-
-            rows.Add(line.Split(','));
-        }
-
-        return rows;
+        Name = name;
+        Weight = weight;
+        Diet = diet;
+        ExtinctionMya = extinctionMya;
     }
 }
 ```
 
-Here is an example of usage of the `EZCsvAdapter` class:
+You can call the code like this:
 
 ```
-using System.IO;
-using System.Text;
+using Microsoft.ML;
 using TextTabulator;
+using TextTabulator.Adapters.MLDotNet;
 
-private static void Main(string[] args)
+var list = new List<Dinosaur>
 {
-    var csvData =
-@"Name,Weight (tons),Diet,Extinction
-Tyrannosaurus Rex,6.7,Carnivore,66 mya
-Triceratops,8,Herbivore,66 mya
-Apatosaurus,33,Herbivore,147 mya
-Archaeopteryx,0.001,Omnivore,147 mya
-Anklyosaurus,4.8,Herbivore,66 mya
-Stegosaurus,3.8,Herbivore,147 mya
-Hadrosaurus,3,Herbivore,66 mya
-";
+    new ("Tyrannosaurus Rex", 6.7, "Carnivore", 66),
+    new ("Triceratops", 8, "Herbivore", 66),
+    new ("Apatosaurus", 33 ,"Herbivore", 147),
+    new ("Archaeopteryx", 0.001, "Omnivore", 147),
+    new ("Anklyosaurus", 4.8, "Herbivore", 66),
+    new ("Stegosaurus", 3.8, "Herbivore", 147),
+    new ("Hadrosaurus", 3, "Herbivore", 66)
+};
 
-    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(csvData));
-    using var reader = new StreamReader(stream);
-    var adapter = new EZCsvAdapter(reader, true);
+var mlContext = new MLContext();
+var data = mlContext.Data.LoadFromEnumerable(list);
 
-    var tabulator = new Tabulator();
-    var table = tabulator.Tabulate(adapter);
+var adapter = new DataViewTabulatorAdapter(data);
 
-    Console.WriteLine(table);
-}
+var tabulator = new Tabulator();
+var table = tabulator.Tabulate(adapter);
+
+Console.WriteLine(table);
 ```
 
 This will produce the output:
@@ -150,9 +93,40 @@ This will produce the output:
 
 ## Public API
 
-### `TextTabulator.Adapters.ITabulatorAdapter`
+The API consists of the `TextTabulator.Adapters.MLDotNet.DataViewTabulatorAdapter` class. `DataViewTabulatorAdapter` derives from the `IDataViewTabulatorAdapter` to allow easy mocking for testing.
 
-Interface for adapting different kinds of data to the format that the method `Tabulator.Tabulate` accepts.
+### `TextTabulator.Adapters.MLDotNet.DataViewTabulatorAdapter`
+
+The adapter class that accepts an `IDataView` object and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
+
+`DataViewTabulatorAdapter` can handle the following types of data in each cell:
+- bool
+- char
+- string
+- byte
+- sbyte
+- short
+- ushort
+- int
+- uint
+- long
+- ulong
+- float
+- double
+- decimal
+- System.DateTime
+- System.DateTimeOffset
+- System.TimeSpan
+- System.Guid
+- ReadOnlyMemory\<char>
+
+**Constructors**
+
+> `public DataViewTabulatorAdapter..ctor(IDataView dataView, DataViewTabulatorAdapterOptions? options = null)`
+
+Parameters
+- `IDataView dataView`: IDataView object containing data to be consumed by Tabulator.Tabulate.
+- `DataViewTabulatorAdapterOptions? options`: Options for the adapter.
 
 **Methods**
 
@@ -175,48 +149,30 @@ Parameters
 - None
 
 Return
+
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
 
-### `ITypeFormatter`
+### `TextTabulator.Adapters.MLDotNet.DataViewTabulatorAdapterOptions`
 
-Interface for formatting values of different types to strings.
-
-**Methods**
-
-> `string FormatTypeValue(object value)`
-
-Called to format a value of a specific type to a string representation.
-
-Parameters
-- `object value`: Value to format.
-
-Return
-- `string`: String representation of the value.
-
-### `TypeFormatter`
-
-Default implementation of ITypeFormatter that formats values based on their type.
+Options to allow configuration of the `DataViewTabulatorAdapter` class.
 
 **Constructors**
 
-> `public TypeFormatter(Dictionary<Type, Func<object, string>>? formatters = null)`
-
-Creates an object of type TypeFormatter.
+> `public DataViewTabulatorAdapterOptions(INameTransform? columnNameTransform = null, ITypeFormatter? typeFormatter = null)`
 
 Parameters
-- `Dictionary<Type, Func<object, string>>? formatters = null`: A mapping of types to formatting functions. Types not in the Dictionary will use default formatting. Pass null to use default formatting for all types.
+- `INameTransform? columnNameTransform`: Transform to apply to `IDataView` column names. Passing null will cause the `IDataView` column names to not be altered.
+- `ITypeFormatter? typeFormatter`: Formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
 
-**Methods**
+**Properties**
 
-> `string FormatTypeValue(object value)`
+> `INameTransform HeaderNameTransform { get; }`
 
-Called to format a value of a specific type to a string representation.
+ Gets the transform to apply to `IDataView` column names.
 
-Parameters
-- `object value`: Value to format.
+> `ITypeFormatter TypeFormatter { get; }`
 
-Return
-- `string`: String representation of the value.
+Gets the formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
 
 ### `INameTransform`
 

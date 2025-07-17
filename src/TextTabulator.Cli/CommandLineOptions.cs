@@ -22,6 +22,7 @@
         public string InputPath { get; }
 
         public string? OutputPath { get; }
+
         public TableStyling Styling { get; }
 
         public bool IncludeNonPrintableCharacters { get; }

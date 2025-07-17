@@ -6,13 +6,13 @@
     <Title>$(AssemblyName)</Title>
     <Authors>Jwelsch</Authors>
     <Company>Justin Welsch</Company>
-    <Description>A .NET Standard 2.1 library that adapts YAML data read by YamlDotNet to a format that can be consumed by TextTabulator.</Description>
+    <Description>A .NET Standard 2.1 library that adapts IDataView, from the ML.NET library, to a format that can be consumed by TextTabulator.</Description>
     <Copyright>Copyright 2025 Justin Welsch</Copyright>
-    <PackageProjectUrl>https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.YamlDotNet</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.MLDotNet</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>table;tabulate;text;yaml</PackageTags>
+    <PackageTags>table;tabulate;text;idataview;ml.net</PackageTags>
     <AssemblyVersion>1.8.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>1.8.0</Version>
@@ -23,7 +23,7 @@
     <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="YamlDotNet" Version="[16.0.0, 16.3.0]" />
+    <PackageReference Include="Microsoft.ML" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
