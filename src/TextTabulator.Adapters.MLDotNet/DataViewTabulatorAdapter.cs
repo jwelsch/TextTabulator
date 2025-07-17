@@ -58,128 +58,128 @@ namespace TextTabulator.Adapters.MLDotNet
                 var rowValues = new List<string>();
                 foreach (var column in columns)
                 {
-                    var value = ColumnValueGetter(cursor, column);
+                    var value = ColumnValueGetter(cursor, column, _options);
                     rowValues.Add(value?.ToString() ?? string.Empty);
                 }
                 yield return rowValues;
             }
         }
 
-        private static object? ColumnValueGetter(DataViewRowCursor cursor, DataViewSchema.Column column)
+        private static object? ColumnValueGetter(DataViewRowCursor cursor, DataViewSchema.Column column, DataViewTabulatorAdapterOptions options)
         {
             if (column.Type.RawType == typeof(bool))
             {
                 bool value = false;
                 cursor.GetGetter<bool>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(char))
             {
                 char value = default;
                 cursor.GetGetter<char>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(string))
             {
                 var value = string.Empty;
                 cursor.GetGetter<string>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(ReadOnlyMemory<char>))
             {
                 var value = new ReadOnlyMemory<char>();
                 cursor.GetGetter<ReadOnlyMemory<char>>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(byte))
             {
                 byte value = 0;
                 cursor.GetGetter<byte>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(sbyte))
             {
                 sbyte value = 0;
                 cursor.GetGetter<sbyte>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(short))
             {
                 short value = 0;
                 cursor.GetGetter<short>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(ushort))
             {
                 ushort value = 0;
                 cursor.GetGetter<ushort>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(int))
             {
                 int value = 0;
                 cursor.GetGetter<int>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(uint))
             {
                 uint value = 0;
                 cursor.GetGetter<uint>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(long))
             {
                 long value = 0;
                 cursor.GetGetter<long>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(ulong))
             {
                 ulong value = 0;
                 cursor.GetGetter<ulong>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(float))
             {
                 float value = 0;
                 cursor.GetGetter<float>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(double))
             {
                 double value = 0;
                 cursor.GetGetter<double>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
             if (column.Type.RawType == typeof(decimal))
             {
                 decimal value = 0;
                 cursor.GetGetter<decimal>(column)(ref value);
-                return value;
+                return options.TypeFormatter.FormatTypeValue(value);
             }
-            if (column.Type.RawType == typeof(System.DateTime))
+            if (column.Type.RawType == typeof(DateTime))
             {
-                System.DateTime value = default;
-                cursor.GetGetter<System.DateTime>(column)(ref value);
-                return value;
+                DateTime value = default;
+                cursor.GetGetter<DateTime>(column)(ref value);
+                return options.TypeFormatter.FormatTypeValue(value);
             }
-            if (column.Type.RawType == typeof(System.DateTimeOffset))
+            if (column.Type.RawType == typeof(DateTimeOffset))
             {
-                System.DateTimeOffset value = default;
-                cursor.GetGetter<System.DateTimeOffset>(column)(ref value);
-                return value;
+                DateTimeOffset value = default;
+                cursor.GetGetter<DateTimeOffset>(column)(ref value);
+                return options.TypeFormatter.FormatTypeValue(value);
             }
-            if (column.Type.RawType == typeof(System.TimeSpan))
+            if (column.Type.RawType == typeof(TimeSpan))
             {
-                System.TimeSpan value = default;
-                cursor.GetGetter<System.TimeSpan>(column)(ref value);
-                return value;
+                TimeSpan value = default;
+                cursor.GetGetter<TimeSpan>(column)(ref value);
+                return options.TypeFormatter.FormatTypeValue(value);
             }
-            if (column.Type.RawType == typeof(System.Guid))
+            if (column.Type.RawType == typeof(Guid))
             {
-                System.Guid value = default;
-                cursor.GetGetter<System.Guid>(column)(ref value);
-                return value;
+                Guid value = default;
+                cursor.GetGetter<Guid>(column)(ref value);
+                return options.TypeFormatter.FormatTypeValue(value);
             }
 
             // If type is not handled, return null
