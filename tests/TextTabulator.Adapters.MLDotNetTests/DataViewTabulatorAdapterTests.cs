@@ -125,14 +125,23 @@ namespace TextTabulator.Adapters.MLDotNetTests
                     ULongValue = 9876543210,
                     FloatValue = 1.23f,
                     DoubleValue = 4.56,
-                    DateTimeValue = new System.DateTime(2020, 1, 1),
+                    DateTimeValue = new System.DateTime(2020, 1, 1, 12, 0, 0),
                     StringValue = "test"
                 }
             };
             var data = mlContext.Data.LoadFromEnumerable(list);
-            var sut = new DataViewTabulatorAdapter(data);
+
+            var formatters = new Dictionary<Type, Func<object, string>>
+            {
+                { typeof(DateTime), v => ((DateTime)v).ToString("u") }
+            };
+            var options = new DataViewTabulatorAdapterOptions(null, new TypeFormatter(formatters));
+
+            var sut = new DataViewTabulatorAdapter(data, options);
+
             var values = sut.GetValueStrings();
             var row = values.First();
+
             Assert.Equal("True", row.ElementAt(0));
             Assert.Equal("42", row.ElementAt(1));
             Assert.Equal("-42", row.ElementAt(2));
@@ -144,7 +153,7 @@ namespace TextTabulator.Adapters.MLDotNetTests
             Assert.Equal("9876543210", row.ElementAt(8));
             Assert.Equal("1.23", row.ElementAt(9));
             Assert.Equal("4.56", row.ElementAt(10));
-            Assert.Equal("1/1/2020 12:00:00 AM", row.ElementAt(11));
+            Assert.Equal("2020-01-01 12:00:00Z", row.ElementAt(11));
             Assert.Equal("test", row.ElementAt(12));
         }
 
