@@ -146,12 +146,13 @@ Options to allow configuration of the ReflectionTabulatorAdapter class.
 
 **Constructors**
 
-> `public ReflectionTabulatorAdapterOptions(INameTransform? memberNameTransform = null, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public)`
+> `public ReflectionTabulatorAdapterOptions(INameTransform? memberNameTransform = null, TypeMembers typeMembers = TypeMembers.Properties, AccessModifiers accessModifiers = AccessModifiers.Public, ITypeFormatter? typeFormatter = null)`
 
 Parameters
 - `INameTransform? memberNameTransform`: Transform to apply to type member names. Passing null will cause the member names to not be altered.
 - `TypeMembers typeMembers`: Specifies which type members to include in the output.
 - `AccessModifiers accessModifiers`: Specifies the desired access modifier(s) of the type members to include in the output.
+- `ITypeFormatter? typeFormatter = null`: Formatter to apply to cell values. Passing null will cause the cell values to use default formatting.
 
 **Properties**
 
@@ -166,6 +167,10 @@ Gets which type members to include in the output.
 > `AccessModifiers AccessModifiers { get; }`
 
 Gets the desired access modifier(s) of the type members to include in the output.
+
+> `ITypeFormatter TypeFormatter { get; }`
+
+Gets the formatter to apply to cell values.
 
 ### `INameTransform`
 

@@ -169,7 +169,7 @@ namespace TextTabulator.Adapters.Reflection
                 {
                     for (var i = 0; i < propertyCount; i++)
                     {
-                        row[i] = _propertyInfos[i].GetValue(item).ToString();
+                        row[i] = _options.TypeFormatter.FormatTypeValue(_propertyInfos[i].GetValue(item));
                     }
                 }
 
@@ -177,7 +177,7 @@ namespace TextTabulator.Adapters.Reflection
                 {
                     for (var i = propertyCount; i < fieldCount + propertyCount; i++)
                     {
-                        row[i] = _fieldInfos[i - propertyCount].GetValue(item).ToString();
+                        row[i] = _options.TypeFormatter.FormatTypeValue(_fieldInfos[i - propertyCount].GetValue(item));
                     }
                 }
 
