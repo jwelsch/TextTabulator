@@ -118,7 +118,7 @@ The adapter class that accepts an `IDataView` object and presents the data that 
 - System.DateTimeOffset
 - System.TimeSpan
 - System.Guid
-- ReadOnlyMemory<char>
+- ReadOnlyMemory\<char>
 
 **Constructors**
 
@@ -139,7 +139,7 @@ Parameters
 
 Return
 
-- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the CSV data did not have headers.
+- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the data did not have headers.
 
 > `public IEnumerable<IEnumerable<string>> GetValueStrings()`
 
@@ -154,20 +154,25 @@ Return
 
 ### `TextTabulator.Adapters.MLDotNet.DataViewTabulatorAdapterOptions`
 
-Options to allow configuration of the DataViewTabulatorAdapter class.
+Options to allow configuration of the `DataViewTabulatorAdapter` class.
 
 **Constructors**
 
-> `public DataViewTabulatorAdapterOptions(INameTransform? columnNameTransform = null, bool hasHeaderRow = true)`
+> `public DataViewTabulatorAdapterOptions(INameTransform? columnNameTransform = null, ITypeFormatter? typeFormatter = null)`
 
 Parameters
-- `INameTransform? columnNameTransform`: Transform to apply to IDataView column names. Passing null will cause the IDataView column names to not be altered.
+- `INameTransform? columnNameTransform`: Transform to apply to `IDataView` column names. Passing null will cause the `IDataView` column names to not be altered.
+- `ITypeFormatter? typeFormatter`: Formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
 
 **Properties**
 
 > `INameTransform HeaderNameTransform { get; }`
 
- Gets the transform to apply to IDataView column names.
+ Gets the transform to apply to `IDataView` column names.
+
+> `ITypeFormatter TypeFormatter { get; }`
+
+Gets the formatter to apply to `IDataView` column values. Passing null will cause the `IDataView` column values to use default formatting.
 
 ### `INameTransform`
 

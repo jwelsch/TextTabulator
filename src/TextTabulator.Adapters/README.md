@@ -165,7 +165,7 @@ Parameters
 
 Return
 
-- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the CSV data did not have headers.
+- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the data did not have headers.
 
 > `public IEnumerable<IEnumerable<string>> GetValueStrings()`
 
@@ -176,6 +176,47 @@ Parameters
 
 Return
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+### `ITypeFormatter`
+
+Interface for formatting values of different types to strings.
+
+**Methods**
+
+> `string FormatTypeValue(object value)`
+
+Called to format a value of a specific type to a string representation.
+
+Parameters
+- `object value`: Value to format.
+
+Return
+- `string`: String representation of the value.
+
+### `TypeFormatter`
+
+Default implementation of ITypeFormatter that formats values based on their type.
+
+**Constructors**
+
+> `public TypeFormatter(Dictionary<Type, Func<object, string>>? formatters = null)`
+
+Creates an object of type TypeFormatter.
+
+Parameters
+- `Dictionary<Type, Func<object, string>>? formatters = null`: A mapping of types to formatting functions. Types not in the Dictionary will use default formatting. Pass null to use default formatting for all types.
+
+**Methods**
+
+> `string FormatTypeValue(object value)`
+
+Called to format a value of a specific type to a string representation.
+
+Parameters
+- `object value`: Value to format.
+
+Return
+- `string`: String representation of the value.
 
 ### `INameTransform`
 
