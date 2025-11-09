@@ -17,7 +17,7 @@ Then run the `change-versions.ps1` script to change the versions when the assemb
 Example:
 
 ```
-.\change-versions.ps1 v1.4.2.0 v1.4.3.0
+.\change-versions.ps1 1.4.2.0 1.4.3.0
 ```
 
 Finally run the `list-version.ps1` script again to make sure the versions were changed as expected.
