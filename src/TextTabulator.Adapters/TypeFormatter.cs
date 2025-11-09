@@ -37,8 +37,13 @@ namespace TextTabulator.Adapters
         /// </summary>
         /// <param name="value">Value to format.</param>
         /// <returns>String representation of the value.</returns>
-        public string FormatTypeValue(object value)
+        public string FormatTypeValue(object? value)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             if (_formatters != null && _formatters.TryGetValue(value.GetType(), out var formatter))
             {
                 return formatter.Invoke(value);
