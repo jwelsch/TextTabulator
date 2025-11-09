@@ -983,5 +983,41 @@ namespace TextTabulator.Adapters.ReflectionTests
                 }),
             });
         }
+
+        [Fact]
+        public void When_called_with_null_items_then_data_is_returned()
+        {
+            var item = new TextClassWithNullable
+            {
+                StringProperty = null,
+                IntProperty = null,
+                DateTimeProperty = null,
+                EnumerableProperty = null,
+            };
+
+            var sut = new ReflectionTabulatorAdapter<TextClassWithNullable>(item);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal(nameof(TextClassWithNullable.StringProperty), i),
+                i => Assert.Equal(nameof(TextClassWithNullable.IntProperty), i),
+                i => Assert.Equal(nameof(TextClassWithNullable.DateTimeProperty), i),
+                i => Assert.Equal(nameof(TextClassWithNullable.EnumerableProperty), i),
+            });
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(string.Empty, j),
+                    j => Assert.Equal(string.Empty, j),
+                    j => Assert.Equal(string.Empty, j),
+                    j => Assert.Equal(string.Empty, j),
+                }),
+            });
+        }
     }
 }
