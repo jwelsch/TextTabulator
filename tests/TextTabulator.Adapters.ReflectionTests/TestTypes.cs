@@ -196,4 +196,15 @@ namespace TextTabulator.Adapters.ReflectionTests
             _intField = intField;
         }
     }
+
+    internal class TextClassWithNullable
+    {
+        public string? StringProperty { get; set; }
+
+        public int? IntProperty { get; set; }
+
+        public DateTime? DateTimeProperty { get; set; }
+
+        public IEnumerable<int?>? EnumerableProperty { get; set; }
+    }
 }
