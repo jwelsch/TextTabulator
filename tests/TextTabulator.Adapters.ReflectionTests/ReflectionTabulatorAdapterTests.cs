@@ -1,4 +1,5 @@
 ﻿using TextTabulator.Adapters.Reflection;
+using TextTabulator.Testing;
 
 namespace TextTabulator.Adapters.ReflectionTests
 {

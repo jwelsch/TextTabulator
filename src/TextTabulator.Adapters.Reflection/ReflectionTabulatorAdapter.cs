@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace TextTabulator.Adapters.Reflection
@@ -93,22 +92,25 @@ namespace TextTabulator.Adapters.Reflection
 
         private void GetMemberInfos()
         {
-            Type? type = null;
+            if (_fieldInfos != null && _propertyInfos != null)
+            {
+                return;
+            }
+
+            var type = typeof(T);
+            var reflector = new Reflector(type);
             var bindingFlags = BindingFlags.Instance
                 | ((_options.AccessModifiers & AccessModifiers.Public) == 0 ? 0 : BindingFlags.Public)
                 | ((_options.AccessModifiers & AccessModifiers.NonPublic) == 0 ? 0 : BindingFlags.NonPublic);
 
             if ((_options.TypeMembers & TypeMembers.Properties) != 0 && _propertyInfos == null)
             {
-                type ??= typeof(T);
-                _propertyInfos = type.GetProperties(bindingFlags).Where(i => !i.GetCustomAttributes<TabulatorIgnoreAttribute>().Any()).ToArray();
+                _propertyInfos = reflector.GetPropertyInfos(bindingFlags);
             }
 
             if ((_options.TypeMembers & TypeMembers.Fields) != 0 && _fieldInfos == null)
             {
-                type ??= typeof(T);
-                // Ignore backing fields.
-                _fieldInfos = type.GetFields(bindingFlags).Where(i => (!i.Name.StartsWith("<") || !i.Name.Contains(">k__BackingField")) && !i.GetCustomAttributes<TabulatorIgnoreAttribute>().Any()).ToArray();
+                _fieldInfos = reflector.GetFieldInfos(bindingFlags);
             }
         }
 
