@@ -1,33 +1,30 @@
-﻿
-namespace TextTabulator.Adapters.Generics
+﻿namespace TextTabulator.Adapters.Generics
 {
     /// <summary>
-    /// Public interface for IDictionaryTabulatorAdapter<TKey,TValue>.
+    /// Public interface for IListTabulatorAdapter<T>.
     /// </summary>
-    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
-    public interface IDictionaryTabulatorAdapter<TKey, TValue> : ITabulatorAdapter
+    /// <typeparam name="T">The type of the items in the list.</typeparam>
+    public interface IListTabulatorAdapter<T> : ITabulatorAdapter
     {
     }
 
     /// <summary>
-    /// Class that implements the ITabulatorAdapter interface in order to adapt IDictionary<TKey,TValue> to be consumed by the Tabulator.Tabulate method.
-    /// Each key in the dictionary will be adapted to a row, and the properties and/or fields of the value type will be adapted to columns.
-    /// The names of the properties and/or fields of the value type will be adapted to headers.
+    /// Class that implements the ITabulatorAdapter interface in order to adapt IList<T> to be consumed by the Tabulator.Tabulate method.
+    /// Each item in the list will be adapted to a row, and the properties and/or fields of the item type will be adapted to columns.
+    /// The names of the properties and/or fields of the item type will be adapted to headers.
     /// </summary>
-    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
-    public class DictionaryTabulatorAdapter<TKey, TValue> : IDictionaryTabulatorAdapter<TKey, TValue>
+    /// <typeparam name="T">The type of the items in the list.</typeparam>
+    public class ListTabulatorAdapter<T> : IListTabulatorAdapter<T>
     {
-        private readonly IDictionary<TKey, TValue> _dictionary;
-        private readonly DictionaryTabulatorAdapterOptions _options;
+        private readonly IList<T> _list;
+        private readonly ListTabulatorAdapterOptions _options;
 
         private readonly Dictionary<string, int> _keyIndexMap = new();
 
-        public DictionaryTabulatorAdapter(IDictionary<TKey, TValue> dictionary, DictionaryTabulatorAdapterOptions? options = null)
+        public ListTabulatorAdapter(IList<T> list, ListTabulatorAdapterOptions? options = null)
         {
-            _dictionary = dictionary;
-            _options = options ?? new DictionaryTabulatorAdapterOptions();
+            _list = list;
+            _options = options ?? new ListTabulatorAdapterOptions();
         }
 
         public IEnumerable<string>? GetHeaderStrings()
@@ -36,14 +33,12 @@ namespace TextTabulator.Adapters.Generics
 
             _keyIndexMap.Clear();
 
-            var type = _dictionary.GetType().GetGenericArguments()[1];
+            var type = typeof(T);
 
             if (PrimitiveLike.Detect(type))
             {
-                headers.Add(_options.HeaderNameTransform.Apply("Key"));
                 headers.Add(_options.HeaderNameTransform.Apply("Value"));
-                _keyIndexMap.Add("Key", 0);
-                _keyIndexMap.Add("Value", 1);
+                _keyIndexMap.Add("Value", 0);
             }
             else
             {
@@ -57,8 +52,8 @@ namespace TextTabulator.Adapters.Generics
                 foreach (var propertyInfo in propertyInfos)
                 {
                     var transformedName = _options.HeaderNameTransform.Apply(propertyInfo.Name);
-                    propertyHeaders.Add(transformedName);
                     nameTransformMap[transformedName] = propertyInfo.Name;
+                    propertyHeaders.Add(transformedName);
                 }
 
                 var fieldHeaders = new List<string>();
@@ -67,8 +62,8 @@ namespace TextTabulator.Adapters.Generics
                 foreach (var fieldInfo in fieldInfos)
                 {
                     var transformedName = _options.HeaderNameTransform.Apply(fieldInfo.Name);
-                    fieldHeaders.Add(transformedName);
                     nameTransformMap[transformedName] = fieldInfo.Name;
+                    fieldHeaders.Add(transformedName);
                 }
 
                 headers.AddRange(propertyHeaders);
@@ -83,11 +78,7 @@ namespace TextTabulator.Adapters.Generics
                     headers = headers.OrderDescending().ToList();
                 }
 
-                headers.Insert(0, _options.HeaderNameTransform.Apply("Key"));
-                _keyIndexMap.Add("Key", 0);
-
-                // Start from 1 since 0 is reserved for the "Key" column.
-                for (var i = 1; i < headers.Count; i++)
+                for (var i = 0; i < headers.Count; i++)
                 {
                     _keyIndexMap.Add(nameTransformMap[headers[i]], i);
                 }
@@ -99,18 +90,16 @@ namespace TextTabulator.Adapters.Generics
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
             var rows = new List<IEnumerable<string>>();
-            var type = _dictionary.GetType().GetGenericArguments()[1];
+            var type = typeof(T);
             var reflector = new Reflector(type);
 
-            foreach (var kvp in _dictionary)
+            foreach (var item in _list)
             {
                 var row = (string[])Array.CreateInstance(typeof(string), _keyIndexMap.Count);
 
-                row[0] = kvp.Key?.ToString() ?? string.Empty;
-
                 if (PrimitiveLike.Detect(type))
                 {
-                    row[1] = kvp.Value?.ToString() ?? string.Empty;
+                    row[0] = item?.ToString() ?? string.Empty;
                 }
                 else
                 {
@@ -118,7 +107,7 @@ namespace TextTabulator.Adapters.Generics
 
                     for (var i = 0; i < propertyInfos.Length; i++)
                     {
-                        var value = propertyInfos[i].GetValue(kvp.Value)?.ToString() ?? string.Empty;
+                        var value = propertyInfos[i].GetValue(item)?.ToString() ?? string.Empty;
                         row[_keyIndexMap[propertyInfos[i].Name]] = value;
                     }
 
@@ -126,7 +115,7 @@ namespace TextTabulator.Adapters.Generics
 
                     for (var i = 0; i < fieldInfos.Length; i++)
                     {
-                        var value = fieldInfos[i].GetValue(kvp.Value)?.ToString() ?? string.Empty;
+                        var value = fieldInfos[i].GetValue(item)?.ToString() ?? string.Empty;
                         row[_keyIndexMap[fieldInfos[i].Name]] = value;
                     }
                 }

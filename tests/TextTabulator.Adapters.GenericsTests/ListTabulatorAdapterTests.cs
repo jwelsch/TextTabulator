@@ -3,14 +3,14 @@ using TextTabulator.Testing;
 
 namespace TextTabulator.Adapters.GenericsTests
 {
-    public class DictionaryTabulatorAdapterTests
+    public class ListTabulatorAdapterTests
     {
         [Fact]
-        public void When_dictionary_is_empty_then_headers_and_values_are_correct()
+        public void When_list_is_empty_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass7>();
+            var data = new List<TestClass7>();
 
-            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data);
+            var sut = new ListTabulatorAdapter<TestClass7>(data);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -19,7 +19,6 @@ namespace TextTabulator.Adapters.GenericsTests
             Assert.NotNull(values);
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal(nameof(TestClass7.StringProperty), i),
                 i => Assert.Equal("_intField", i),
             });
@@ -27,16 +26,16 @@ namespace TextTabulator.Adapters.GenericsTests
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_class_values_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_class_values_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass7>()
+            var data = new List<TestClass7>()
             {
-                ["One"] = new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
-                ["Two"] = new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
-                ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
+                new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
+                new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
+                new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data);
+            var sut = new ListTabulatorAdapter<TestClass7>(data);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -46,7 +45,6 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal(nameof(TestClass7.StringProperty), i),
                 i => Assert.Equal("_intField", i),
             });
@@ -55,19 +53,16 @@ namespace TextTabulator.Adapters.GenericsTests
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("FirstProperty", j),
                     j => Assert.Equal("1", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("SecondProperty", j),
                     j => Assert.Equal("2", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("ThirdProperty", j),
                     j => Assert.Equal("3", j)
                 })
@@ -75,16 +70,11 @@ namespace TextTabulator.Adapters.GenericsTests
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_int_values_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_int_values_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, int>()
-            {
-                ["One"] = 1,
-                ["Two"] = 2,
-                ["Three"] = 3
-            };
+            var data = new List<int>() { 1, 2, 3 };
 
-            var sut = new DictionaryTabulatorAdapter<string, int>(data);
+            var sut = new ListTabulatorAdapter<int>(data);
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
 
@@ -93,41 +83,23 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal("Value", i),
             });
 
             Assert.Collection(values, new Action<IEnumerable<string>>[]
             {
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("One", j),
-                    j => Assert.Equal("1", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Two", j),
-                    j => Assert.Equal("2", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Three", j),
-                    j => Assert.Equal("3", j)
-                })
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("1", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("2", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("3", j) })
             });
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_string_values_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_string_values_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, string>()
-            {
-                ["One"] = "First",
-                ["Two"] = "Second",
-                ["Three"] = "Third"
-            };
+            var data = new List<string>() { "First", "Second", "Third" };
 
-            var sut = new DictionaryTabulatorAdapter<string, string>(data);
+            var sut = new ListTabulatorAdapter<string>(data);
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
 
@@ -136,80 +108,49 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal("Value", i),
             });
 
             Assert.Collection(values, new Action<IEnumerable<string>>[]
             {
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("One", j),
-                    j => Assert.Equal("First", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Two", j),
-                    j => Assert.Equal("Second", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Three", j),
-                    j => Assert.Equal("Third", j)
-                })
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("First", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("Second", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("Third", j) })
             });
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_enum_values_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_enum_values_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestEnum>()
-            {
-                ["One"] = TestEnum.First,
-                ["Two"] = TestEnum.Second,
-                ["Three"] = TestEnum.None
-            };
-            var sut = new DictionaryTabulatorAdapter<string, TestEnum>(data);
+            var data = new List<TestEnum>() { TestEnum.First, TestEnum.Second, TestEnum.None };
+            var sut = new ListTabulatorAdapter<TestEnum>(data);
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
             Assert.NotNull(headers);
             Assert.NotNull(values);
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal("Value", i),
             });
             Assert.Collection(values, new Action<IEnumerable<string>>[]
             {
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("One", j),
-                    j => Assert.Equal("First", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Two", j),
-                    j => Assert.Equal("Second", j)
-                }),
-                i => Assert.Collection(i, new Action<string>[]
-                {
-                    j => Assert.Equal("Three", j),
-                    j => Assert.Equal("None", j)
-                })
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("First", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("Second", j) }),
+                i => Assert.Collection(i, new Action<string>[] { j => Assert.Equal("None", j) })
             });
         }
 
         [Fact]
         public void When_columns_are_sorted_in_ascending_order_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass9>()
+            var data = new List<TestClass9>()
             {
-                ["One"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
-                ["Two"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
-                ["Three"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.AlphaNumericAscending);
-            var sut = new DictionaryTabulatorAdapter<string, TestClass9>(data, options);
+            var options = new ListTabulatorAdapterOptions(null, SortOrder.AlphaNumericAscending);
+            var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -218,7 +159,6 @@ namespace TextTabulator.Adapters.GenericsTests
             Assert.NotNull(values);
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal("PrivateField", i),
                 i => Assert.Equal("PrivateProperty", i),
                 i => Assert.Equal("ProtectedField", i),
@@ -230,7 +170,6 @@ namespace TextTabulator.Adapters.GenericsTests
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("PrivateField", j),
                     j => Assert.Equal("PrivateProperty", j),
                     j => Assert.Equal("ProtectedField", j),
@@ -240,7 +179,6 @@ namespace TextTabulator.Adapters.GenericsTests
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("PrivateField", j),
                     j => Assert.Equal("PrivateProperty", j),
                     j => Assert.Equal("ProtectedField", j),
@@ -250,7 +188,6 @@ namespace TextTabulator.Adapters.GenericsTests
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("PrivateField", j),
                     j => Assert.Equal("PrivateProperty", j),
                     j => Assert.Equal("ProtectedField", j),
@@ -264,14 +201,14 @@ namespace TextTabulator.Adapters.GenericsTests
         [Fact]
         public void When_columns_are_sorted_in_descending_order_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass9>()
+            var data = new List<TestClass9>()
             {
-                ["One"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
-                ["Two"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
-                ["Three"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
+                new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.AlphaNumericDescending);
-            var sut = new DictionaryTabulatorAdapter<string, TestClass9>(data, options);
+            var options = new ListTabulatorAdapterOptions(null, SortOrder.AlphaNumericDescending);
+            var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -280,7 +217,6 @@ namespace TextTabulator.Adapters.GenericsTests
             Assert.NotNull(values);
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("Key", i),
                 i => Assert.Equal("PublicProperty", i),
                 i => Assert.Equal("PublicField", i),
                 i => Assert.Equal("ProtectedProperty", i),
@@ -292,7 +228,6 @@ namespace TextTabulator.Adapters.GenericsTests
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("PublicProperty", j),
                     j => Assert.Equal("PublicField", j),
                     j => Assert.Equal("ProtectedProperty", j),
@@ -302,7 +237,6 @@ namespace TextTabulator.Adapters.GenericsTests
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("PublicProperty", j),
                     j => Assert.Equal("PublicField", j),
                     j => Assert.Equal("ProtectedProperty", j),
@@ -312,7 +246,6 @@ namespace TextTabulator.Adapters.GenericsTests
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("PublicProperty", j),
                     j => Assert.Equal("PublicField", j),
                     j => Assert.Equal("ProtectedProperty", j),
@@ -324,16 +257,16 @@ namespace TextTabulator.Adapters.GenericsTests
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_class_and_header_name_transform_is_used_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_class_and_header_name_transform_is_used_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass7>()
+            var data = new List<TestClass7>()
             {
-                ["One"] = new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
-                ["Two"] = new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
-                ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
+                new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
+                new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
+                new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform()));
+            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(new UpperCaseNameTransform()));
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -343,7 +276,6 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("KEY", i),
                 i => Assert.Equal(nameof(TestClass7.StringProperty).ToUpperInvariant(), i),
                 i => Assert.Equal("_INTFIELD", i),
             });
@@ -352,19 +284,16 @@ namespace TextTabulator.Adapters.GenericsTests
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("FirstProperty", j),
                     j => Assert.Equal("1", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("SecondProperty", j),
                     j => Assert.Equal("2", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("ThirdProperty", j),
                     j => Assert.Equal("3", j)
                 })
@@ -372,16 +301,17 @@ namespace TextTabulator.Adapters.GenericsTests
         }
 
         [Fact]
-        public void When_dictionary_is_populated_with_int_and_header_name_transform_is_used_then_headers_and_values_are_correct()
+        public void When_list_is_populated_with_int_and_header_name_transform_is_used_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, int>()
+            var data = new List<int>()
             {
-                ["One"] = 1,
-                ["Two"] = 2,
-                ["Three"] = 3
+                1,
+                2,
+                3
             };
 
-            var sut = new DictionaryTabulatorAdapter<string, int>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform()));
+            var sut = new ListTabulatorAdapter<int>(data, new ListTabulatorAdapterOptions(new UpperCaseNameTransform()));
+
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
 
@@ -390,25 +320,21 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("KEY", i),
-                i => Assert.Equal("VALUE", i),
+                i => Assert.Equal("VALUE", i)
             });
 
             Assert.Collection(values, new Action<IEnumerable<string>>[]
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("1", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("2", j)
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("3", j)
                 })
             });
@@ -417,14 +343,14 @@ namespace TextTabulator.Adapters.GenericsTests
         [Fact]
         public void When_header_name_transform_and_column_sort_order_is_used_then_headers_and_values_are_correct()
         {
-            var data = new Dictionary<string, TestClass7>()
+            var data = new List<TestClass7>()
             {
-                ["One"] = new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
-                ["Two"] = new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
-                ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
+                new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
+                new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
+                new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
+            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -434,7 +360,6 @@ namespace TextTabulator.Adapters.GenericsTests
 
             Assert.Collection(headers, new Action<string>[]
             {
-                i => Assert.Equal("KEY", i),
                 i => Assert.Equal("_INTFIELD", i),
                 i => Assert.Equal(nameof(TestClass7.StringProperty).ToUpperInvariant(), i),
             });
@@ -443,19 +368,16 @@ namespace TextTabulator.Adapters.GenericsTests
             {
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("One", j),
                     j => Assert.Equal("1", j),
                     j => Assert.Equal("FirstProperty", j),
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Two", j),
                     j => Assert.Equal("2", j),
                     j => Assert.Equal("SecondProperty", j),
                 }),
                 i => Assert.Collection(i, new Action<string>[]
                 {
-                    j => Assert.Equal("Three", j),
                     j => Assert.Equal("3", j),
                     j => Assert.Equal("ThirdProperty", j),
                 })
