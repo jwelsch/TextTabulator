@@ -1,4 +1,8 @@
-﻿namespace TextTabulator.Adapters.Generics
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TextTabulator.Adapters.Generics
 {
     /// <summary>
     /// Public interface for IListTabulatorAdapter<T>.
@@ -19,7 +23,7 @@
         private readonly IList<T> _list;
         private readonly ListTabulatorAdapterOptions _options;
 
-        private readonly Dictionary<string, int> _keyIndexMap = new();
+        private readonly Dictionary<string, int> _keyIndexMap = new Dictionary<string, int>();
 
         public ListTabulatorAdapter(IList<T> list, ListTabulatorAdapterOptions? options = null)
         {
@@ -37,8 +41,16 @@
 
             if (PrimitiveLike.Detect(type))
             {
+                var index = 0;
+
+                if (_options.IncludeIndex)
+                {
+                    headers.Add(_options.HeaderNameTransform.Apply("Index"));
+                    _keyIndexMap.Add("Index", index++);
+                }
+
                 headers.Add(_options.HeaderNameTransform.Apply("Value"));
-                _keyIndexMap.Add("Value", 0);
+                _keyIndexMap.Add("Value", index);
             }
             else
             {
@@ -71,14 +83,22 @@
 
                 if (_options.ColumnSortOrder == SortOrder.AlphaNumericAscending)
                 {
-                    headers = headers.Order().ToList();
+                    headers = headers.OrderBy(h => h).ToList();
                 }
                 else if (_options.ColumnSortOrder == SortOrder.AlphaNumericDescending)
                 {
-                    headers = headers.OrderDescending().ToList();
+                    headers = headers.OrderByDescending(h => h).ToList();
                 }
 
-                for (var i = 0; i < headers.Count; i++)
+                var start = 0;
+
+                if (_options.IncludeIndex)
+                {
+                    headers.Insert(0, _options.HeaderNameTransform.Apply("Index"));
+                    _keyIndexMap.Add("Index", start++);
+                }
+
+                for (var i = start; i < headers.Count; i++)
                 {
                     _keyIndexMap.Add(nameTransformMap[headers[i]], i);
                 }
@@ -92,6 +112,7 @@
             var rows = new List<IEnumerable<string>>();
             var type = typeof(T);
             var reflector = new Reflector(type);
+            var rowIndex = 0;
 
             foreach (var item in _list)
             {
@@ -99,10 +120,23 @@
 
                 if (PrimitiveLike.Detect(type))
                 {
-                    row[0] = item?.ToString() ?? string.Empty;
+                    if (_options.IncludeIndex && _keyIndexMap.ContainsKey("Index"))
+                    {
+                        row[_keyIndexMap["Index"]] = rowIndex.ToString();
+                    }
+
+                    if (_keyIndexMap.ContainsKey("Value"))
+                    {
+                        row[_keyIndexMap["Value"]] = item?.ToString() ?? string.Empty;
+                    }
                 }
                 else
                 {
+                    if (_options.IncludeIndex && _keyIndexMap.ContainsKey("Index"))
+                    {
+                        row[_keyIndexMap["Index"]] = rowIndex.ToString();
+                    }
+
                     var propertyInfos = reflector.GetPropertyInfos();
 
                     for (var i = 0; i < propertyInfos.Length; i++)
@@ -121,6 +155,7 @@
                 }
 
                 rows.Add(row);
+                rowIndex++;
             }
 
             return rows;

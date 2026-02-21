@@ -1,4 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace TextTabulator.Adapters.Generics
 {
     /// <summary>
@@ -22,7 +25,7 @@ namespace TextTabulator.Adapters.Generics
         private readonly IDictionary<TKey, TValue> _dictionary;
         private readonly DictionaryTabulatorAdapterOptions _options;
 
-        private readonly Dictionary<string, int> _keyIndexMap = new();
+        private readonly Dictionary<string, int> _keyIndexMap = new Dictionary<string, int>();
 
         public DictionaryTabulatorAdapter(IDictionary<TKey, TValue> dictionary, DictionaryTabulatorAdapterOptions? options = null)
         {
@@ -76,11 +79,11 @@ namespace TextTabulator.Adapters.Generics
 
                 if (_options.ColumnSortOrder == SortOrder.AlphaNumericAscending)
                 {
-                    headers = headers.Order().ToList();
+                    headers = headers.OrderBy(h => h).ToList();
                 }
                 else if (_options.ColumnSortOrder == SortOrder.AlphaNumericDescending)
                 {
-                    headers = headers.OrderDescending().ToList();
+                    headers = headers.OrderByDescending(h => h).ToList();
                 }
 
                 headers.Insert(0, _options.HeaderNameTransform.Apply("Key"));
