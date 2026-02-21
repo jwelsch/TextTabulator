@@ -34,3 +34,5 @@ jobs:
         run: dotnet nuget push src/TextTabulator.Adapters.YamlDotNet/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
       - name: Publish TextTabulator.Adapters.MLDotNet package to nuget.org
         run: dotnet nuget push src/TextTabulator.Adapters.MLDotNet/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
+      - name: Publish TextTabulator.Adapters.Generics package to nuget.org
+        run: dotnet nuget push src/TextTabulator.Adapters.Generics/bin/Release/*.nupkg --api-key ${{secrets.NUGET_TOKEN}} --source https://api.nuget.org/v3/index.json
