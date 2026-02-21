@@ -49,12 +49,16 @@ namespace TextTabulator.Adapters.Generics
             {
                 var reflector = new Reflector(type);
 
+                var nameTransformMap = new Dictionary<string, string>();
+
                 var propertyHeaders = new List<string>();
                 var propertyInfos = reflector.GetPropertyInfos();
 
                 foreach (var propertyInfo in propertyInfos)
                 {
-                    propertyHeaders.Add(_options.HeaderNameTransform.Apply(propertyInfo.Name));
+                    var transformedName = _options.HeaderNameTransform.Apply(propertyInfo.Name);
+                    propertyHeaders.Add(transformedName);
+                    nameTransformMap[transformedName] = propertyInfo.Name;
                 }
 
                 var fieldHeaders = new List<string>();
@@ -62,7 +66,9 @@ namespace TextTabulator.Adapters.Generics
 
                 foreach (var fieldInfo in fieldInfos)
                 {
-                    fieldHeaders.Add(_options.HeaderNameTransform.Apply(fieldInfo.Name));
+                    var transformedName = _options.HeaderNameTransform.Apply(fieldInfo.Name);
+                    fieldHeaders.Add(transformedName);
+                    nameTransformMap[transformedName] = fieldInfo.Name;
                 }
 
                 headers.AddRange(propertyHeaders);
@@ -77,11 +83,13 @@ namespace TextTabulator.Adapters.Generics
                     headers = headers.OrderDescending().ToList();
                 }
 
-                headers.Insert(0, "Key");
+                headers.Insert(0, _options.HeaderNameTransform.Apply("Key"));
+                _keyIndexMap.Add("Key", 0);
 
-                for (var i = 0; i < headers.Count; i++)
+                // Start from 1 since 0 is reserved for the "Key" column.
+                for (var i = 1; i < headers.Count; i++)
                 {
-                    _keyIndexMap.Add(headers[i], i);
+                    _keyIndexMap.Add(nameTransformMap[headers[i]], i);
                 }
             }
 

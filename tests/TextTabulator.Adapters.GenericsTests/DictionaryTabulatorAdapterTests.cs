@@ -322,5 +322,101 @@ namespace TextTabulator.Adapters.GenericsTests
                 })
             });
         }
+
+        [Fact]
+        public void When_header_name_transform_is_used_then_headers_and_values_are_correct()
+        {
+            var data = new Dictionary<string, TestClass7>()
+            {
+                ["One"] = new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
+                ["Two"] = new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
+                ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
+            };
+
+            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform()));
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.NotNull(values);
+
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal("KEY", i),
+                i => Assert.Equal(nameof(TestClass7.StringProperty).ToUpperInvariant(), i),
+                i => Assert.Equal("_INTFIELD", i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("One", j),
+                    j => Assert.Equal("FirstProperty", j),
+                    j => Assert.Equal("1", j)
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("Two", j),
+                    j => Assert.Equal("SecondProperty", j),
+                    j => Assert.Equal("2", j)
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("Three", j),
+                    j => Assert.Equal("ThirdProperty", j),
+                    j => Assert.Equal("3", j)
+                })
+            });
+        }
+
+        [Fact]
+        public void When_header_name_transform_and_column_sort_order_is_used_then_headers_and_values_are_correct()
+        {
+            var data = new Dictionary<string, TestClass7>()
+            {
+                ["One"] = new TestClass7("FirstField", 1) { StringProperty = "FirstProperty", IntProperty = 11 },
+                ["Two"] = new TestClass7("SecondField", 2) { StringProperty = "SecondProperty", IntProperty = 22 },
+                ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
+            };
+
+            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.NotNull(values);
+
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal("KEY", i),
+                i => Assert.Equal("_INTFIELD", i),
+                i => Assert.Equal(nameof(TestClass7.StringProperty).ToUpperInvariant(), i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("One", j),
+                    j => Assert.Equal("1", j),
+                    j => Assert.Equal("FirstProperty", j),
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("Two", j),
+                    j => Assert.Equal("2", j),
+                    j => Assert.Equal("SecondProperty", j),
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal("Three", j),
+                    j => Assert.Equal("3", j),
+                    j => Assert.Equal("ThirdProperty", j),
+                })
+            });
+        }
     }
 }
