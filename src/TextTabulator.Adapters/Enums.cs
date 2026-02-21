@@ -19,11 +19,6 @@
         /// Columns are sorted in descending alphanumeric order.
         /// </summary>
         AlphaNumericDescending,
-
-        /// <summary>
-        /// Columns are sorted using a custom order defined by the user.
-        /// </summary>
-        Custom
     }
 
     /// <summary>

@@ -120,17 +120,29 @@ namespace TextTabulator.Testing
 
     public class TestClass9
     {
-        public readonly string PublicField = string.Empty;
+        public string PublicField = string.Empty;
 
-        protected readonly string ProtectedField = string.Empty;
+        protected string ProtectedField = string.Empty;
 
-        private readonly string PrivateField = string.Empty;
+        private string PrivateField = string.Empty;
 
         public string PublicProperty { get; set; } = string.Empty;
 
         protected string ProtectedProperty { get; set; } = string.Empty;
 
         private string PrivateProperty { get; set; } = string.Empty;
+
+        public TestClass9()
+        {
+        }
+
+        public TestClass9(string protectedField, string privateField, string protectedProperty, string privateProperty)
+        {
+            ProtectedField = protectedField;
+            PrivateField = privateField;
+            ProtectedProperty = protectedProperty;
+            PrivateProperty = privateProperty;
+        }
 
         public void PublicMethod()
         {
