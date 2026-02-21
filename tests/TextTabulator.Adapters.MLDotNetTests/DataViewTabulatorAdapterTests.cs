@@ -175,11 +175,6 @@ namespace TextTabulator.Adapters.MLDotNetTests
             public string StringValue { get; set; } = string.Empty;
         }
 
-        private class UpperCaseNameTransform : INameTransform
-        {
-            public string Apply(string name) => name.ToUpperInvariant();
-        }
-
         [Fact]
         public void When_column_name_transform_is_passed_then_headers_are_transformed()
         {
@@ -194,11 +189,6 @@ namespace TextTabulator.Adapters.MLDotNetTests
             var headers = sut.GetHeaderStrings();
             var expected = data.Schema.Select(c => c.Name.ToUpperInvariant()).ToArray();
             Assert.Equal(expected, headers);
-        }
-
-        private class SuffixNameTransform : INameTransform
-        {
-            public string Apply(string name) => name + "_SUFFIX";
         }
 
         [Fact]

@@ -11,4 +11,8 @@
     <PackageReference Include="NSubstitute" Version="5.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />
+  </ItemGroup>
+
 </Project>

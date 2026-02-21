@@ -1,12 +1,34 @@
-﻿using TextTabulator.Adapters.Reflection;
+﻿using TextTabulator.Adapters;
 
-namespace TextTabulator.Adapters.ReflectionTests
+namespace TextTabulator.Testing
 {
-    internal class TestClass1
+    public enum TestEnum
+    {
+        None,
+        First,
+        Second,
+    }
+
+    public record TestRecord1(string StringProperty, int IntProperty, IEnumerable<string> EnumerableProperty);
+
+    public record struct TestRecordStruct1(string StringProperty, int IntProperty, IEnumerable<string> EnumerableProperty);
+
+    public interface ITestInterface1
+    {
+        string StringProperty { get; set; }
+
+        int IntProperty { get; set; }
+
+        IEnumerable<string> EnumerableProperty { get; set; }
+    }
+
+    public delegate void TestDelegate1(string stringParameter, int intParameter, IEnumerable<string> enumerableParameter);
+
+    public class TestClass1
     {
     }
 
-    internal class TestClass2
+    public class TestClass2
     {
         public string StringProperty { get; set; } = string.Empty;
 
@@ -15,7 +37,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         public IEnumerable<string> EnumerableProperty { get; set; } = Array.Empty<string>();
     }
 
-    internal class TestClass3
+    public class TestClass3
     {
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _stringField;
@@ -31,7 +53,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal class TestClass4
+    public class TestClass4
     {
         protected string StringProperty { get; set; } = string.Empty;
 
@@ -40,7 +62,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         protected IEnumerable<string> EnumerableProperty { get; set; } = Array.Empty<string>();
     }
 
-    internal class TestClass5
+    public class TestClass5
     {
         public readonly string _stringField = string.Empty;
 #pragma warning disable CS0649
@@ -49,7 +71,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         public readonly IEnumerable<string> _enumerableField = Array.Empty<string>();
     }
 
-    internal class TestClass6
+    public class TestClass6
     {
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _stringField;
@@ -71,7 +93,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal class TestClass7
+    public class TestClass7
     {
 #pragma warning disable IDE0052 // Remove unread private members
         [TabulatorIgnore]
@@ -91,16 +113,58 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal class TestClass8
+    public class TestClass8
     {
         public DateTime DateTimeProperty { get; set; } = DateTime.Now;
     }
 
-    internal struct TestStruct1
+    public class TestClass9
+    {
+        public string PublicField = string.Empty;
+
+        protected string ProtectedField = string.Empty;
+
+        private string PrivateField = string.Empty;
+
+        public string PublicProperty { get; set; } = string.Empty;
+
+        protected string ProtectedProperty { get; set; } = string.Empty;
+
+        private string PrivateProperty { get; set; } = string.Empty;
+
+        public TestClass9()
+        {
+        }
+
+        public TestClass9(string protectedField, string privateField, string protectedProperty, string privateProperty)
+        {
+            ProtectedField = protectedField;
+            PrivateField = privateField;
+            ProtectedProperty = protectedProperty;
+            PrivateProperty = privateProperty;
+        }
+
+        public void PublicMethod()
+        {
+        }
+
+        protected void ProtectedMethod()
+        {
+        }
+
+        private void PrivateMethod()
+        {
+        }
+
+        [TabulatorIgnore]
+        public string IgnoredPublicProperty { get; set; } = string.Empty;
+    }
+
+    public struct TestStruct1
     {
     }
 
-    internal struct TestStruct2
+    public struct TestStruct2
     {
         public string StringProperty { get; set; } = string.Empty;
 
@@ -113,7 +177,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal readonly struct TestStruct3
+    public readonly struct TestStruct3
     {
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _stringField;
@@ -129,7 +193,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal struct TestStruct4
+    public struct TestStruct4
     {
         private string StringProperty { get; set; } = string.Empty;
 
@@ -142,7 +206,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal readonly struct TestStruct5
+    public readonly struct TestStruct5
     {
         public readonly string _stringField = string.Empty;
 #pragma warning disable CS0649
@@ -155,7 +219,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal struct TestStruct6
+    public struct TestStruct6
     {
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _stringField;
@@ -177,7 +241,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal struct TestStruct7
+    public struct TestStruct7
     {
 #pragma warning disable IDE0052 // Remove unread private members
         [TabulatorIgnore]
@@ -197,7 +261,7 @@ namespace TextTabulator.Adapters.ReflectionTests
         }
     }
 
-    internal class TextClassWithNullable
+    public class TextClassWithNullable
     {
         public string? StringProperty { get; set; }
 

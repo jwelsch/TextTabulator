@@ -11,7 +11,7 @@
     <Company>Justin Welsch</Company>
     <Authors>Jwelsch</Authors>
     <Description>TextTabulator.Cli is a .NET application that allows command line access to TextTabulator functionality.</Description>
-    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <Copyright>Copyright 2025-2026 Justin Welsch</Copyright>
     <PackageProjectUrl>https://github.com/jwelsch/TextTabulator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
     <PackageTags>table;tabulate;text;cli</PackageTags>

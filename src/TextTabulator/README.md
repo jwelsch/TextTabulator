@@ -309,6 +309,9 @@ Existing implementations of `ITabulatorAdapter` for various common data formats 
 - Reflection adapter
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
+- Generics adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Generics)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Generics)
 
 ## Tabulation Options
 

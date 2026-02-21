@@ -51,3 +51,6 @@ There are also separate libraries that adapt different types of data to be consu
 - Reflection adapter
     - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Reflection)
     - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Reflection)
+- Generics adapter
+    - [Github](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.Generics)
+    - [Nuget](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Generics)
