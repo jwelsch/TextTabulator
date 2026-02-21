@@ -42,6 +42,7 @@ namespace TextTabulator.Adapters
 
         public FieldInfo? GetFieldInfo(string fieldName, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
         {
+            // Ignore backing fields.
             var info = fieldName.StartsWith("<") || fieldName.Contains(">k__BackingField") ? null : _type.GetField(fieldName, bindingFlags);
             return info == null || info.GetCustomAttributes<TabulatorIgnoreAttribute>().Any() ? null : info;
         }

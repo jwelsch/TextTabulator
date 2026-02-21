@@ -2,6 +2,28 @@
 
 namespace TextTabulator.Testing
 {
+    public enum TestEnum
+    {
+        None,
+        First,
+        Second,
+    }
+
+    public record TestRecord1(string StringProperty, int IntProperty, IEnumerable<string> EnumerableProperty);
+
+    public record struct TestRecordStruct1(string StringProperty, int IntProperty, IEnumerable<string> EnumerableProperty);
+
+    public interface ITestInterface1
+    {
+        string StringProperty { get; set; }
+
+        int IntProperty { get; set; }
+
+        IEnumerable<string> EnumerableProperty { get; set; }
+    }
+
+    public delegate void TestDelegate1(string stringParameter, int intParameter, IEnumerable<string> enumerableParameter);
+
     public class TestClass1
     {
     }
