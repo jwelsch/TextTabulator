@@ -18,73 +18,97 @@ nuget install JWelsch.TextTabulator.Adapters.Generics
 
 ## How to use
 
-You can call the code like this:
+See this example code.
 
+Define types:
 ```
-using CsvHelper;
-using System.IO;
+public enum Diet
+{
+   Carnivore,
+   Herbivore,
+   Omnivore
+}
+
+public class Dinosaur
+{
+   public string Name { get; set; }
+
+   public double Weight { get; set; }
+
+   public Diet Diet { get; set; }
+
+   public int Extinction { get; set; }
+
+   public Dinosaur(string name, double weight, Diet diet, int extinction)
+   {
+      Name = name;
+      Weight = weight;
+      Diet = diet;
+      Extinction = extinction;
+   }
+}
+```
+
+Call `TextTabulator.Tabulate` to generate table:
+```
 using TextTabulator;
-using TextTabulator.Adapters.CsvHelper;
+using TextTabulator.Adapters.Generics;
 
-var csvData =
-@"Name,Weight (tons),Diet,Extinction
-Tyrannosaurus Rex,6.7,Carnivore,66 mya
-Triceratops,8,Herbivore,66 mya
-Apatosaurus,33,Herbivore,147 mya
-Archaeopteryx,0.001,Omnivore,147 mya
-Anklyosaurus,4.8,Herbivore,66 mya
-Stegosaurus,3.8,Herbivore,147 mya
-Hadrosaurus,3,Herbivore,66 mya
-";
+var data = new Dictionary<Guid, Dinosaur>
+{
+    { Guid.NewGuid(), new Dinosaur("Tyrannosaurus Rex", 6.7, Diet.Carnivore, 66) },
+    { Guid.NewGuid(), new Dinosaur("Triceratops", 8, Diet.Herbivore, 66) },
+    { Guid.NewGuid(), new Dinosaur("Apatosaurus", 33, Diet.Herbivore, 147) },
+    { Guid.NewGuid(), new Dinosaur("Archaeopteryx", 0.001, Diet.Omnivore, 147) },
+    { Guid.NewGuid(), new Dinosaur("Anklyosaurus", 4.8, Diet.Herbivore, 66) },
+    { Guid.NewGuid(), new Dinosaur("Stegosaurus", 3.8, Diet.Herbivore, 147) },
+    { Guid.NewGuid(), new Dinosaur("Hadrosaurus", 3, Diet.Herbivore, 66) },
+};
 
-using var textReader = new StringReader(csvData);
-using var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
-var csvAdapter = new CsvHelperTabulatorAdapter(csvReader);
+var adapter = new GenericsTabulatorAdapter(data);
 
 var tabulator = new Tabulator();
-var table = tabulator.Tabulate(csvAdapter);
+var table = tabulator.Tabulate(adapter);
 
 Console.WriteLine(table);
 ```
 
 This will produce the output:
 ```
-------------------------------------------------------
-|Name             |Weight (tons)|Diet     |Extinction|
-|-----------------+-------------+---------+----------|
-|Tyrannosaurus Rex|6.7          |Carnivore|66 mya    |
-|-----------------+-------------+---------+----------|
-|Triceratops      |8            |Herbivore|66 mya    |
-|-----------------+-------------+---------+----------|
-|Apatosaurus      |33           |Herbivore|147 mya   |
-|-----------------+-------------+---------+----------|
-|Archaeopteryx    |0.001        |Omnivore |147 mya   |
-|-----------------+-------------+---------+----------|
-|Anklyosaurus     |4.8          |Herbivore|66 mya    |
-|-----------------+-------------+---------+----------|
-|Stegosaurus      |3.8          |Herbivore|147 mya   |
-|-----------------+-------------+---------+----------|
-|Hadrosaurus      |3            |Herbivore|66 mya    |
-------------------------------------------------------
+------------------------------------------------------------------------------------
+|Key                                 |Name             |Weight|Diet     |Extinction|
+|------------------------------------+-----------------+------+---------+----------|
+|567fb95b-97e3-4a56-aafc-b25edcdd9ba5|Tyrannosaurus Rex|6.7   |Carnivore|66        |
+|------------------------------------+-----------------+------+---------+----------|
+|d1412bfb-dc97-4f01-8630-aa58d772c33b|Triceratops      |8     |Herbivore|66        |
+|------------------------------------+-----------------+------+---------+----------|
+|8622ec6c-8a1a-442f-b502-1ea70b4e727a|Apatosaurus      |33    |Herbivore|147       |
+|------------------------------------+-----------------+------+---------+----------|
+|8b894103-8ba5-4d5a-a961-1ea2b639f05f|Archaeopteryx    |0.001 |Omnivore |147       |
+|------------------------------------+-----------------+------+---------+----------|
+|e4a4a81d-16a1-42b5-86fb-81ccaad24ea7|Anklyosaurus     |4.8   |Herbivore|66        |
+|------------------------------------+-----------------+------+---------+----------|
+|fa16e8d4-7292-423c-93f9-c516bc8a6538|Stegosaurus      |3.8   |Herbivore|147       |
+|------------------------------------+-----------------+------+---------+----------|
+|704f3fc1-13e6-4e72-aba6-8f6f2f798964|Hadrosaurus      |3     |Herbivore|66        |
+------------------------------------------------------------------------------------
 ```
 
 ## Public API
 
-The API consists of the `TextTabulator.Adapters.Generics.GenericsTabulatorAdapter` class. `GenericsTabulatorAdapter` derives from the `IGenericsTabulatorAdapter` to allow easy mocking for testing.
+### `TextTabulator.Adapters.Generics.DictionaryTabulatorAdapter<T>` class
 
-### `TextTabulator.Adapters.Generics.GenericsTabulatorAdapter`
-
-The adapter class that accepts a generic type object and presents the data that it reads in a format that `TextTabulator.Tabulate` can consume.
+Class that implements the `ITabulatorAdapter` interface in order to adapt types to be consumed by the `Tabulator.Tabulate` method.
 
 **Constructors**
 
-> `public CsvHelperTabulatorAdapter..ctor(CsvReader csvReader, CsvHelperTabulatorAdapterOptions? options = null)`
+> `public DictionaryTabulatorAdapter..ctor(IDictionary<TKey, TValue> dictionary, DictionaryTabulatorAdapterOptions? options = null)`
 
 Parameters
-- `CsvReader csvReader`: The `CsvReader` object that will read the desired data.
-- `CsvHelperTabulatorAdapterOptions? options`: Options for the adapter.
+- `IDictionary<TKey, TValue> dictionary`: The dictionary to display as a table.
+- `DictionaryTabulatorAdapterOptions? options`: Options for the adapter.
 
-**Methods**
+- **Methods**
 
 > `public IEnumerable<string>? GetHeaderStrings()`
 
@@ -108,27 +132,86 @@ Return
 
 - `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
 
-### `TextTabulator.Adapters.CsvHelper.CsvHelperTabulatorAdapterOptions`
+### `TextTabulator.Adapters.Generics.DictionaryTabulatorAdapterOptions`
 
-Options to allow configuration of the CsvHelperTabulatorAdapter class.
+Options to allow configuration of the DictionaryTabulatorAdapter class.
 
 **Constructors**
 
-> `public CsvHelperTabulatorAdapterOptions(INameTransform? headerNameTransform = null, bool hasHeaderRow = true)`
-
+> `public DictionaryTabulatorAdapterOptions(INameTransform? headerNameTransform = null, SortOrder columnSortOrder = SortOrder.Default)`
 Parameters
-- `INameTransform? headerNameTransform`: Transform to apply to CSV header names. Passing null will cause the CSV header names to not be altered.
-- `bool hasHeaderRow`: True if the CSV data contains a header row, false if not. Defaults to true.
+- `INameTransform? headerNameTransform`: Transform to apply to header names. Passing null will cause the header names to not be altered.
+- `SortOrder columnSortOrder`: Specifies the sort order of the columns.
 
 **Properties**
 
 > `INameTransform HeaderNameTransform { get; }`
+Gets the transform to apply to header names.
 
- Gets the transform to apply to CSV header names.
+> `SortOrder ColumnSortOrder { get; }`
+Gets the sort order of the columns.
 
-> `bool HasHeaderRow { get; }`
+### `TextTabulator.Adapters.Generics.ListTabulatorAdapter<T>` class
 
-Gets whether or not the CSV data contains a header row. Defaults to true.
+Class that implements the `ITabulatorAdapter` interface in order to adapt types to be consumed by the `Tabulator.Tabulate` method.
+
+**Constructors**
+
+> `public ListTabulatorAdapter..ctor(IList<T> list, ListTabulatorAdapterOptions? options = null)`
+
+Parameters
+- `IList<T> list`: The list to display as a table.
+- `ListTabulatorAdapterOptions? options`: Options for the adapter.
+- 
+- **Methods**
+
+> `public IEnumerable<string>? GetHeaderStrings()`
+
+Called by `Tabulator.Tabulate` to return the header strings, if any, of the data. If the data does not contain headers, then null should be returned.
+
+Parameters
+- None
+
+Return
+
+- `IEnumerable<string>?`: An enumerable containing the header strings, or null if the CSV data did not have headers.
+
+> `public IEnumerable<IEnumerable<string>> GetValueStrings()`
+
+Called to return the row values. The outer enumeration is the rows, while the inner enumeration contains the values in each row. Can be an empty enumeration if the data contains no rows.
+
+Parameters
+- None
+
+Return
+
+- `IEnumerable<IEnumerable<string>>`: An enumerable containing the values for each row.
+
+### `TextTabulator.Adapters.Generics.ListTabulatorAdapterOptions`
+
+Options to allow configuration of the ListTabulatorAdapter class.
+
+**Constructors**
+
+> `public ListTabulatorAdapterOptions(bool includeIndex = true, INameTransform? headerNameTransform = null, SortOrder columnSortOrder = SortOrder.Default)`
+Parameters
+- `bool includeIndex`: True to include an index column, false otherwise.
+- `INameTransform? headerNameTransform`: Transform to apply to header names. Passing null will cause the header names to not be altered.
+- `SortOrder columnSortOrder`: Specifies the sort order of the columns.
+
+**Properties**
+
+> `bool IncludeIndex { get; }`
+
+Gets a value indicating whether to include an index column.
+
+> `INameTransform HeaderNameTransform { get; }`
+
+Gets the transform to apply to header names.
+
+> `SortOrder ColumnSortOrder { get; }`
+
+Gets the sort order of the columns.
 
 ### `INameTransform`
 
