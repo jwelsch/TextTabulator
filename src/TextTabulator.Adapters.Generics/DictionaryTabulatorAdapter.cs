@@ -1,10 +1,22 @@
 ﻿
 namespace TextTabulator.Adapters.Generics
 {
+    /// <summary>
+    /// Public interface for IDictionaryTabulatorAdapter<TKey,TValue>.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     public interface IDictionaryTabulatorAdapter<TKey, TValue> : ITabulatorAdapter
     {
     }
 
+    /// <summary>
+    /// Class that implements the ITabulatorAdapter interface in order to adapt IDictionary<TKey,TValue> to be consumed by the Tabulator.Tabulate method.
+    /// Each key in the dictionary will be adapted to a row, and the properties and/or fields of the value type will be adapted to columns.
+    /// The names of the properties and/or fields of the value type will be adapted to headers.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
+    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     public class DictionaryTabulatorAdapter<TKey, TValue> : IDictionaryTabulatorAdapter<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _dictionary;
