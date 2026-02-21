@@ -8,7 +8,7 @@
     <Company>Justin Welsch</Company>
     <Authors>Jwelsch</Authors>
     <Description>TextTabulator is a .NET Standard 2.1 library that will format data into a string that, when printed, will be in the form of a table.</Description>
-    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <Copyright>Copyright 2025-2026 Justin Welsch</Copyright>
     <PackageProjectUrl>https://github.com/jwelsch/TextTabulator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
     <PackageTags>table;tabulate;text</PackageTags>

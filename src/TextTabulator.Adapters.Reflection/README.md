@@ -31,7 +31,7 @@ public enum Diet
 
 public class Dinosaur
 {
-   public string Name { get; set; };
+   public string Name { get; set; }
 
    public double Weight { get; set; }
 

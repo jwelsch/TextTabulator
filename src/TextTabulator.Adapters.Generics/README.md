@@ -1,6 +1,6 @@
 [![Build](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/build.yml)
 [![Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml/badge.svg)](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml)
-[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.CsvHelper.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.CsvHelper)
+[![NuGet](https://img.shields.io/nuget/v/Jwelsch.TextTabulator.Adapters.Generics.svg)](https://www.nuget.org/packages/Jwelsch.TextTabulator.Adapters.Generics)
 
 # TextTabulator.Adapters.Generics
 

@@ -7,7 +7,7 @@
     <Authors>Jwelsch</Authors>
     <Company>Justin Welsch</Company>
     <Description>A .NET Standard 2.1 library that adapts IDataView, from the ML.NET library, to a format that can be consumed by TextTabulator.</Description>
-    <Copyright>Copyright 2025 Justin Welsch</Copyright>
+    <Copyright>Copyright 2025-2026 Justin Welsch</Copyright>
     <PackageProjectUrl>https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters.MLDotNet</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>

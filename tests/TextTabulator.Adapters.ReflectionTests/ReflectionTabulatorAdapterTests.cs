@@ -449,8 +449,6 @@ namespace TextTabulator.Adapters.ReflectionTests
             });
         }
 
-        ///////////////////////////////////////////////////////////////////////
-
         [Fact]
         public void When_called_with_empty_enumberable_of_struct_with_properties_then_data_returned()
         {
