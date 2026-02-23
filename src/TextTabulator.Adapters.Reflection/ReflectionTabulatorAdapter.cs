@@ -70,6 +70,7 @@ namespace TextTabulator.Adapters.Reflection
 
         private PropertyInfo[]? _propertyInfos;
         private FieldInfo[]? _fieldInfos;
+        private ColumnNameMapper? _mapper;
 
         /// <summary>
         /// ReflectionTabulatorAdapter constructor that takes an enumerable.
@@ -144,6 +145,10 @@ namespace TextTabulator.Adapters.Reflection
                         headers.Add(_fieldInfos[i].Name);
                     }
                 }
+
+                _mapper = new ColumnNameMapper(headers, _options.MemberNameTransform, _options.ColumnSorter);
+
+                headers = _mapper.GetSortedColumnNames().ToList();
             }
             else
             {
@@ -198,7 +203,9 @@ namespace TextTabulator.Adapters.Reflection
                     {
                         for (var i = 0; i < propertyCount; i++)
                         {
-                            row[i] = _options.TypeFormatter.FormatTypeValue(_propertyInfos[i].GetValue(item));
+                            var propertyInfo = _propertyInfos[i];
+                            var rowIndex = _mapper != null ? _mapper.GetColumnName(propertyInfo.Name).SortedIndex : i;
+                            row[rowIndex] = _options.TypeFormatter.FormatTypeValue(propertyInfo.GetValue(item));
                         }
                     }
 
@@ -206,7 +213,9 @@ namespace TextTabulator.Adapters.Reflection
                     {
                         for (var i = propertyCount; i < fieldCount + propertyCount; i++)
                         {
-                            row[i] = _options.TypeFormatter.FormatTypeValue(_fieldInfos[i - propertyCount].GetValue(item));
+                            var fieldInfo = _fieldInfos[i - propertyCount];
+                            var rowIndex = _mapper != null ? _mapper.GetColumnName(fieldInfo.Name).SortedIndex : i;
+                            row[rowIndex] = _options.TypeFormatter.FormatTypeValue(fieldInfo.GetValue(item));
                         }
                     }
 
