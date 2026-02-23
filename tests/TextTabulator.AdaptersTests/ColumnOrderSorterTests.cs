@@ -14,7 +14,7 @@ namespace TextTabulator.AdaptersTests
         {
             var sut = new DefaultColumnOrderSorter();
 
-            var result = sut.Sort(data, i => i);
+            var result = sut.Sort(data);
 
             Assert.Collection(result,
                 i => Assert.Equal(expected[0], i),
@@ -35,7 +35,7 @@ namespace TextTabulator.AdaptersTests
         {
             var sut = new AscendingColumnOrderSorter();
 
-            var result = sut.Sort(data, i => i);
+            var result = sut.Sort(data);
 
             Assert.Collection(result,
                 i => Assert.Equal(expected[0], i),
@@ -56,7 +56,7 @@ namespace TextTabulator.AdaptersTests
         {
             var sut = new DescendingColumnOrderSorter();
 
-            var result = sut.Sort(data, i => i);
+            var result = sut.Sort(data);
 
             Assert.Collection(result,
                 i => Assert.Equal(expected[0], i),
@@ -73,9 +73,9 @@ namespace TextTabulator.AdaptersTests
             var data = new[] { "1", "C", "A", "0", "B" };
             var expected = new[] { "A", "B", "C", "0", "1" };
 
-            var sut = new CustomColumnOrderSorter();
+            var sut = new ColumnOrderSorter(i => expected);
 
-            var result = sut.Sort(data, i => expected);
+            var result = sut.Sort(data);
 
             Assert.Collection(result,
                 i => Assert.Equal(expected[0], i),
