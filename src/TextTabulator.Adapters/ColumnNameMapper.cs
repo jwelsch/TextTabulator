@@ -4,14 +4,18 @@ using System.Linq;
 
 namespace TextTabulator.Adapters
 {
-    internal interface IColumnNameMapper
+    public interface IColumnNameMapper
     {
         ColumnNameIndex GetColumnName(string mappedColumnName);
 
         ColumnNameIndex GetMappedColumnName(string columnName);
+
+        string[] GetSortedColumnNames();
+
+        string[] GetSortedMappedColumnNames();
     }
 
-    internal class ColumnNameIndex
+    public class ColumnNameIndex
     {
         public string ColumnName { get; }
 
@@ -24,7 +28,7 @@ namespace TextTabulator.Adapters
         }
     }
 
-    internal class ColumnNameMapper : IColumnNameMapper
+    public class ColumnNameMapper : IColumnNameMapper
     {
         // The key is the tranformed column name. The value is the original column name and the sorted index.
         private readonly Dictionary<string, ColumnNameIndex> _columnNameMap = new Dictionary<string, ColumnNameIndex>();
@@ -82,6 +86,16 @@ namespace TextTabulator.Adapters
             }
 
             throw new KeyNotFoundException($"Column name '{columnName}' not found.");
+        }
+
+        public string[] GetSortedColumnNames()
+        {
+            return _columnNameMap.OrderBy(kvp => kvp.Value.SortedIndex).Select(kvp => kvp.Value.ColumnName).ToArray();
+        }
+
+        public string[] GetSortedMappedColumnNames()
+        {
+            return _columnNameMap.OrderBy(kvp => kvp.Value.SortedIndex).Select(kvp => kvp.Key).ToArray();
         }
     }
 }

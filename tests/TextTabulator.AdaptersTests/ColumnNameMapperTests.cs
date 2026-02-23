@@ -34,6 +34,9 @@ namespace TextTabulator.AdaptersTests
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
             Assert.Equal("ColumnC", mappedColumnC.ColumnName);
             Assert.Equal("ColumnA", mappedColumnA.ColumnName);
+
+            Assert.Equal(new[] { "ColumnB", "ColumnC", "ColumnA" }, sut.GetSortedColumnNames());
+            Assert.Equal(new[] { "ColumnB", "ColumnC", "ColumnA" }, sut.GetSortedMappedColumnNames());
         }
 
         [Fact]
@@ -66,6 +69,9 @@ namespace TextTabulator.AdaptersTests
             Assert.Equal("ColumnA", mappedColumnA.ColumnName);
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
             Assert.Equal("ColumnC", mappedColumnC.ColumnName);
+
+            Assert.Equal(new[] { "ColumnA", "ColumnB", "ColumnC" }, sut.GetSortedColumnNames());
+            Assert.Equal(new[] { "ColumnA", "ColumnB", "ColumnC" }, sut.GetSortedMappedColumnNames());
         }
 
         [Fact]
@@ -98,6 +104,9 @@ namespace TextTabulator.AdaptersTests
             Assert.Equal("ColumnC", mappedColumnC.ColumnName);
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
             Assert.Equal("ColumnA", mappedColumnA.ColumnName);
+
+            Assert.Equal(new[] { "ColumnC", "ColumnB", "ColumnA" }, sut.GetSortedColumnNames());
+            Assert.Equal(new[] { "ColumnC", "ColumnB", "ColumnA" }, sut.GetSortedMappedColumnNames());
         }
 
         [Fact]
@@ -162,6 +171,9 @@ namespace TextTabulator.AdaptersTests
             Assert.Equal("Column A", mappedColumnA.ColumnName);
             Assert.Equal("Column B", mappedColumnB.ColumnName);
             Assert.Equal("Column C", mappedColumnC.ColumnName);
+
+            Assert.Equal(new[] { "ColumnA", "ColumnB", "ColumnC" }, sut.GetSortedColumnNames());
+            Assert.Equal(new[] { "Column A", "Column B", "Column C" }, sut.GetSortedMappedColumnNames());
         }
     }
 }
