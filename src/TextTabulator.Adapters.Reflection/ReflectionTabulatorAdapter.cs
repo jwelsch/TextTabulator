@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace TextTabulator.Adapters.Reflection
@@ -64,6 +65,7 @@ namespace TextTabulator.Adapters.Reflection
     public class ReflectionTabulatorAdapter<T> : IReflectionTabulatorAdapter
     {
         private readonly IEnumerable<T> _items;
+        private readonly int _itemCount;
         private readonly ReflectionTabulatorAdapterOptions _options;
 
         private PropertyInfo[]? _propertyInfos;
@@ -77,6 +79,7 @@ namespace TextTabulator.Adapters.Reflection
         public ReflectionTabulatorAdapter(IEnumerable<T> items, ReflectionTabulatorAdapterOptions? options = null)
         {
             _items = items;
+            _itemCount = _items.Count();
             _options = options ?? new ReflectionTabulatorAdapterOptions();
         }
 
@@ -124,19 +127,41 @@ namespace TextTabulator.Adapters.Reflection
 
             var headers = new List<string>();
 
-            if (_propertyInfos != null)
+            if (_options.AxesOrientation == AxesOrientation.Default)
             {
-                for (var i = 0; i < _propertyInfos!.Length; i++)
+                if (_propertyInfos != null)
                 {
-                    headers.Add(_propertyInfos[i].Name);
+                    for (var i = 0; i < _propertyInfos!.Length; i++)
+                    {
+                        headers.Add(_propertyInfos[i].Name);
+                    }
+                }
+
+                if (_fieldInfos != null)
+                {
+                    for (var i = 0; i < _fieldInfos!.Length; i++)
+                    {
+                        headers.Add(_fieldInfos[i].Name);
+                    }
                 }
             }
-
-            if (_fieldInfos != null)
+            else
             {
-                for (var i = 0; i < _fieldInfos!.Length; i++)
+                if (_propertyInfos != null || _fieldInfos != null)
                 {
-                    headers.Add(_fieldInfos[i].Name);
+                    headers.Add("Member");
+
+                    if (_itemCount == 1)
+                    {
+                        headers.Add("Value");
+                    }
+                    else
+                    {
+                        for (var i = 0; i < _itemCount; i++)
+                        {
+                            headers.Add($"Value{i}");
+                        }
+                    }
                 }
             }
 
@@ -160,30 +185,62 @@ namespace TextTabulator.Adapters.Reflection
 
             var values = new List<string[]>();
 
-            foreach (var item in _items)
+            if (_options.AxesOrientation == AxesOrientation.Default)
             {
-                var propertyCount = _propertyInfos?.Length ?? 0;
-                var fieldCount = _fieldInfos?.Length ?? 0;
-
-                var row = new string[propertyCount + fieldCount];
-
-                if (_propertyInfos != null)
+                foreach (var item in _items)
                 {
-                    for (var i = 0; i < propertyCount; i++)
-                    {
-                        row[i] = _options.TypeFormatter.FormatTypeValue(_propertyInfos[i].GetValue(item));
-                    }
-                }
+                    var propertyCount = _propertyInfos?.Length ?? 0;
+                    var fieldCount = _fieldInfos?.Length ?? 0;
 
-                if (_fieldInfos != null)
+                    var row = new string[propertyCount + fieldCount];
+
+                    if (_propertyInfos != null)
+                    {
+                        for (var i = 0; i < propertyCount; i++)
+                        {
+                            row[i] = _options.TypeFormatter.FormatTypeValue(_propertyInfos[i].GetValue(item));
+                        }
+                    }
+
+                    if (_fieldInfos != null)
+                    {
+                        for (var i = propertyCount; i < fieldCount + propertyCount; i++)
+                        {
+                            row[i] = _options.TypeFormatter.FormatTypeValue(_fieldInfos[i - propertyCount].GetValue(item));
+                        }
+                    }
+
+                    values.Add(row);
+                }
+            }
+            else
+            {
+                var memberCount = (_propertyInfos?.Length ?? 0) + (_fieldInfos?.Length ?? 0);
+
+                for (var i = 0; i < memberCount; i++)
                 {
-                    for (var i = propertyCount; i < fieldCount + propertyCount; i++)
-                    {
-                        row[i] = _options.TypeFormatter.FormatTypeValue(_fieldInfos[i - propertyCount].GetValue(item));
-                    }
-                }
+                    var row = new string[_itemCount + 1];
 
-                values.Add(row);
+                    if (_propertyInfos != null && i < _propertyInfos.Length)
+                    {
+                        row[0] = _propertyInfos[i].Name;
+                        for (var j = 0; j < _itemCount; j++)
+                        {
+                            row[j + 1] = _options.TypeFormatter.FormatTypeValue(_propertyInfos[i].GetValue(_items.ElementAt(j)));
+                        }
+                    }
+                    else if (_fieldInfos != null)
+                    {
+                        var fieldIndex = i - (_propertyInfos?.Length ?? 0);
+                        row[0] = _fieldInfos[fieldIndex].Name;
+                        for (var j = 0; j < _itemCount; j++)
+                        {
+                            row[j + 1] = _options.TypeFormatter.FormatTypeValue(_fieldInfos[fieldIndex].GetValue(_items.ElementAt(j)));
+                        }
+                    }
+
+                    values.Add(row);
+                }
             }
 
             return values;
