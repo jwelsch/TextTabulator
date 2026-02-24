@@ -107,4 +107,4 @@ The data should be in the following format:
 
 ## Public API
 
-The full public API documentation can be found here: 
+Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/texttabulator.adapters.yamldotnet.md).

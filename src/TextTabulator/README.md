@@ -58,7 +58,7 @@ The output of the above code would be:
 
 ## Public API
 
-The full public API documentation can be found here: 
+Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/index.md).
 
 ### Adapters
 
@@ -93,11 +93,11 @@ Existing implementations of `ITabulatorAdapter` for various common data formats 
 
 ## Tabulation Options
 
-Various aspects of the generated table can be controlled by the configuration class `TableOptions`. Examples of what the specific options values produce can be found below.
+Various aspects of the generated table can be controlled by the configuration class `TabulatorOptions`. Examples of what the specific options values produce can be found below.
 
 ### Alignment
 
-If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `CellAlignment` property in an `ITableOptions` object. The `CellAlignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
+If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `CellAlignment` property in an `ITabulatorOptions` object. The `CellAlignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
 
 There are four `CellAlignment` values:
 - `Left`: Aligns content to the left of the cell.
@@ -257,7 +257,7 @@ The output will look like this:
 
 ### Styling
 
-The style of the table structure can be controlled by setting the `Styling` property in an `ITableOptions` object and passing it to the `Tabulator.Tabulate` method. There are two types that implement `ITableStyle` out of the box: `AsciiTableStyling` and `UnicodeTableStyling`. You can set the properties of either to further customize the styling of the table. The default table styling is the same as `AsciiTableStyling`.
+The style of the table structure can be controlled by setting the `Styling` property in an `ITabulatorOptions` object and passing it to the `Tabulator.Tabulate` method. There are two types that implement `ITableStyle` out of the box: `AsciiTableStyling` and `UnicodeTableStyling`. You can set the properties of either to further customize the styling of the table. The default table styling is the same as `AsciiTableStyling`.
 
 `AsciiTableStyling` will only use traditional ASCII characters to build the table. Note that this does not mean that the characters are ASCII encoded, the actual characters are encoded as standard Unicode, like all .NET characters. This only uses characters within the traditional ASCII 1-byte range of 0-255.
 
@@ -317,7 +317,7 @@ An example table looks like:
 
 ### New Lines
 
-By default `TextTabulator.Tabulate` uses the `Environment.NewLine` for new lines. However, characters to use for new lines can be set by assigning a value to `TableOptions.NewLines`.
+By default `TextTabulator.Tabulate` uses the `Environment.NewLine` for new lines. However, characters to use for new lines can be set by assigning a value to `TabulatorOptions.NewLines`.
 
 Example:
 
