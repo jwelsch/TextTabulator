@@ -70,4 +70,4 @@ This will produce the output:
 
 ## Public API
 
-Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/texttabulator.adapters.csvhelper.md).
+Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/index-texttabulator.adapters.csvhelper.md).

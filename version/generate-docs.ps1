@@ -127,7 +127,7 @@ foreach ($name in $directoryNames) {
         $copiedDlls = Copy-Dependencies -DllDir $dllDir -DepsJsonName $name -DependenciesToCopy $projectDependencies[$name]
         
         # Run xmldoc2md
-        xmldoc2md "$dllDir\$name.dll" -o "..\docs"
+        xmldoc2md "$dllDir\$name.dll" -o "..\docs" --index-page-name "index-$($name.ToLowerInvariant())"
         
         # Clean up copied dependencies
         foreach ($depDll in $copiedDlls) {
@@ -138,6 +138,6 @@ foreach ($name in $directoryNames) {
         }
     }
     else {
-        xmldoc2md "$dllDir\$name.dll" -o "..\docs"
+        xmldoc2md "$dllDir\$name.dll" -o "..\docs" --index-page-name "index-$($name.ToLowerInvariant())"
     }
 }

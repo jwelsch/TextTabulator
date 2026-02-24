@@ -58,7 +58,7 @@ The output of the above code would be:
 
 ## Public API
 
-Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/index.md).
+Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/index-texttabulator.md).
 
 ### Adapters
 
