@@ -1,6 +1,6 @@
 ﻿namespace TextTabulator.Adapters
 {
-    public class TableHeader
+    internal class TableHeader
     {
         public string TransformedName { get; }
 

@@ -2,12 +2,12 @@
 
 namespace TextTabulator.Adapters
 {
-    public interface IValueNormalizer
+    internal interface IValueNormalizer
     {
         string Normalize(string value);
     }
 
-    public class ValueNormalizer : IValueNormalizer
+    internal class ValueNormalizer : IValueNormalizer
     {
         public string Normalize(string value)
         {
