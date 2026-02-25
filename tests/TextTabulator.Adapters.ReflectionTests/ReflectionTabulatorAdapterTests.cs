@@ -1187,5 +1187,71 @@ namespace TextTabulator.Adapters.ReflectionTests
                 }),
             });
         }
+
+        [Fact]
+        public void When_called_with_columns_sorted_ascending_and_axes_swapped_then_data_is_returned_with_rows_and_columns_swapped_and_in_correct_order()
+        {
+            var items = new TestClass2[]
+            {
+                new()
+                {
+                    StringProperty = "Hello",
+                    IntProperty = 123,
+                    EnumerableProperty = new string[] { "foo", "bar" },
+                },
+                new()
+                {
+                    StringProperty = "World",
+                    IntProperty = 456,
+                    EnumerableProperty = new string[] { "goo", "baz" },
+                },
+                new()
+                {
+                    StringProperty = "Hello World",
+                    IntProperty = 789,
+                    EnumerableProperty = new string[] { "noo", "buzz" },
+                },
+            };
+
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.Public, null, AxesOrientation.Swapped, ColumnOrderSorter.Descending);
+            var sut = new ReflectionTabulatorAdapter<TestClass2>(items, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers, new Action<string>[]
+            {
+                i => Assert.Equal($"Member", i),
+                i => Assert.Equal($"Value0", i),
+                i => Assert.Equal($"Value1", i),
+                i => Assert.Equal($"Value2", i),
+            });
+
+            Assert.Collection(values, new Action<IEnumerable<string>>[]
+            {
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(nameof(TestClass2.StringProperty), j),
+                    j => Assert.Equal(items[0].StringProperty, j),
+                    j => Assert.Equal(items[1].StringProperty, j),
+                    j => Assert.Equal(items[2].StringProperty, j),
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(nameof(TestClass2.IntProperty), j),
+                    j => Assert.Equal(items[0].IntProperty.ToString(), j),
+                    j => Assert.Equal(items[1].IntProperty.ToString(), j),
+                    j => Assert.Equal(items[2].IntProperty.ToString(), j),
+                }),
+                i => Assert.Collection(i, new Action<string>[]
+                {
+                    j => Assert.Equal(nameof(TestClass2.EnumerableProperty), j),
+                    j => Assert.Equal(items[0].EnumerableProperty.ToString(), j),
+                    j => Assert.Equal(items[1].EnumerableProperty.ToString(), j),
+                    j => Assert.Equal(items[2].EnumerableProperty.ToString(), j),
+                }),
+            });
+        }
     }
 }

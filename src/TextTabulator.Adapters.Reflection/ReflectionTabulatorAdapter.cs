@@ -204,7 +204,7 @@ namespace TextTabulator.Adapters.Reflection
                         for (var i = 0; i < propertyCount; i++)
                         {
                             var propertyInfo = _propertyInfos[i];
-                            var rowIndex = _mapper != null ? _mapper.GetColumn(propertyInfo.Name).Index : i;
+                            var rowIndex = _mapper?.GetMappedColumn(propertyInfo.Name).Index ?? i;
                             row[rowIndex] = _options.TypeFormatter.FormatTypeValue(propertyInfo.GetValue(item));
                         }
                     }
@@ -214,7 +214,7 @@ namespace TextTabulator.Adapters.Reflection
                         for (var i = propertyCount; i < fieldCount + propertyCount; i++)
                         {
                             var fieldInfo = _fieldInfos[i - propertyCount];
-                            var rowIndex = _mapper != null ? _mapper.GetColumn(fieldInfo.Name).Index : i;
+                            var rowIndex = _mapper?.GetMappedColumn(fieldInfo.Name).Index ?? i;
                             row[rowIndex] = _options.TypeFormatter.FormatTypeValue(fieldInfo.GetValue(item));
                         }
                     }
