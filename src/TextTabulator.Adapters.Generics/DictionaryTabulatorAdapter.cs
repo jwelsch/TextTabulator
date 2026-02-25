@@ -77,11 +77,11 @@ namespace TextTabulator.Adapters.Generics
                 headers.AddRange(propertyHeaders);
                 headers.AddRange(fieldHeaders);
 
-                if (_options.ColumnSortOrder == SortOrder.AlphaNumericAscending)
+                if (_options.ColumnSortOrder == SortOrder.Ascending)
                 {
                     headers = headers.OrderBy(h => h).ToList();
                 }
-                else if (_options.ColumnSortOrder == SortOrder.AlphaNumericDescending)
+                else if (_options.ColumnSortOrder == SortOrder.Descending)
                 {
                     headers = headers.OrderByDescending(h => h).ToList();
                 }

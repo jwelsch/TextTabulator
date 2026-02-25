@@ -47,30 +47,38 @@ namespace TextTabulator.Cli
             IStreamWriterWrap? outStreamWriter = null;
             TableCallback? callback = null;
 
+            var headerSorter = (IHeaderOrderSorter)(commandLineOptions.SortOrder switch
+            {
+                SortOrder.Default => HeaderOrderSorter.Default,
+                SortOrder.Ascending => HeaderOrderSorter.Ascending,
+                SortOrder.Descending => HeaderOrderSorter.Descending,
+                _ => throw new InvalidOperationException($"Unknown {nameof(SortOrder)} value: '{commandLineOptions.SortOrder}'.")
+            });
+
             ITabulatorAdapter CreateCsvAdapter()
             {
                 textReader = new StreamReader(commandLineOptions.InputPath);
                 csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture);
-                return new CsvHelperTabulatorAdapter(csvReader);
+                return new CsvHelperTabulatorAdapter(csvReader, new CsvHelperTabulatorAdapterOptions(null, true, headerSorter));
             }
 
             ITabulatorAdapter CreateJsonAdapter()
             {
                 inFileStream = new FileStream(commandLineOptions.InputPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                return new JsonTabulatorAdapter(inFileStream);
+                return new JsonTabulatorAdapter(inFileStream, new JsonTabulatorAdapterOptions(null, default, headerSorter));
             }
 
             ITabulatorAdapter CreateXmlAdapter()
             {
                 inFileStream = new FileStream(commandLineOptions.InputPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                return new XmlTabulatorAdapter(inFileStream);
+                return new XmlTabulatorAdapter(inFileStream, new XmlTabulatorAdapterOptions(null, null, headerSorter));
             }
 
             ITabulatorAdapter CreateYamlAdapter()
             {
                 textReader = new StreamReader(commandLineOptions.InputPath);
                 var parser = new Parser(textReader);
-                return new YamlDotNetTabulatorAdapter(parser);
+                return new YamlDotNetTabulatorAdapter(parser, new YamlDotNetTabulatorAdapterOptions(null, headerSorter));
             }
 
             try
@@ -138,10 +146,10 @@ Project:
   https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator
 
 Licensed under the MIT License:
-  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator/LICENSE
+  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator.Cli/LICENSE
 
 More information can be found in the README:
-  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator/README.md
+  https://github.com/jwelsch/TextTabulator/blob/main/src/TextTabulator.Cli/README.md
 
 Command Line Arguments
 ----------------------
@@ -165,6 +173,10 @@ This argument is optional. This specifies which characters set to use to create 
 --tab-length, -t
 
 This argument is optional. This specifies the number of spaces to substitute for each tab character in the table. The value should be the next argument on the command line. If this argument is not included, tabs will be inserted as is in the table.
+
+--sort-order, -so
+
+This argument is optional. This specifies the order of the table headers. Valid values are: Ascending, Descending, Default. If not include, the value will be "Default". In "Default" order, headers will be in the order they are read from the input file.
 """;
         }
     }

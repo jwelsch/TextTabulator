@@ -204,3 +204,14 @@ Usage example:
 ```
 texttabulator-cli.exe --input-path "C:\Some\Path\data.csv" --tab-length 4
 ```
+
+### --sort-order
+
+This argument is optional. Short notation: `-so`.
+
+This specifies the order of the table headers. Valid values are: Ascending, Descending, Default. If not include, the value will be "Default". In "Default" order, headers will be in the order they are read from the input file.
+
+Usage example:
+```
+texttabulator-cli.exe --input-path "C:\Some\Path\data.csv" --sort-order Ascending
+```

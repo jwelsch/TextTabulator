@@ -1,4 +1,6 @@
-﻿namespace TextTabulator.Cli
+﻿using TextTabulator.Adapters;
+
+namespace TextTabulator.Cli
 {
     public interface ICommandLineOptions
     {
@@ -13,6 +15,8 @@
         bool IncludeNonPrintableCharacters { get; }
 
         int TabLength { get; }
+
+        SortOrder SortOrder { get; }
     }
 
     public class CommandLineOptions : ICommandLineOptions
@@ -29,7 +33,9 @@
 
         public int TabLength { get; }
 
-        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii, bool includeNonPrintableCharacters = false, int tabLength = 0)
+        public SortOrder SortOrder { get; }
+
+        public CommandLineOptions(DataType adapterType, string inputPath, string? outputPath = null, TableStyling styling = TableStyling.Ascii, bool includeNonPrintableCharacters = false, int tabLength = 0, SortOrder sortOrder = SortOrder.Default)
         {
             AdapterType = adapterType;
             InputPath = inputPath;
@@ -37,6 +43,7 @@
             Styling = styling;
             IncludeNonPrintableCharacters = includeNonPrintableCharacters;
             TabLength = tabLength;
+            SortOrder = sortOrder;
         }
     }
 }

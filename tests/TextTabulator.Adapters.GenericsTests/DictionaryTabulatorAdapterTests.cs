@@ -208,7 +208,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 ["Two"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 ["Three"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.AlphaNumericAscending);
+            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.Ascending);
             var sut = new DictionaryTabulatorAdapter<string, TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -270,7 +270,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 ["Two"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 ["Three"] = new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.AlphaNumericDescending);
+            var options = new DictionaryTabulatorAdapterOptions(null, SortOrder.Descending);
             var sut = new DictionaryTabulatorAdapter<string, TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -424,7 +424,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 ["Three"] = new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
+            var sut = new DictionaryTabulatorAdapter<string, TestClass7>(data, new DictionaryTabulatorAdapterOptions(new UpperCaseNameTransform(), SortOrder.Ascending));
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();

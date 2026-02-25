@@ -177,7 +177,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new ListTabulatorAdapterOptions(true, null, SortOrder.AlphaNumericAscending);
+            var options = new ListTabulatorAdapterOptions(true, null, SortOrder.Ascending);
             var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -239,7 +239,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new ListTabulatorAdapterOptions(true, null, SortOrder.AlphaNumericDescending);
+            var options = new ListTabulatorAdapterOptions(true, null, SortOrder.Descending);
             var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -394,7 +394,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(true, new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
+            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(true, new UpperCaseNameTransform(), SortOrder.Ascending));
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();
@@ -556,7 +556,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new ListTabulatorAdapterOptions(false, null, SortOrder.AlphaNumericAscending);
+            var options = new ListTabulatorAdapterOptions(false, null, SortOrder.Ascending);
             var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -614,7 +614,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" },
                 new TestClass9("ProtectedField", "PrivateField", "ProtectedProperty", "PrivateProperty") { PublicProperty = "PublicProperty", PublicField = "PublicField" }
             };
-            var options = new ListTabulatorAdapterOptions(false, null, SortOrder.AlphaNumericDescending);
+            var options = new ListTabulatorAdapterOptions(false, null, SortOrder.Descending);
             var sut = new ListTabulatorAdapter<TestClass9>(data, options);
 
             var headers = sut.GetHeaderStrings();
@@ -757,7 +757,7 @@ namespace TextTabulator.Adapters.GenericsTests
                 new TestClass7("ThirdField", 3) { StringProperty = "ThirdProperty", IntProperty = 33 }
             };
 
-            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(false, new UpperCaseNameTransform(), SortOrder.AlphaNumericAscending));
+            var sut = new ListTabulatorAdapter<TestClass7>(data, new ListTabulatorAdapterOptions(false, new UpperCaseNameTransform(), SortOrder.Ascending));
 
             var headers = sut.GetHeaderStrings();
             var values = sut.GetValueStrings();

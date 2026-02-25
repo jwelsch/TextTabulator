@@ -1,4 +1,5 @@
-﻿using TextTabulator.Cli;
+﻿using TextTabulator.Adapters;
+using TextTabulator.Cli;
 
 namespace TextTabulator.CliTests
 {
@@ -686,6 +687,99 @@ namespace TextTabulator.CliTests
             {
                 "-i", inputPath,
                 "-t"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_long_sort_order_with_valid_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--sort-order", "Ascending"
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(SortOrder.Ascending, result.SortOrder);
+        }
+
+        [Fact]
+        public void When_args_has_short_so_option_with_valid_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "-i", inputPath,
+                "-so", "Ascending"
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(SortOrder.Ascending, result.SortOrder);
+        }
+
+        [Fact]
+        public void When_args_has_long_sort_order_with_lower_case_valid_value_then_return_commandlineoptions()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "--input-path", inputPath,
+                "--sort-order", "ascending"
+            };
+
+            var sut = new CommandLineParser();
+
+            var result = sut.Parse(args);
+
+            Assert.Equal(DataType.Csv, result.AdapterType);
+            Assert.Equal(inputPath, result.InputPath);
+            Assert.Null(result.OutputPath);
+            Assert.Equal(TableStyling.Ascii, result.Styling);
+            Assert.Equal(SortOrder.Ascending, result.SortOrder);
+        }
+
+        [Fact]
+        public void When_args_has_short_so_option_with_invalid_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "-i", inputPath,
+                "-so", "InvalidValue"
+            };
+
+            var sut = new CommandLineParser();
+
+            Assert.Throws<ArgumentException>(() => sut.Parse(args));
+        }
+
+        [Fact]
+        public void When_args_has_short_so_option_with_no_value_then_throw_argumentexception()
+        {
+            var inputPath = @"C:\Some\Path\data.csv";
+            var args = new string[]
+            {
+                "-i", inputPath,
+                "-so", 
             };
 
             var sut = new CommandLineParser();
