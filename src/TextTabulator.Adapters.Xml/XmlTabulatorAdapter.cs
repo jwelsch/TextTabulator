@@ -18,22 +18,22 @@ namespace TextTabulator.Adapters.Xml
     /// 
     /// The data should be in the following format:
     ///
-    /// <?xml version="1.0" encoding="UTF-8"?>
-    /// <list>
-    ///     <object>
-    ///         <value1>value1A</value1>
-    ///         <value2>value2A</value2>
-    ///     </object>
-    ///     <object>
-    ///         <value1>value1B</value1>
-    ///         <value2>value2B</value2>
-    ///     </object>
-    /// <object>
-    ///         <value1>value1C</value1>
-    ///         <value2>value2C</value2>
-    ///     </object>
+    /// &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    /// &lt;list&gt;
+    ///     &lt;object&gt;
+    ///         &lt;value1&gt;value1A&lt;/value1&gt;
+    ///         &lt;value2&gt;value2A&lt;/value2&gt;
+    ///     &lt;/object&gt;
+    ///     &lt;object&gt;
+    ///         &lt;value1&gt;value1B&lt;/value1&gt;
+    ///         &lt;value2&gt;value2B&lt;/value2&gt;
+    ///     &lt;/object&gt;
+    /// &lt;object&gt;
+    ///         &lt;value1&gt;value1C&lt;/value1&gt;
+    ///         &lt;value2&gt;value2C&lt;/value2&gt;
+    ///     &lt;/object&gt;
     ///     ...
-    /// </list>
+    /// &lt;/list&gt;
     /// 
     /// </summary>
     public class XmlTabulatorAdapter : IXmlTabulatorAdapter
