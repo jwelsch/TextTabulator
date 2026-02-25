@@ -1151,7 +1151,7 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.Public, null, AxesOrientation.Default, ColumnOrderSorter.Ascending);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.Public, null, AxesOrientation.Default, HeaderOrderSorter.Ascending);
             var sut = new ReflectionTabulatorAdapter<TestClass2>(items, options);
 
             var headers = sut.GetHeaderStrings();
@@ -1213,7 +1213,7 @@ namespace TextTabulator.Adapters.ReflectionTests
                 },
             };
 
-            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.Public, null, AxesOrientation.Swapped, ColumnOrderSorter.Descending);
+            var options = new ReflectionTabulatorAdapterOptions(null, TypeMembers.Properties, AccessModifiers.Public, null, AxesOrientation.Swapped, HeaderOrderSorter.Descending);
             var sut = new ReflectionTabulatorAdapter<TestClass2>(items, options);
 
             var headers = sut.GetHeaderStrings();

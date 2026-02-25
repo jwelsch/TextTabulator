@@ -229,7 +229,7 @@ Tyrannosaurus Rex,6.7,Carnivore,66
         public void When_name_transform_used_and_column_sorter_used_and_headers_exist_then_transformed_headers_returned()
         {
             var transform = new CamelNameTransform();
-            var options = new CsvHelperTabulatorAdapterOptions(transform, true, ColumnOrderSorter.Ascending);
+            var options = new CsvHelperTabulatorAdapterOptions(transform, true, HeaderOrderSorter.Ascending);
 
             var csvData =
 """

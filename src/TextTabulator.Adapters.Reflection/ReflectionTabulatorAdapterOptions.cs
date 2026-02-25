@@ -31,9 +31,9 @@
         public AxesOrientation AxesOrientation { get; }
 
         /// <summary>
-        /// Gets the sorter to use for the columns.
+        /// Gets the sorter to use for the headers.
         /// </summary>
-        public IColumnOrderSorter ColumnSorter { get; }
+        public IHeaderOrderSorter HeaderSorter { get; }
 
         /// <summary>
         /// Creates an object of type ReflectionTabulatorAdapterOptions.
@@ -43,14 +43,14 @@
         /// <param name="accessModifiers">Specifies the desired access modifier(s) of the type members to include in the output.</param>
         /// <param name="typeFormatter">Formatter to apply to cell values. Passing null will cause the cell values to use default formatting.</param>
         /// <param name="axesOrientation">Specifies the orientation of the axes. This determines whether type members are represented as rows or columns in the output.</param>
-        /// <param name="columnSorter">Specifies the sorter to use for the columns. Passing null will use DefaultColumnOrderSorter.</param>
+        /// <param name="headerSorter">Specifies the sorter to use for the headers. Passing null will use DefaultHeaderOrderSorter.</param>
         public ReflectionTabulatorAdapterOptions(
             INameTransform? memberNameTransform = null,
             TypeMembers typeMembers = TypeMembers.Properties,
             AccessModifiers accessModifiers = AccessModifiers.Public,
             ITypeFormatter? typeFormatter = null,
             AxesOrientation axesOrientation = AxesOrientation.Default,
-            IColumnOrderSorter? columnSorter = null
+            IHeaderOrderSorter? headerSorter = null
             )
         {
             MemberNameTransform = memberNameTransform ?? new PassThruNameTransform();
@@ -58,7 +58,7 @@
             AccessModifiers = accessModifiers;
             TypeFormatter = typeFormatter ?? new TypeFormatter();
             AxesOrientation = axesOrientation;
-            ColumnSorter = columnSorter ?? ColumnOrderSorter.Default;
+            HeaderSorter = headerSorter ?? HeaderOrderSorter.Default;
         }
     }
 }

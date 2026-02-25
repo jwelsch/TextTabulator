@@ -70,7 +70,7 @@ namespace TextTabulator.Adapters.Reflection
 
         private PropertyInfo[]? _propertyInfos;
         private FieldInfo[]? _fieldInfos;
-        private ColumnNameMapper? _mapper;
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// ReflectionTabulatorAdapter constructor that takes an enumerable.
@@ -146,9 +146,9 @@ namespace TextTabulator.Adapters.Reflection
                     }
                 }
 
-                _mapper = new ColumnNameMapper(headers, _options.MemberNameTransform, _options.ColumnSorter);
+                _mapper = new TableHeaderMapper(headers, _options.MemberNameTransform, _options.HeaderSorter);
 
-                headers = _mapper.GetSortedColumnNames().ToList();
+                headers = _mapper.GetSortedHeaderNames().ToList();
             }
             else
             {
@@ -204,7 +204,7 @@ namespace TextTabulator.Adapters.Reflection
                         for (var i = 0; i < propertyCount; i++)
                         {
                             var propertyInfo = _propertyInfos[i];
-                            var rowIndex = _mapper?.GetMappedColumn(propertyInfo.Name).Index ?? i;
+                            var rowIndex = _mapper?.GetMappedHeader(propertyInfo.Name).Index ?? i;
                             row[rowIndex] = _options.TypeFormatter.FormatTypeValue(propertyInfo.GetValue(item));
                         }
                     }
@@ -214,7 +214,7 @@ namespace TextTabulator.Adapters.Reflection
                         for (var i = propertyCount; i < fieldCount + propertyCount; i++)
                         {
                             var fieldInfo = _fieldInfos[i - propertyCount];
-                            var rowIndex = _mapper?.GetMappedColumn(fieldInfo.Name).Index ?? i;
+                            var rowIndex = _mapper?.GetMappedHeader(fieldInfo.Name).Index ?? i;
                             row[rowIndex] = _options.TypeFormatter.FormatTypeValue(fieldInfo.GetValue(item));
                         }
                     }

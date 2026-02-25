@@ -2,7 +2,7 @@
 
 namespace TextTabulator.AdaptersTests
 {
-    public class ColumnOrderSorterTests
+    public class HeaderOrderSorterTests
     {
         [Theory]
         [InlineData(new[] { "C", "Z", "A", "M", "B" }, new[] { "C", "Z", "A", "M", "B" })]
@@ -12,7 +12,7 @@ namespace TextTabulator.AdaptersTests
         [InlineData(new[] { "1", "C", "A", "0", "B" }, new[] { "1", "C", "A", "0", "B" })]
         public void When_sort_order_default_then_return_unsorted_names(IEnumerable<string> data, string[] expected)
         {
-            var sut = new DefaultColumnOrderSorter();
+            var sut = new DefaultHeaderOrderSorter();
 
             var result = sut.Sort(data);
 
@@ -33,7 +33,7 @@ namespace TextTabulator.AdaptersTests
         [InlineData(new[] { "1", "C", "A", "0", "B" }, new[] { "0", "1", "A", "B", "C" })]
         public void When_sort_order_ascending_then_return_sorted_names(IEnumerable<string> data, string[] expected)
         {
-            var sut = new AscendingColumnOrderSorter();
+            var sut = new AscendingHeaderOrderSorter();
 
             var result = sut.Sort(data);
 
@@ -54,7 +54,7 @@ namespace TextTabulator.AdaptersTests
         [InlineData(new[] { "1", "C", "A", "0", "B" }, new[] { "C", "B", "A", "1", "0" })]
         public void When_sort_order_descending_then_return_sorted_names(IEnumerable<string> data, string[] expected)
         {
-            var sut = new DescendingColumnOrderSorter();
+            var sut = new DescendingHeaderOrderSorter();
 
             var result = sut.Sort(data);
 
@@ -73,7 +73,7 @@ namespace TextTabulator.AdaptersTests
             var data = new[] { "1", "C", "A", "0", "B" };
             var expected = new[] { "A", "B", "C", "0", "1" };
 
-            var sut = new ColumnOrderSorter(i => expected);
+            var sut = new HeaderOrderSorter(i => expected);
 
             var result = sut.Sort(data);
 

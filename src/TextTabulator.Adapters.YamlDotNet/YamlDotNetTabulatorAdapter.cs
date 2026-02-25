@@ -87,7 +87,7 @@ namespace TextTabulator.Adapters.YamlDotNet
                 v => _firstRow.Add(v)
             );
 
-            return _headers.Select(i => i.Value.TransformedName).ToArray();
+            return _headers.Select(i => i.Value.Name).ToArray();
         }
 
         /// <summary>

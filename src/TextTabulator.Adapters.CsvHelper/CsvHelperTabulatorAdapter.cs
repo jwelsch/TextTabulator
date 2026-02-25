@@ -20,7 +20,7 @@ namespace TextTabulator.Adapters.CsvHelper
         private readonly CsvReader _csvReader;
         private readonly CsvHelperTabulatorAdapterOptions _options;
 
-        private ColumnNameMapper? _mapper;
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// CsvHelperTabulatorAdapter constructor.
@@ -51,9 +51,9 @@ namespace TextTabulator.Adapters.CsvHelper
                 throw new Exception($"No header row found.");
             }
 
-            _mapper = new ColumnNameMapper(_csvReader.HeaderRecord, _options.HeaderNameTransform, _options.ColumnSorter);
+            _mapper = new TableHeaderMapper(_csvReader.HeaderRecord, _options.HeaderNameTransform, _options.HeaderSorter);
 
-            return _mapper.GetSortedMappedColumnNames();
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace TextTabulator.Adapters.CsvHelper
 
                 for (var i = 0; i < _csvReader.ColumnCount; i++)
                 {
-                    var column = _mapper?.GetColumn(i);
+                    var column = _mapper?.GetHeader(i);
                     row[i] = _csvReader.GetField(column?.Index ?? i) ?? string.Empty;
                 }
 
