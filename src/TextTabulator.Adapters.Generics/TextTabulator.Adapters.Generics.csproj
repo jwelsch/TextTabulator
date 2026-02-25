@@ -12,12 +12,13 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/jwelsch/TextTabulator</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>table;tabulate;text;csv;generics</PackageTags>
+    <PackageTags>table;tabulate;text;generics</PackageTags>
     <AssemblyVersion>1.9.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>1.9.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
