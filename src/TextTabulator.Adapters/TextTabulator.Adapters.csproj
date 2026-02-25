@@ -21,6 +21,13 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="$(MSBuildProjectName)Tests" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.CsvHelper" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.Generics" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.Json" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.MLDotNet" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.Reflection" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.Xml" />
+    <InternalsVisibleTo Include="TextTabulator.Adapters.YamlDotNet" />
   </ItemGroup>
   <ItemGroup>
     <None Update="LICENSE">

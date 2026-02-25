@@ -11,25 +11,25 @@ namespace TextTabulator.AdaptersTests
 
             var sut = new ColumnNameMapper(columnNames);
 
-            var columnB = sut.GetColumnName("ColumnB");
-            var columnC = sut.GetColumnName("ColumnC");
-            var columnA = sut.GetColumnName("ColumnA");
+            var columnB = sut.GetColumn("ColumnB");
+            var columnC = sut.GetColumn("ColumnC");
+            var columnA = sut.GetColumn("ColumnA");
 
             Assert.Equal("ColumnB", columnB.ColumnName);
             Assert.Equal("ColumnC", columnC.ColumnName);
             Assert.Equal("ColumnA", columnA.ColumnName);
 
-            Assert.Equal(0, columnB.SortedIndex);
-            Assert.Equal(1, columnC.SortedIndex);
-            Assert.Equal(2, columnA.SortedIndex);
+            Assert.Equal(0, columnB.Index);
+            Assert.Equal(1, columnC.Index);
+            Assert.Equal(2, columnA.Index);
 
-            var mappedColumnB = sut.GetMappedColumnName("ColumnB");
-            var mappedColumnC = sut.GetMappedColumnName("ColumnC");
-            var mappedColumnA = sut.GetMappedColumnName("ColumnA");
+            var mappedColumnB = sut.GetMappedColumn("ColumnB");
+            var mappedColumnC = sut.GetMappedColumn("ColumnC");
+            var mappedColumnA = sut.GetMappedColumn("ColumnA");
 
-            Assert.Equal(0, mappedColumnB.SortedIndex);
-            Assert.Equal(1, mappedColumnC.SortedIndex);
-            Assert.Equal(2, mappedColumnA.SortedIndex);
+            Assert.Equal(0, mappedColumnB.Index);
+            Assert.Equal(1, mappedColumnC.Index);
+            Assert.Equal(2, mappedColumnA.Index);
 
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
             Assert.Equal("ColumnC", mappedColumnC.ColumnName);
@@ -46,25 +46,25 @@ namespace TextTabulator.AdaptersTests
 
             var sut = new ColumnNameMapper(columnNames, null, ColumnOrderSorter.Ascending);
 
-            var columnA = sut.GetColumnName("ColumnA");
-            var columnB = sut.GetColumnName("ColumnB");
-            var columnC = sut.GetColumnName("ColumnC");
+            var columnA = sut.GetColumn("ColumnA");
+            var columnB = sut.GetColumn("ColumnB");
+            var columnC = sut.GetColumn("ColumnC");
 
             Assert.Equal("ColumnA", columnA.ColumnName);
             Assert.Equal("ColumnB", columnB.ColumnName);
             Assert.Equal("ColumnC", columnC.ColumnName);
 
-            Assert.Equal(0, columnA.SortedIndex);
-            Assert.Equal(1, columnB.SortedIndex);
-            Assert.Equal(2, columnC.SortedIndex);
+            Assert.Equal(2, columnA.Index);
+            Assert.Equal(0, columnB.Index);
+            Assert.Equal(1, columnC.Index);
 
-            var mappedColumnA = sut.GetMappedColumnName("ColumnA");
-            var mappedColumnB = sut.GetMappedColumnName("ColumnB");
-            var mappedColumnC = sut.GetMappedColumnName("ColumnC");
+            var mappedColumnA = sut.GetMappedColumn("ColumnA");
+            var mappedColumnB = sut.GetMappedColumn("ColumnB");
+            var mappedColumnC = sut.GetMappedColumn("ColumnC");
 
-            Assert.Equal(0, mappedColumnA.SortedIndex);
-            Assert.Equal(1, mappedColumnB.SortedIndex);
-            Assert.Equal(2, mappedColumnC.SortedIndex);
+            Assert.Equal(0, mappedColumnA.Index);
+            Assert.Equal(1, mappedColumnB.Index);
+            Assert.Equal(2, mappedColumnC.Index);
 
             Assert.Equal("ColumnA", mappedColumnA.ColumnName);
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
@@ -81,25 +81,25 @@ namespace TextTabulator.AdaptersTests
 
             var sut = new ColumnNameMapper(columnNames, null, ColumnOrderSorter.Descending);
 
-            var columnC = sut.GetColumnName("ColumnC");
-            var columnB = sut.GetColumnName("ColumnB");
-            var columnA = sut.GetColumnName("ColumnA");
+            var columnC = sut.GetColumn("ColumnC");
+            var columnB = sut.GetColumn("ColumnB");
+            var columnA = sut.GetColumn("ColumnA");
 
             Assert.Equal("ColumnC", columnC.ColumnName);
             Assert.Equal("ColumnB", columnB.ColumnName);
             Assert.Equal("ColumnA", columnA.ColumnName);
 
-            Assert.Equal(0, columnC.SortedIndex);
-            Assert.Equal(1, columnB.SortedIndex);
-            Assert.Equal(2, columnA.SortedIndex);
+            Assert.Equal(1, columnC.Index);
+            Assert.Equal(0, columnB.Index);
+            Assert.Equal(2, columnA.Index);
 
-            var mappedColumnC = sut.GetMappedColumnName("ColumnC");
-            var mappedColumnB = sut.GetMappedColumnName("ColumnB");
-            var mappedColumnA = sut.GetMappedColumnName("ColumnA");
+            var mappedColumnC = sut.GetMappedColumn("ColumnC");
+            var mappedColumnB = sut.GetMappedColumn("ColumnB");
+            var mappedColumnA = sut.GetMappedColumn("ColumnA");
 
-            Assert.Equal(0, mappedColumnC.SortedIndex);
-            Assert.Equal(1, mappedColumnB.SortedIndex);
-            Assert.Equal(2, mappedColumnA.SortedIndex);
+            Assert.Equal(0, mappedColumnC.Index);
+            Assert.Equal(1, mappedColumnB.Index);
+            Assert.Equal(2, mappedColumnA.Index);
 
             Assert.Equal("ColumnC", mappedColumnC.ColumnName);
             Assert.Equal("ColumnB", mappedColumnB.ColumnName);
@@ -116,25 +116,25 @@ namespace TextTabulator.AdaptersTests
 
             var sut = new ColumnNameMapper(columnNames, new PascalNameTransform());
 
-            var columnB = sut.GetColumnName("Column B");
-            var columnC = sut.GetColumnName("Column C");
-            var columnA = sut.GetColumnName("Column A");
+            var columnB = sut.GetColumn("Column B");
+            var columnC = sut.GetColumn("Column C");
+            var columnA = sut.GetColumn("Column A");
 
-            Assert.Equal(0, columnB.SortedIndex);
-            Assert.Equal(1, columnC.SortedIndex);
-            Assert.Equal(2, columnA.SortedIndex);
+            Assert.Equal(0, columnB.Index);
+            Assert.Equal(1, columnC.Index);
+            Assert.Equal(2, columnA.Index);
 
             Assert.Equal("ColumnB", columnB.ColumnName);
             Assert.Equal("ColumnC", columnC.ColumnName);
             Assert.Equal("ColumnA", columnA.ColumnName);
 
-            var mappedColumnB = sut.GetMappedColumnName("ColumnB");
-            var mappedColumnC = sut.GetMappedColumnName("ColumnC");
-            var mappedColumnA = sut.GetMappedColumnName("ColumnA");
+            var mappedColumnB = sut.GetMappedColumn("ColumnB");
+            var mappedColumnC = sut.GetMappedColumn("ColumnC");
+            var mappedColumnA = sut.GetMappedColumn("ColumnA");
 
-            Assert.Equal(0, mappedColumnB.SortedIndex);
-            Assert.Equal(1, mappedColumnC.SortedIndex);
-            Assert.Equal(2, mappedColumnA.SortedIndex);
+            Assert.Equal(0, mappedColumnB.Index);
+            Assert.Equal(1, mappedColumnC.Index);
+            Assert.Equal(2, mappedColumnA.Index);
 
             Assert.Equal("Column B", mappedColumnB.ColumnName);
             Assert.Equal("Column C", mappedColumnC.ColumnName);
@@ -148,25 +148,25 @@ namespace TextTabulator.AdaptersTests
 
             var sut = new ColumnNameMapper(columnNames, new PascalNameTransform(), ColumnOrderSorter.Ascending);
 
-            var columnA = sut.GetColumnName("Column A");
-            var columnB = sut.GetColumnName("Column B");
-            var columnC = sut.GetColumnName("Column C");
+            var columnA = sut.GetColumn("Column A");
+            var columnB = sut.GetColumn("Column B");
+            var columnC = sut.GetColumn("Column C");
 
-            Assert.Equal(0, columnA.SortedIndex);
-            Assert.Equal(1, columnB.SortedIndex);
-            Assert.Equal(2, columnC.SortedIndex);
+            Assert.Equal(2, columnA.Index);
+            Assert.Equal(0, columnB.Index);
+            Assert.Equal(1, columnC.Index);
 
             Assert.Equal("ColumnA", columnA.ColumnName);
             Assert.Equal("ColumnB", columnB.ColumnName);
             Assert.Equal("ColumnC", columnC.ColumnName);
 
-            var mappedColumnA = sut.GetMappedColumnName("ColumnA");
-            var mappedColumnB = sut.GetMappedColumnName("ColumnB");
-            var mappedColumnC = sut.GetMappedColumnName("ColumnC");
+            var mappedColumnA = sut.GetMappedColumn("ColumnA");
+            var mappedColumnB = sut.GetMappedColumn("ColumnB");
+            var mappedColumnC = sut.GetMappedColumn("ColumnC");
 
-            Assert.Equal(0, mappedColumnA.SortedIndex);
-            Assert.Equal(1, mappedColumnB.SortedIndex);
-            Assert.Equal(2, mappedColumnC.SortedIndex);
+            Assert.Equal(0, mappedColumnA.Index);
+            Assert.Equal(1, mappedColumnB.Index);
+            Assert.Equal(2, mappedColumnC.Index);
 
             Assert.Equal("Column A", mappedColumnA.ColumnName);
             Assert.Equal("Column B", mappedColumnB.ColumnName);
