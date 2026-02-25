@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using System.Text;
+﻿using System.Text;
 using TextTabulator.Adapters.Json;
 
 namespace TextTabulator.Adapters.JsonTests

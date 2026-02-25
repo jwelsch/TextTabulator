@@ -1,5 +1,4 @@
-﻿using System.Text;
-using TextTabulator;
+﻿using TextTabulator;
 using TextTabulator.Testing;
 
 namespace TextTabulatorTests

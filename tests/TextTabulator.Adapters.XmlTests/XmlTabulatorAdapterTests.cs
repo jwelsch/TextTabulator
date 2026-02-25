@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using TextTabulator.Adapters.Xml;
-using TextTabulator.Testing;
 
 namespace TextTabulator.Adapters.XmlTests
 {
@@ -661,7 +660,6 @@ namespace TextTabulator.Adapters.XmlTests
             );
         }
 
-
         [Fact]
         public void When_header_sorter_sorts_ascending_then_headers_and_values_are_sorted()
         {
@@ -710,7 +708,7 @@ namespace TextTabulator.Adapters.XmlTests
         }
 
         [Fact]
-        public void When_header_sorter_sorts_ascending_and_pascal_case_header_transform_then_headers_and_values_are_sorted_and_transformed()
+        public void When_header_sorter_sorts_ascending_and_camel_case_header_transform_then_headers_and_values_are_sorted_and_transformed()
         {
             var options = new XmlTabulatorAdapterOptions(new CamelNameTransform(true, false, null), null, HeaderOrderSorter.Ascending);
             var sut = new XmlTabulatorAdapter(XmlWithMultipleSimpleObjects, options);
