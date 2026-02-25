@@ -505,5 +505,115 @@ teeth:
                 i => Assert.Equal("Test", i)
             );
         }
+
+        [Fact]
+        public void When_header_sorter_sorts_ascending_then_headers_and_values_are_sorted()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithMultipleSimpleObjects));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+
+            var options = new YamlDotNetTabulatorAdapterOptions(null, HeaderOrderSorter.Ascending);
+            var sut = new YamlDotNetTabulatorAdapter(parser, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("diet", i),
+                i => Assert.Equal("extinction", i),
+                i => Assert.Equal("name", i),
+                i => Assert.Equal("test", i),
+                i => Assert.Equal("weight", i)
+            );
+
+            Assert.NotNull(values);
+            Assert.Equal(3, values.Count());
+            Assert.Collection(values,
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Carnivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Tyrannosaurus Rex", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("6.7", r.ElementAt(4));
+                },
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Herbivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Triceratops", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("8", r.ElementAt(4));
+                },
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Omnivore", r.ElementAt(0));
+                    Assert.Equal("147", r.ElementAt(1));
+                    Assert.Equal("Archaeopteryx", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("0.001", r.ElementAt(4));
+                }
+            );
+        }
+
+        [Fact]
+        public void When_header_sorter_sorts_ascending_and_pascal_case_header_transform_then_headers_and_values_are_sorted_and_transformed()
+        {
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(YamlWithMultipleSimpleObjects));
+            using var reader = new StreamReader(stream);
+            var parser = new Parser(reader);
+
+            var options = new YamlDotNetTabulatorAdapterOptions(new CamelNameTransform(true, false, null), HeaderOrderSorter.Ascending);
+            var sut = new YamlDotNetTabulatorAdapter(parser, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("Diet", i),
+                i => Assert.Equal("Extinction", i),
+                i => Assert.Equal("Name", i),
+                i => Assert.Equal("Test", i),
+                i => Assert.Equal("Weight", i)
+            );
+
+            Assert.NotNull(values);
+            Assert.Equal(3, values.Count());
+            Assert.Collection(values,
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Carnivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Tyrannosaurus Rex", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("6.7", r.ElementAt(4));
+                },
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Herbivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Triceratops", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("8", r.ElementAt(4));
+                },
+                r =>
+                {
+                    Assert.Equal(5, r.Count());
+                    Assert.Equal("Omnivore", r.ElementAt(0));
+                    Assert.Equal("147", r.ElementAt(1));
+                    Assert.Equal("Archaeopteryx", r.ElementAt(2));
+                    Assert.Equal("", r.ElementAt(3));
+                    Assert.Equal("0.001", r.ElementAt(4));
+                }
+            );
+        }
     }
 }

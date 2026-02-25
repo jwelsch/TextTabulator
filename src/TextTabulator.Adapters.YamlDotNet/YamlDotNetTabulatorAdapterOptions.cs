@@ -11,12 +11,19 @@
         public INameTransform NodeNameTransform { get; }
 
         /// <summary>
-        /// Creates an object of type JsonTabulatorAdapterOptions.
+        /// Gets the sorter to use for the headers.
+        /// </summary>
+        public IHeaderOrderSorter HeaderSorter { get; }
+
+        /// <summary>
+        /// Creates an object of type YamlDotNetTabulatorAdapterOptions.
         /// </summary>
         /// <param name="nodeNameTransform">Transform to apply to YAML node names. Passing null will cause the YAML node names to not be altered.</param>
-        public YamlDotNetTabulatorAdapterOptions(INameTransform? nodeNameTransform = null)
+        /// <param name="headerSorter">Sorter to use for the headers. Passing null will cause the headers to not be sorted.</param>
+        public YamlDotNetTabulatorAdapterOptions(INameTransform? nodeNameTransform = null, IHeaderOrderSorter? headerSorter = null)
         {
             NodeNameTransform = nodeNameTransform ?? new PassThruNameTransform();
+            HeaderSorter = headerSorter ?? HeaderOrderSorter.Default;
         }
     }
 }

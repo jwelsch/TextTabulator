@@ -44,7 +44,6 @@ namespace TextTabulator.Adapters.YamlDotNet
 
         private readonly Parser _parser;
         private readonly YamlDotNetTabulatorAdapterOptions _options;
-        private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
         private readonly List<string> _firstRow = new List<string>();
         private readonly IValueNormalizer _valueNormalizer = new ValueNormalizer();
         private readonly int _targetDepth = 4; // Target depth for the key/value pairs that will be included in the table.
@@ -56,6 +55,8 @@ namespace TextTabulator.Adapters.YamlDotNet
         private int _row = 0;
         private int _column = 0;
         private int _currentDepth = 0;
+
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// Creates an object of type YamlDotNetTabulatorAdapter.
@@ -74,7 +75,8 @@ namespace TextTabulator.Adapters.YamlDotNet
         /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
-            _headers.Clear();
+            var headers = new List<string>();
+            var firstRow = new List<string>();
             _firstRow.Clear();
             _row = 0;
             _column = 0;
@@ -83,11 +85,19 @@ namespace TextTabulator.Adapters.YamlDotNet
             ParseLoop(
                 null,
                 m => false,
-                k => _headers.Add(k, new TableHeader(_options.NodeNameTransform.Apply(k), _column)),
-                v => _firstRow.Add(v)
+                k => headers.Add(k),
+                v => firstRow.Add(v)
             );
 
-            return _headers.Select(i => i.Value.Name).ToArray();
+            _mapper = new TableHeaderMapper(headers, _options.NodeNameTransform, _options.HeaderSorter);
+
+            for (var i = 0; i < firstRow.Count; i++)
+            {
+                var mappedHeader = _mapper.GetHeader(i);
+                _firstRow.Add(firstRow[mappedHeader.Index]);
+            }
+
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -97,14 +107,19 @@ namespace TextTabulator.Adapters.YamlDotNet
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
+            if (_mapper == null)
+            {
+                throw new InvalidOperationException("Header mapper was null - GetHeaderStrings must be called before GetValueStrings.");
+            }
+
             var rowValues = new List<string[]>(new string[][] { _firstRow.ToArray() });
             string[]? values = null;
-            var index = 0;
+            TableHeader? tableHeader = null;
 
             ParseLoop(
                 e =>
                 {
-                    values = new string[_headers.Count];
+                    values = new string[_mapper.HeaderCount];
                     Array.Fill(values, string.Empty);
                 },
                 e =>
@@ -120,12 +135,16 @@ namespace TextTabulator.Adapters.YamlDotNet
                 },
                 k =>
                 {
-                    if (!_headers.TryGetValue(k, out var tableHeader))
+                    try
                     {
-                        throw new InvalidOperationException($"Unknown header '{k}' encountered while parsing values - row: '{_row}', column: '{_column}'.");
-                    }
+                        tableHeader = _mapper.GetMappedHeader(k);
 
-                    index = tableHeader.Index;
+                        //System.Diagnostics.Trace.WriteLine($"Mapping header '{k}' to index '{tableHeader.Index}'.");
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        throw new InvalidOperationException($"Unknown header '{k}' encountered while parsing values - row: '{_row}', column: '{_column}'.", ex);
+                    }
                 },
                 v =>
                 {
@@ -134,7 +153,14 @@ namespace TextTabulator.Adapters.YamlDotNet
                         throw new InvalidOperationException($"Values array was null while trying to store value - row: '{_row}', column: '{_column}'.");
                     }
 
-                    values[index] = v;
+                    if (tableHeader == null)
+                    {
+                        throw new InvalidOperationException($"Table header was null while trying to store value - row: '{_row}', column: '{_column}'.");
+                    }
+
+                    //System.Diagnostics.Trace.WriteLine($"Storing value '{v}' under header '{tableHeader.Name}'.");
+
+                    values[tableHeader.Index] = v;
                 }
             );
 
@@ -148,8 +174,6 @@ namespace TextTabulator.Adapters.YamlDotNet
             while (_parser.MoveNext())
             {
                 var parsingEvent = _parser.Current;
-
-                //System.Diagnostics.Trace.WriteLine($"Parsing event: {parsingEvent?.ToString()}");
 
                 if (parsingEvent == null)
                 {
