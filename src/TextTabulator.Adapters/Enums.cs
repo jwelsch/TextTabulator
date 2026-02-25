@@ -13,12 +13,12 @@
         /// <summary>
         /// Columns are sorted in ascending alphanumeric order.
         /// </summary>
-        AlphaNumericAscending,
+        Ascending,
 
         /// <summary>
         /// Columns are sorted in descending alphanumeric order.
         /// </summary>
-        AlphaNumericDescending,
+        Descending,
     }
 
     /// <summary>

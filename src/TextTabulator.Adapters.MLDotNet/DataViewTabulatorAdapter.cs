@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TextTabulator.Adapters.MLDotNet
 {
@@ -12,6 +13,8 @@ namespace TextTabulator.Adapters.MLDotNet
     {
         private readonly IDataView _dataView;
         private readonly DataViewTabulatorAdapterOptions _options;
+
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// Creates an object of type DataViewTabulatorAdapter.
@@ -30,10 +33,9 @@ namespace TextTabulator.Adapters.MLDotNet
         /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
-            foreach (var column in _dataView.Schema)
-            {
-                yield return _options.ColumnNameTransform.Apply(column.Name);
-            }
+            _mapper = new TableHeaderMapper(_dataView.Schema.Select(i => i.Name), _options.ColumnNameTransform, _options.HeaderSorter);
+
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -43,12 +45,17 @@ namespace TextTabulator.Adapters.MLDotNet
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
+            if (_mapper == null)
+            {
+                throw new InvalidOperationException("GetHeaderStrings must be called before GetValueStrings.");
+            }
+
             var columns = new DataViewSchema.Column[_dataView.Schema.Count];
-            var i = 0;
 
             foreach (var column in _dataView.Schema)
             {
-                columns[i++] = column;
+                var mapped = _mapper.GetMappedHeader(column.Name);
+                columns[mapped.Index] = column;
             }
 
             var cursor = _dataView.GetRowCursor(columns);

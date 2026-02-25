@@ -39,7 +39,8 @@ namespace TextTabulator.Adapters.Json
 
         private readonly Func<Stream> _jsonStreamProvider;
         private readonly JsonTabulatorAdapterOptions _options;
-        private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
+
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// Creates an object of type JsonTabulatorAdapter.
@@ -113,9 +114,7 @@ namespace TextTabulator.Adapters.Json
             var depthDelta = 2;
             var targetDepth = startDepth + depthDelta;
 
-            _headers.Clear();
-
-            var transformedHeaders = new List<string>();
+            var headers = new List<string>();
 
             // Since the ITabulatorAdapter interface reads the data in two steps - headers then values - state
             // needs to be maintained between the calls to GetHeaderStrings() and GetValueStrings(). Because
@@ -139,9 +138,7 @@ namespace TextTabulator.Adapters.Json
                 if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.CurrentDepth == targetDepth)
                 {
                     var rawHeader = jsonReader.GetString() ?? string.Empty;
-                    var transformed = _options.PropertyNameTransform.Apply(rawHeader);
-                    transformedHeaders.Add(transformed);
-                    _headers.Add(rawHeader, new TableHeader(transformed, transformedHeaders.Count - 1));
+                    headers.Add(rawHeader);
                 }
                 else if (jsonReader.TokenType == JsonTokenType.EndObject)
                 {
@@ -153,7 +150,9 @@ namespace TextTabulator.Adapters.Json
                 }
             }
 
-            return transformedHeaders;
+            _mapper = new TableHeaderMapper(headers, _options.PropertyNameTransform, _options.HeaderSorter);
+
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -163,6 +162,11 @@ namespace TextTabulator.Adapters.Json
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
+            if (_mapper == null)
+            {
+                throw new InvalidOperationException("GetHeaderStrings() must be called before GetValueStrings().");
+            }
+
             var buffer = new byte[BufferSize];
 
             var stream = _jsonStreamProvider.Invoke();
@@ -183,7 +187,7 @@ namespace TextTabulator.Adapters.Json
             var targetDepth = startDepth + depthDelta;
             var index = 0;
             var rowValues = new List<string[]>();
-            var values = new string[_headers.Count];
+            var values = new string[_mapper.HeaderCount];
 
             // This loop will read the values of the properties in JSON objects. It uses the property names as
             // headers, that were read in GetHeaderStrings().
@@ -208,12 +212,16 @@ namespace TextTabulator.Adapters.Json
                         throw new InvalidOperationException("Empty header value.");
                     }
 
-                    if (!_headers.TryGetValue(rawHeader, out TableHeader header))
+                    try
                     {
-                        throw new InvalidOperationException($"Unknown header '{rawHeader}' encountered while parsing values.");
-                    }
+                        var header = _mapper.GetMappedHeader(rawHeader);
 
-                    index = header.Index;
+                        index = header.Index;
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        throw new InvalidOperationException($"Unknown header '{rawHeader}' encountered while parsing values.", ex);
+                    }
                 }
                 else if (jsonReader.TokenType == JsonTokenType.String && jsonReader.CurrentDepth == targetDepth)
                 {
@@ -259,7 +267,7 @@ namespace TextTabulator.Adapters.Json
                 {
                     if (jsonReader.CurrentDepth == targetDepth - 1)
                     {
-                        values = new string[_headers.Count];
+                        values = new string[_mapper.HeaderCount];
                         Array.Fill(values, "");
                     }
                     else if (jsonReader.CurrentDepth == targetDepth)

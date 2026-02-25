@@ -531,5 +531,54 @@ namespace TextTabulator.Adapters.JsonTests
                 i => Assert.Equal("Extinction", i)
             );
         }
+
+        [Fact]
+        public void When_header_sorter_used_then_sorted_headers_and_values_returned()
+        {
+            var options = new JsonTabulatorAdapterOptions(null, default, HeaderOrderSorter.Ascending);
+
+            using var stream = new MemoryStream(UTF8Encoding.UTF8.GetBytes(JsonWithMultipleSimpleObjects));
+            var sut = new JsonTabulatorAdapter(stream, options);
+
+            var headers = sut.GetHeaderStrings();
+            var values = sut.GetValueStrings();
+
+            Assert.NotNull(headers);
+            Assert.Collection(headers,
+                i => Assert.Equal("diet", i),
+                i => Assert.Equal("extinction", i),
+                i => Assert.Equal("name", i),
+                i => Assert.Equal("weight", i)
+            );
+
+            Assert.NotNull(values);
+            Assert.Equal(3, values.Count());
+            Assert.Collection(values,
+                r =>
+                {
+                    Assert.Equal(4, r.Count());
+                    Assert.Equal("Carnivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Tyrannosaurus Rex", r.ElementAt(2));
+                    Assert.Equal("6.7", r.ElementAt(3));
+                },
+                r =>
+                {
+                    Assert.Equal(4, r.Count());
+                    Assert.Equal("Herbivore", r.ElementAt(0));
+                    Assert.Equal("66", r.ElementAt(1));
+                    Assert.Equal("Triceratops", r.ElementAt(2));
+                    Assert.Equal("8", r.ElementAt(3));
+                },
+                r =>
+                {
+                    Assert.Equal(4, r.Count());
+                    Assert.Equal("Omnivore", r.ElementAt(0));
+                    Assert.Equal("147", r.ElementAt(1));
+                    Assert.Equal("Archaeopteryx", r.ElementAt(2));
+                    Assert.Equal("0.001", r.ElementAt(3));
+                }
+            );
+        }
     }
 }

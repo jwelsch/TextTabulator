@@ -18,14 +18,21 @@ namespace TextTabulator.Adapters.Json
         public JsonReaderOptions JsonReaderOptions { get; }
 
         /// <summary>
+        /// Gets the sorter to use for the headers.
+        /// </summary>
+        public IHeaderOrderSorter HeaderSorter { get; }
+
+        /// <summary>
         /// Creates an object of type JsonTabulatorAdapterOptions.
         /// </summary>
         /// <param name="propertyNameTransform">Transform to apply to JSON property names. Passing null will cause the JSON property names to not be altered.</param>
         /// <param name="jsonReaderOptions">Options that define customized behavior of the Utf8JsonReader that differs from the JSON RFC (for example, how to handle comments or maximum depth allowed when reading). By default, the Utf8JsonReader follows the JSON RFC strictly; comments within the JSON are invalid, and the maximum depth is 64.</param>
-        public JsonTabulatorAdapterOptions(INameTransform? propertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default)
+        /// <param name="headerSorter">Specifies the sorter to use for the headers. Passing null will use DefaultHeaderOrderSorter.</param>
+        public JsonTabulatorAdapterOptions(INameTransform? propertyNameTransform = null, JsonReaderOptions jsonReaderOptions = default, IHeaderOrderSorter? headerSorter = null)
         {
             PropertyNameTransform = propertyNameTransform ?? new PassThruNameTransform();
             JsonReaderOptions = jsonReaderOptions;
+            HeaderSorter = headerSorter ?? HeaderOrderSorter.Default;
         }
     }
 }

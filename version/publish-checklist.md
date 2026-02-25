@@ -26,11 +26,21 @@ Finally run the `list-version.ps1` script again to make sure the versions were c
 .\list-versions.ps1
 ```
 
-## 2. Update publish.yml
+## 2. Generate documentation
+
+With Configuration set to "Release", run the `generate-docs.ps1` script locally to generate API documentation files for the entire solution.
+
+Example:
+
+```
+.\generate-docs.ps1 -Configuration "Release"
+```
+
+## 3. Update publish.yml
 
 If a new package is to be published, make sure the publish.yml file in the .github/workflows directory has been updated with the new package.
 
-## 3. Commit the version changes locally
+## 4. Commit the version changes locally
 
 Commit the version changes locally.
 
@@ -38,7 +48,7 @@ Commit the version changes locally.
 git commit -a -m "Updated version to vNewMajor.newMinor.newPatch.newBuild"
 ```
 
-## 4. Push the local commit
+## 5. Push the local commit
 
 Push the local commit to the remote.
 
@@ -46,9 +56,9 @@ Push the local commit to the remote.
 git push origin main
 ```
 
-## 5. Tag the repo locally
+## 6. Tag the repo locally
 
-Tag the local repo with a new tag.
+Tag the local repo with a new tag. Note that there is a 'v' in front of the version number and the version number has three seconds (not four).
 
 ```
 git tag vNewMajor.newMinor.newPatch
@@ -60,7 +70,7 @@ Example:
 git tag v1.4.3
 ```
 
-## 6. Push the local tag
+## 7. Push the local tag
 
 Push the local tag to the remote repo.
 
@@ -74,7 +84,7 @@ Example:
 git push origin v1.4.3
 ```
 
-## 7. Create a release
+## 8. Create a release
 
 On Github, create a release on this page: https://github.com/jwelsch/TextTabulator/releases
 
@@ -84,6 +94,6 @@ On Github, create a release on this page: https://github.com/jwelsch/TextTabulat
 - Make sure "Set as latest release" is checked.
 - Finally, click the "Publish release" button.
 
-## 8. Check the publish
+## 9. Check the publish
 
 Once the release is created, the Github action [Publish](https://github.com/jwelsch/TextTabulator/actions/workflows/publish.yml) will be automatically run. Make sure it completes successfully.

@@ -1,4 +1,6 @@
-﻿namespace TextTabulator.Cli
+﻿using TextTabulator.Adapters;
+
+namespace TextTabulator.Cli
 {
     public interface ICommandLineParser
     {
@@ -19,6 +21,7 @@
             DataType? dataType = null;
             var tableStyling = TableStyling.Ascii;
             var tabLength = 0;
+            var sortOrder = SortOrder.Default;
 
             for (var i = 0; i < args.Length; i++)
             {
@@ -77,6 +80,20 @@
 
                     tabLength = int.Parse(args[++i], System.Globalization.CultureInfo.InvariantCulture);
                 }
+                else if (args[i].Equals("--sort-order", StringComparison.OrdinalIgnoreCase) || args[i].Equals("-so", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (i + 1 >= args.Length)
+                    {
+                        throw new ArgumentException($"No value for sort order was found.", nameof(args));
+                    }
+
+                    if (!Enum.TryParse(args[i + 1], true, out sortOrder))
+                    {
+                        throw new ArgumentException($"Unknown sort order value '{args[i + 1]}'. Must be one of: {string.Join(',', Enum.GetNames<SortOrder>())}.", nameof(args));
+                    }
+
+                    i++;
+                }
                 else
                 {
                     throw new ArgumentException($"Unknown command line argument '{args[i]}' found.", nameof(args));
@@ -98,7 +115,7 @@
                 }
             }
 
-            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling, true, tabLength);
+            return new CommandLineOptions(dataType.Value, inputPath, outputPath, tableStyling, true, tabLength, sortOrder);
         }
 
         private static bool TryMatchDataType(string input, out DataType? dataType)

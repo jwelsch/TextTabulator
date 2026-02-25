@@ -18,6 +18,7 @@
     <AssemblyVersion>1.9.0.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>$(AssemblyVersion)</Version>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\TextTabulator.Adapters\TextTabulator.Adapters.csproj" />

@@ -1,7 +1,6 @@
 ﻿using CsvHelper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TextTabulator.Adapters.CsvHelper
 {
@@ -20,6 +19,8 @@ namespace TextTabulator.Adapters.CsvHelper
     {
         private readonly CsvReader _csvReader;
         private readonly CsvHelperTabulatorAdapterOptions _options;
+
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// CsvHelperTabulatorAdapter constructor.
@@ -50,7 +51,9 @@ namespace TextTabulator.Adapters.CsvHelper
                 throw new Exception($"No header row found.");
             }
 
-            return _csvReader.HeaderRecord.Select(i => _options.HeaderNameTransform.Apply(i)).ToArray();
+            _mapper = new TableHeaderMapper(_csvReader.HeaderRecord, _options.HeaderNameTransform, _options.HeaderSorter);
+
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -68,7 +71,8 @@ namespace TextTabulator.Adapters.CsvHelper
 
                 for (var i = 0; i < _csvReader.ColumnCount; i++)
                 {
-                    row[i] = _csvReader.GetField(i) ?? string.Empty;
+                    var column = _mapper?.GetHeader(i);
+                    row[i] = _csvReader.GetField(column?.Index ?? i) ?? string.Empty;
                 }
 
                 csvRows.Add(row);

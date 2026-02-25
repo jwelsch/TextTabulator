@@ -58,229 +58,7 @@ The output of the above code would be:
 
 ## Public API
 
-### `TextTabulator.Tabulator` class
-
-The `TextTabulator.Tabulator` class has several overloaded `Tabulate` methods that generate the table.
-
-**Methods**
-
-#### `public string Tabulate(IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<string> headers`: Enumeration containing strings for each header.
-- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<object> headers`: Enumeration containing objects for each header. Each object's ToString() method will be called to generate the value displayed in the table.
-- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `IEnumerable<CellValue> headers`: Enumeration containing `CellValue` delegates for each header.
-- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public string Tabulate(ITabulatorAdapter adapter, TabulatorOptions? options = null)`
-
-Tabulates data and outputs a string representation of a table.
-
-Parameters
-
-- `ITabulatorAdapter adapter`: Adapter object that the method can get data from.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- `string`: String representation of a table.
-
-#### `public void Tabulate(IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(IEnumerable<string> headers, IEnumerable<IEnumerable<string>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<string> headers`: Enumeration containing strings for each header.
-- `IEnumerable<IEnumerable<string>> rowValues`: Enumeration containing strings for each header.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(IEnumerable<object> headers, IEnumerable<IEnumerable<object>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<object> headers`: Enumeration containing strings for each header. Each object's ToString() method will be called to generate the value displayed in the table.
-- `IEnumerable<IEnumerable<object>> rowValues`: Enumeration containing objects for each value in each row. Each object's ToString() method will be called to generate the value displayed in the table.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(IEnumerable<CellValue> headers, IEnumerable<IEnumerable<CellValue>> rowValues, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `IEnumerable<CellValue> headers`: Enumeration containing `CellValue` delegates for each header.
-- `IEnumerable<IEnumerable<CellValue>> rowValues`: Enumeration containing `CellValue` delegates for each value in each row.
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-#### `public void Tabulate(ITabulatorAdapter adapter, TableCallback callback, TabulatorOptions? options = null)`
-
-Tabulates data and makes callbacks with elements of the table.
-
-Parameters
-
-- `ITabulatorAdapter adapter`: Adapter object that the method can get data from. See [TextTabulator.Adapters](https://github.com/jwelsch/TextTabulator/tree/main/src/TextTabulator.Adapters).
-- `TableCallback callback`: Callback received when an element of the table is constructed.
-- `TabulatorOptions? options`: Options specifying how the table should be constructed.
-
-Return
-
-- None
-
-### Delegates
-
-`TextTabulator` defines some delegates that can be passed to `Tabulator.Tabulate`.
-
-#### `CellValue`
-
-Used in some overloads of `TextTabulator.Tabulate` to dynamically generate table data. The delegate is called when the content of each cell is generated. Implementers should return the string representation of the value in the table.
-
-Signature:
-
-```
-public delegate string CellValue();
-```
-
-#### `TableCallback`
-
-Used in some overloads of `TextTabulator.Tabulate` so that the caller can receive callbacks when elements of the table are generated. This can be used to put pieces of the table directly into other outputs more efficiently. The parameter `string text` will contain the most recently created element of the table.
-
-Signature:
-```
-public delegate void TableCallback(string text);
-```
+Follow the link for the [full public API documentation](https://github.com/jwelsch/TextTabulator/main/docs/index-texttabulator.md).
 
 ### Adapters
 
@@ -315,11 +93,11 @@ Existing implementations of `ITabulatorAdapter` for various common data formats 
 
 ## Tabulation Options
 
-There is a configuration class, called `TableOptions`, that can be used to control various aspects of the table. It derives from `ITableOptions`, which can be used to implement custom values, if necessary. Most developers will likely use `TableOptions`, though.
+Various aspects of the generated table can be controlled by the configuration class `TabulatorOptions`. Examples of what the specific options values produce can be found below.
 
 ### Alignment
 
-If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `CellAlignment` property in an `ITableOptions` object. The `CellAlignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
+If a cell's contents do not span the full width of a column, it can be aligned such that the content will appear consistently on the left, right, or in the center. This can be accomplished by setting the `CellAlignment` property in an `ITabulatorOptions` object. The `CellAlignment` property can be set with type that implements `ICellAlignmentProvider`. If the default `ICellAlignmentProvider` is used, all cell contents will be aligned to the left.
 
 There are four `CellAlignment` values:
 - `Left`: Aligns content to the left of the cell.
@@ -479,7 +257,7 @@ The output will look like this:
 
 ### Styling
 
-The style of the table structure can be controlled by setting the `Styling` property in an `ITableOptions` object and passing it to the `Tabulator.Tabulate` method. There are two types that implement `ITableStyle` out of the box: `AsciiTableStyling` and `UnicodeTableStyling`. You can set the properties of either to further customize the styling of the table. The default table styling is the same as `AsciiTableStyling`.
+The style of the table structure can be controlled by setting the `Styling` property in an `ITabulatorOptions` object and passing it to the `Tabulator.Tabulate` method. There are two types that implement `ITableStyle` out of the box: `AsciiTableStyling` and `UnicodeTableStyling`. You can set the properties of either to further customize the styling of the table. The default table styling is the same as `AsciiTableStyling`.
 
 `AsciiTableStyling` will only use traditional ASCII characters to build the table. Note that this does not mean that the characters are ASCII encoded, the actual characters are encoded as standard Unicode, like all .NET characters. This only uses characters within the traditional ASCII 1-byte range of 0-255.
 
@@ -539,7 +317,7 @@ An example table looks like:
 
 ### New Lines
 
-By default `TextTabulator.Tabulate` uses the `Environment.NewLine` for new lines. However, characters to use for new lines can be set by assigning a value to `TableOptions.NewLines`.
+By default `TextTabulator.Tabulate` uses the `Environment.NewLine` for new lines. However, characters to use for new lines can be set by assigning a value to `TabulatorOptions.NewLines`.
 
 Example:
 

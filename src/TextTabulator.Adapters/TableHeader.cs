@@ -1,15 +1,37 @@
-﻿namespace TextTabulator.Adapters
+﻿using System;
+
+namespace TextTabulator.Adapters
 {
-    public class TableHeader
+    internal class TableHeader : IEquatable<TableHeader>
     {
-        public string TransformedName { get; }
+        public string Name { get; }
 
         public int Index { get; }
 
-        public TableHeader(string transformedName, int index)
+        public TableHeader(string name, int index)
         {
-            TransformedName = transformedName;
+            Name = name;
             Index = index;
+        }
+
+        public bool Equals(TableHeader? other)
+        {
+            return other != null && Name == other.Name && Index == other.Index;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TableHeader cni && Equals(cni);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, Index);
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Name)}: {Name}, {nameof(Index)}: {Index}";
         }
     }
 }

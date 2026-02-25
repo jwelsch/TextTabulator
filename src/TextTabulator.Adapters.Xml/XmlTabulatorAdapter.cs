@@ -18,30 +18,31 @@ namespace TextTabulator.Adapters.Xml
     /// 
     /// The data should be in the following format:
     ///
-    /// <?xml version="1.0" encoding="UTF-8"?>
-    /// <list>
-    ///     <object>
-    ///         <value1>value1A</value1>
-    ///         <value2>value2A</value2>
-    ///     </object>
-    ///     <object>
-    ///         <value1>value1B</value1>
-    ///         <value2>value2B</value2>
-    ///     </object>
-    /// <object>
-    ///         <value1>value1C</value1>
-    ///         <value2>value2C</value2>
-    ///     </object>
+    /// &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    /// &lt;list&gt;
+    ///     &lt;object&gt;
+    ///         &lt;value1&gt;value1A&lt;/value1&gt;
+    ///         &lt;value2&gt;value2A&lt;/value2&gt;
+    ///     &lt;/object&gt;
+    ///     &lt;object&gt;
+    ///         &lt;value1&gt;value1B&lt;/value1&gt;
+    ///         &lt;value2&gt;value2B&lt;/value2&gt;
+    ///     &lt;/object&gt;
+    /// &lt;object&gt;
+    ///         &lt;value1&gt;value1C&lt;/value1&gt;
+    ///         &lt;value2&gt;value2C&lt;/value2&gt;
+    ///     &lt;/object&gt;
     ///     ...
-    /// </list>
+    /// &lt;/list&gt;
     /// 
     /// </summary>
     public class XmlTabulatorAdapter : IXmlTabulatorAdapter
     {
         private readonly Func<Stream> _xmlStreamProvider;
         private readonly XmlTabulatorAdapterOptions _options;
-        private readonly Dictionary<string, TableHeader> _headers = new Dictionary<string, TableHeader>();
         private readonly IValueNormalizer _valueNormalizer = new ValueNormalizer();
+
+        private TableHeaderMapper? _mapper;
 
         /// <summary>
         /// Creates an object of type XmlTabulatorAdapter.
@@ -83,8 +84,6 @@ namespace TextTabulator.Adapters.Xml
         /// <returns>An enumerable containing the header strings for the table, or null if the data contains no header strings.</returns>
         public IEnumerable<string>? GetHeaderStrings()
         {
-            _headers.Clear();
-
             // Ensure that the stream is reset to the beginning.
             var stream = _xmlStreamProvider.Invoke();
 
@@ -99,7 +98,7 @@ namespace TextTabulator.Adapters.Xml
                 throw new InvalidOperationException($"No root node found in XML document.");
             }
 
-            var transformedHeaders = new List<string>();
+            var headers = new List<string>();
 
             // Read first node in the list.
             if (xmlReader.ReadToNode(XmlNodeType.Element))
@@ -112,10 +111,7 @@ namespace TextTabulator.Adapters.Xml
                     if (xmlReader.NodeType == XmlNodeType.Element && (depth ??= xmlReader.Depth) == xmlReader.Depth)
                     {
                         // Add the first occurances at this depth of the names of the XML nodes as the table headers.
-                        var rawHeader = xmlReader.Name;
-                        var transformed = _options.NodeNameTransform.Apply(rawHeader);
-                        transformedHeaders.Add(transformed);
-                        _headers.Add(rawHeader, new TableHeader(transformed, transformedHeaders.Count - 1));
+                        headers.Add(xmlReader.Name);
                     }
                     else if (xmlReader.NodeType == XmlNodeType.EndElement && xmlReader.Name == name)
                     {
@@ -132,7 +128,9 @@ namespace TextTabulator.Adapters.Xml
                 }
             }
 
-            return transformedHeaders;
+            _mapper = new TableHeaderMapper(headers, _options.NodeNameTransform, _options.HeaderSorter);
+
+            return _mapper.GetSortedMappedHeaderNames();
         }
 
         /// <summary>
@@ -142,6 +140,11 @@ namespace TextTabulator.Adapters.Xml
         /// <returns>An enumerable containing the rows and the values within each row.</returns>
         public IEnumerable<IEnumerable<string>> GetValueStrings()
         {
+            if (_mapper == null)
+            {
+                throw new InvalidOperationException($"GetHeaderStrings must be called before GetValueStrings.");
+            }
+
             // Ensure that the stream is reset to the beginning.
             var stream = _xmlStreamProvider.Invoke();
 
@@ -182,7 +185,7 @@ namespace TextTabulator.Adapters.Xml
                         // New XML list item.
                         itemName ??= xmlReader.Name;
 
-                        rowValues = new string[_headers.Count];
+                        rowValues = new string[_mapper.HeaderCount];
                         Array.Fill(rowValues, "");
                         continue;
                     }
@@ -204,9 +207,13 @@ namespace TextTabulator.Adapters.Xml
                 {
                     if (xmlReader.NodeType == XmlNodeType.Element)
                     {
-                        if (!_headers.TryGetValue(xmlReader.Name, out tableHeader))
+                        try
                         {
-                            throw new InvalidOperationException($"Unknown header '{xmlReader.Name}' encountered while parsing values.");
+                            tableHeader = _mapper.GetMappedHeader(xmlReader.Name);
+                        }
+                        catch (KeyNotFoundException ex)
+                        {
+                            throw new InvalidOperationException($"Unknown header '{xmlReader.Name}' encountered while parsing values.", ex);
                         }
 
                         if (xmlReader.IsEmptyElement && rowValues != null)

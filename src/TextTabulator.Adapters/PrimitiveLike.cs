@@ -2,7 +2,7 @@
 
 namespace TextTabulator.Adapters
 {
-    public static class PrimitiveLike
+    internal static class PrimitiveLike
     {
         public static bool Detect(Type type)
         {

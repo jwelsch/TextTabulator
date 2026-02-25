@@ -6,7 +6,7 @@ using System.Reflection;
 namespace TextTabulator.Adapters
 {
     [Flags]
-    public enum MemberType
+    internal enum MemberType
     {
         Property = 0x1,
         Field = 0x2,
@@ -14,7 +14,7 @@ namespace TextTabulator.Adapters
         Member = Property | Field | Method
     }
 
-    public interface IReflector
+    internal interface IReflector
     {
         FieldInfo? GetFieldInfo(string fieldName, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
@@ -31,7 +31,7 @@ namespace TextTabulator.Adapters
         MemberInfo[] GetMemberInfos(MemberType memberType = MemberType.Member, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
     }
 
-    public class Reflector : IReflector
+    internal class Reflector : IReflector
     {
         private readonly Type _type;
 
